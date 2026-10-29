@@ -1,0 +1,89 @@
+# Skills lock — fonte + pin de cada skill de terceiro-parte.
+# Localmente modificados: divergencia registrada em modified_by_user.
+# Update: scripts/update-skills.sh (diferenca contra upstream, nunca sobrescreve cega).
+
+sources:
+  mattpocock/skills:
+    url: https://github.com/mattpocock/skills.git
+    code-review:
+      pin: fee7bb5fdddc
+      updated: 2026-10-28T23:44:15.025Z
+      modified_by_user: true
+    codebase-design:
+      pin: 07ba1cd60efc
+      updated: 2026-10-28T23:44:16.221Z
+      modified_by_user: true
+    domain-modeling:
+      pin: ea30ee454ba2
+      updated: 2026-10-28T23:44:13.659Z
+      modified_by_user: true
+    grill-me:
+      pin: 3df14e2d3a89
+      updated: 2026-08-18T16:28:05.320Z
+      modified_by_user: true
+    grill-with-docs:
+      pin: eedaf2562c83
+      updated: 2026-08-18T16:28:05.320Z
+      modified_by_user: true
+    grilling:
+      pin: 28aceb4c9567
+      updated: 2026-10-28T23:44:12.236Z
+      modified_by_user: true
+    handoff:
+      pin: ce24892bd2d4
+      updated: 2026-10-28T23:44:11.318Z
+      modified_by_user: true
+    implement:
+      pin: 4804b466ab26
+      updated: 2026-10-28T23:44:10.081Z
+      modified_by_user: true
+    improve-codebase-architecture:
+      pin: 39bd9cc130f7
+      updated: 2026-10-28T23:44:01.965Z
+      modified_by_user: true
+    prototype:
+      pin: e41d92e171f0
+      updated: 2026-08-21T17:54:21.538Z
+      modified_by_user: true
+    research:
+      pin: 0a6796c5667e
+      updated: 2026-08-21T17:54:27.841Z
+      modified_by_user: true
+    setup-matt-pocock-skills:
+      pin: b644b684781f
+      updated: 2026-10-28T23:44:03.479Z
+      modified_by_user: true
+    tdd:
+      pin: 667dbdd00c09
+      updated: 2026-10-28T23:44:04.403Z
+      modified_by_user: true
+    triage:
+      pin: 4cb951d62ecc
+      updated: 2026-10-28T23:44:05.637Z
+      modified_by_user: true
+    wait-what:
+      pin: c8b050e6b8c7
+      updated: 2026-10-28T23:44:06.829Z
+      modified_by_user: true
+    wizard:
+      pin: e396d3ba97c7
+      updated: 2026-10-28T23:44:08.811Z
+      modified_by_user: true
+  vercel-labs/skills:
+    url: https://github.com/vercel-labs/skills.git
+    find-skills:
+      pin: 76a98a285cb0
+      updated: 2026-08-18T16:28:07.400Z
+      modified_by_user: true
+  heliocosta-dev/revenue-centric-design:
+    url: https://github.com/heliocosta-dev/revenue-centric-design.git
+    revenue-centric-design:
+      pin: 1942760c2242
+      updated: 2026-09-04T16:34:50.876Z
+      modified_by_user: true
+  Leonxlnx/taste-skill:
+    url: https://github.com/Leonxlnx/taste-skill.git
+    design-taste-frontend:
+      pin: 844f3cf223d2
+      updated: 2026-10-28T23:44:17.538Z
+      modified_by_user: true
