@@ -23,20 +23,25 @@ if [ -f "$repo/skills.lock.yaml" ]; then
   pinned="$(grep -E '^    [A-Za-z0-9_.-]+:$' "$repo/skills.lock.yaml" | sed 's/^ *//; s/:$//')"
 fi
 
+# Every SKILL.md under personal/ or third-party/ is a candidate, and a skill's name
+# is the directory holding it. Nested trees are covered by the find: a vendored
+# multi-skill repo keeps upstream's discipline/phase/skill layout so that the
+# relative references inside its skills ("../../../references/...") still resolve.
+# That is why `wanted` carries the path, not just the name.
 wanted=""
-for dir in "$repo"/personal/*/ "$repo"/third-party/*/; do
-  [ -f "$dir/SKILL.md" ] || continue
-  name="$(basename "$dir")"
-  case "$dir" in
-    */third-party/*) grep -qx "$name" <<<"$pinned" || continue ;;
+while IFS= read -r skill_md; do
+  rel="$(dirname "${skill_md#"$repo"/}")"
+  name="$(basename "$rel")"
+  case "$rel" in
+    third-party/*) grep -qx "$name" <<<"$pinned" || continue ;;
   esac
-  wanted+="$name"$'\n'
-done
+  wanted+="$name"$'\t'"$rel"$'\n'
+done < <(find "$repo/personal" "$repo/third-party" -name SKILL.md -print | sort)
 
 linked=0 removed=0
-while read -r name; do
+while IFS=$'\t' read -r name rel; do
   [ -n "$name" ] || continue
-  target="$repo/$( [ -d "$repo/personal/$name" ] && echo personal || echo third-party )/$name"
+  target="$repo/$rel"
   link="$farm/$name"
   if [ -L "$link" ] && [ "$(readlink -f "$link")" = "$(readlink -f "$target")" ]; then
     continue

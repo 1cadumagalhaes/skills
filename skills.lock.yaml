@@ -285,3 +285,421 @@ sources:
       pin: 6be93f45064f
       updated: 2026-11-07T02:32:20.000Z
       modified_by_user: true
+  aaron-he-zhu/aaron-marketing-skills:
+    url: https://github.com/aaron-he-zhu/aaron-marketing-skills.git
+    ad-account-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    conversion-signal-qa:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    conversion-value-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    placement-exclusion-manager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    ad-creative-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    ad-test-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    bid-strategy-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    landing-experience-checker:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    audience-segment-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    campaign-architect:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    product-feed-optimizer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    search-term-miner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    attribution-reconciler:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    budget-pacing-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    fatigue-frequency-manager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    paid-measurement-loop:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    cold-outbound-sequencer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    email-quality-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    inbox-placement-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    send-experiment-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    dynamic-content-personalizer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    email-creative-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    email-render-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    subject-line-lab:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    email-sequence-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    newsletter-monetization-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    preference-frequency-manager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    reactivation-specialist:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    deliverability-qa:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    list-growth-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    list-hygiene-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    list-segment-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    content-amplifier:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    contract-helper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    creator-content-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    outreach-manager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    landing-optimizer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    performance-analyzer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    report-generator:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    roi-calculator:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    audience-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    fit-scorer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    influencer-discovery:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    trend-spotter:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    brief-generator:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    budget-optimizer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    campaign-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    competitor-tracker:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-asset-packager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    message-house-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    pricing-packaging-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    sales-enablement-kit:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    community-launch-runner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-day-conductor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-readiness-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    press-media-relations:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-feedback-synthesizer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-retro-analyzer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    momentum-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    early-access-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-tier-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    launch-window-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    positioning-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    brand-language-codifier:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    message-system-architect:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    story-bank-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    strategic-narrative-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    message-test-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-drift-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-quality-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-resonance-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-cascade-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-enablement-kit:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    pitch-narrative-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    proof-point-packager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    audience-belief-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    category-narrative-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    narrative-baseline-mapper:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    positioning-truth-tracer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    domain-authority-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    offsite-signal-analyzer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    performance-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    rank-tracker:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    competitor-analysis:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    content-gap-analysis:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    keyword-research:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    serp-analysis:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    advocacy-program-designer:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    short-video-scripter:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-calendar-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-creative-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    channel-portfolio-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    participation-warmup-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    platform-norm-profiler:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    voice-dossier-builder:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    crisis-response-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    engagement-inbox-manager:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-quality-auditor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-selling-planner:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    dark-social-attributor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    share-of-voice-tracker:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-measurement-loop:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
+    social-pulse-monitor:
+      pin: 3da1c6d96ad4
+      updated: 2026-11-07T02:36:49.000Z
+      modified_by_user: true
