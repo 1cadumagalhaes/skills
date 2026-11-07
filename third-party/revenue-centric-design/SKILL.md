@@ -1,13 +1,6 @@
 ---
 name: revenue-centric-design
-description: >-
-  Playbook for designing SaaS and startup products that convert, retain, and monetize —
-  landing pages & CRO, checkout & forms, onboarding/activation, churn reduction, pricing
-  psychology, dashboards, behavioral-science tactics, feature discipline, positioning/ICP,
-  go-to-market, and AI-era differentiation. Use when advising on product design, UX,
-  conversion, landing pages, checkout, onboarding, trials, pricing, retention/churn,
-  growth, or positioning for a startup or SaaS. Distilled from product designer Richard
-  (@richardrx). Not for use on gambling, betting, or casino products.
+description: 'Product and conversion playbook for SaaS: landing pages, onboarding, pricing, retention, checkout and forms, positioning, dashboard metrics. Use for product/UX strategy questions, not visual craft (that is ui-craft).'
 ---
 
 # Revenue-Centric Design

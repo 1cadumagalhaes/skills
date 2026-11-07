@@ -1,13 +1,6 @@
 ---
 name: dashboard
-description: >
-  Build, spec or critique an analytics dashboard — KPI tiles, charts, tables, filters and the
-  numbers behind them. Use when someone asks for a dashboard, scorecard, monitoring view,
-  report page or a native Grafana dashboard, when choosing which metrics and dimensions belong on
-  it, when defining filters and date ranges, when a chart is misleading or a number does not
-  reconcile, or when reviewing an existing dashboard for honesty and readability. Routes the spec
-  to dashboard-spec, the metric rigor to its own reference, and the drawing (or Grafana panel
-  configuration) to dashboard-design and references/grafana.md.
+description: 'Spec, build or critique an analytics dashboard, including native Grafana: which metrics and dimensions belong, how filters and date ranges behave, and whether each number is defined and comparable. Also for reviewing an existing dashboard.'
 ---
 
 # Dashboard
@@ -16,9 +9,9 @@ A dashboard is an argument made of numbers. Four separate jobs, in order:
 
 | phase | what it answers | where |
 |---|---|---|
-| **spec** | who reads this, what decision it serves, which questions in priority order | `dashboard-spec` skill |
+| **spec** | who reads this, what decision it serves, which questions in priority order | `~/.agents/skills/dashboard-spec/SKILL.md` |
 | **metrics & filters** | is each number defined, complete and comparable | `references/metrics-and-filters.md` (always, for any number shown) |
-| **drawing & critique** | which mark for which question, axes, colour, layout | `dashboard-design` skill → `perception.md`, `components.md`, `layout.md`, `qa.md` |
+| **drawing & critique** | which mark for which question, axes, colour, layout | `~/.agents/skills/dashboard-design/SKILL.md` → `perception.md`, `components.md`, `layout.md`, `qa.md` |
 | **native Grafana** | panel type, units, thresholds, variables, time picker, dashboards-as-code | `references/grafana.md` |
 
 Surrounding UI (spacing, focus, contrast, tables, forms) follows `ui-craft` — its `[req]` rules win over any taste rule below. A repo's `DESIGN.md` (see `design-contract`) wins over `dashboard-design`'s house style; the user's stated taste wins over both.
@@ -47,11 +40,11 @@ Surrounding UI (spacing, focus, contrast, tables, forms) follows `ui-craft` — 
 
 ## Process
 
-1. **Spec** (`dashboard-spec`): audience, the decision, questions in priority order, one chart per question, refresh cadence, and what is deliberately left off. Vanity metrics get cut in the spec, not in review.
+1. **Spec** (read `~/.agents/skills/dashboard-spec/SKILL.md`): audience, the decision, questions in priority order, one chart per question, refresh cadence, and what is deliberately left off. Vanity metrics get cut in the spec, not in review.
 2. **Define** each metric and filter with `references/metrics-and-filters.md`. Write the metric cards into the spec document, not into chat.
-3. **Draw** with `dashboard-design`: `perception.md` for the encoding ladder, `components.md` for tiles/tables/lists, `layout.md` for the grid, `tokens.md` for colour and type. **If the target is native Grafana**, the drawing phase is configuration instead — read `references/grafana.md` first; `components.md` and `tokens.md` do not apply, and panel choice, units, thresholds, variables and the time picker carry the craft.
+3. **Draw** with `~/.agents/skills/dashboard-design/SKILL.md`: `perception.md` for the encoding ladder, `components.md` for tiles/tables/lists, `layout.md` for the grid, `tokens.md` for colour and type. **If the target is native Grafana**, the drawing phase is configuration instead — read `references/grafana.md` first; `components.md` and `tokens.md` do not apply, and panel choice, units, thresholds, variables and the time picker carry the craft.
 4. **Build** per `frontend-workflow`; the shell, controls, tables and states follow `ui-craft`.
-5. **QA**: `dashboard-design/references/qa.md` plus this file's report.
+5. **QA**: `~/.agents/skills/dashboard-design/references/qa.md` plus this file's report.
 
 ## Report
 

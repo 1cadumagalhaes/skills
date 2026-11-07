@@ -1,13 +1,13 @@
 ---
 name: design-direction
-description: Decide a visual direction with the user before any UI is built, then record it and hand off. Use when a page, screen, product surface or component needs a look — when starting new UI, redesigning, restyling, or when the output feels generic and someone says it looks templated, AI-made or off-brand. Asks for a choice between two or three subject-grounded directions, writes the decision to DESIGN.md, then routes execution to design-taste-frontend for public pages and frontend-workflow/ui-craft for app UI.
+description: 'Decide a visual direction with the user before building UI: two or three subject-grounded options, the choice recorded in DESIGN.md, then execution handed to the right skill. Use when starting or restyling a surface, or when the output looks generic.'
 ---
 
 # Design direction
 
 One job: turn "make it look good" into a named direction the user chose, on the record, before code exists.
 
-This is the *decide* phase. Building is `frontend-workflow`; rules are `ui-craft`; durable decisions are `design-contract`; a gallery-grade public page is `design-taste-frontend`.
+This is the *decide* phase. Building is `frontend-workflow`; rules are `ui-craft`; durable decisions are `design-contract`; a gallery-grade public page is the `design-taste-frontend` playbook. Playbooks are not auto-invocable: when this skill sends you to one, read `~/.agents/skills/<name>/SKILL.md` and follow it.
 
 ## 0. Do not ask when the answer is given
 
@@ -62,14 +62,14 @@ These are the current generated-page defaults. They are legitimate for *some* br
 - the SaaS card kit: identical rounded cards, one radius for everything, the same soft grey shadow, gradient washes as decoration
 - template chrome regardless of subject: all-caps eyebrow above every heading, `A · B · C` meta strings, `WORD — fragment` labels, `#0B0B0B` standing in for black, monospace micro-labels, `→` appended to every button
 
-Where the brief pins one of these, follow it. Where an axis is free, do not spend the freedom on a default. Full registry of tells: `design-taste-frontend` → `references/tells.md`.
+Where the brief pins one of these, follow it. Where an axis is free, do not spend the freedom on a default. Full registry of tells: `~/.agents/skills/design-taste-frontend/references/tells.md`.
 
 ## 5. Route execution
 
 | surface | use |
 |---|---|
-| public/marketing page needing gallery-grade output | `design-taste-frontend` — its direction sheet, browser gate and screenshot loop |
-| app UI, dashboard, admin, settings | `frontend-workflow` + `ui-craft` (+ `design-taste-frontend/references/app-screens.md` for app-specific rules) |
+| public/marketing page needing gallery-grade output | read `~/.agents/skills/design-taste-frontend/SKILL.md` — its direction sheet, browser gate and screenshot loop |
+| app UI, dashboard, admin, settings | `frontend-workflow` + `ui-craft` (+ `~/.agents/skills/design-taste-frontend/references/app-screens.md` for app-specific rules) |
 | one component inside an established surface | `frontend-workflow` + `ui-craft`; no new direction |
 | copy for the chosen direction | the direction's own voice rules, recorded in `DESIGN.md` |
 

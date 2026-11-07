@@ -1,13 +1,6 @@
 ---
 name: ui-craft
-description: >-
-  Concrete rules for building or reviewing UI that is correct, accessible and modern — concentric
-  radii, tabular numbers, focus rings, spacing rhythm, semantic HTML, form errors, hover on touch,
-  contrast, hit targets, and modern CSS instead of workarounds. Use when styling, restyling,
-  reviewing or fixing any web interface, when a layout or component looks wrong, shifts, or is
-  misaligned, when auditing accessibility, or when a typography, colour or spacing decision needs a
-  concrete value rather than an opinion. Rules, not process — pair with frontend-workflow for build
-  order and design-direction for the look.
+description: Concrete rules for correct, accessible UI — radii, tabular numbers, focus, hit targets, contrast, semantic HTML, form errors, modern CSS. Use when styling or reviewing any web interface where correctness matters, not taste.
 ---
 
 # UI craft
