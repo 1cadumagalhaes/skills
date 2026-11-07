@@ -85,3 +85,11 @@ sources:
       pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
       updated: 2026-11-07T01:40:39.057Z
       modified_by_user: true
+    agentbox:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:47.127Z
+      modified_by_user: true
+    webscraping-expert:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:47.127Z
+      modified_by_user: true
