@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when auditing, reconciling, or updating canonical entity identity for Knowledge Graph, Wikidata, schema.org, sameAs, or AI-system disambiguation."
 argument-hint: "<entity aggregate-id/name or 'review entity proposals'>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "high", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Entity Registry

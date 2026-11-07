@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when planning or restructuring a site (page hierarchy, navigation, URL taxonomy, hub/spoke topic clusters, visual sitemap) OR when fixing internal link structure (orphan pages, anchor-text distribution, authority flow, crawl depth). One skill, two altitudes: architecture designs the structure; linking optimizes the links inside it."
 argument-hint: "[--mode architecture|linking] <domain, sitemap, or page list + site type>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "tune", "geo-relevance": "high", "hermes": {"tags": ["marketing", "seo-geo", "tune"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Site Structure Optimizer

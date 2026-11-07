@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when writing SEO articles, blog posts, landing pages, or product descriptions targeting a keyword (mode: new), OR when updating outdated content, refreshing old articles, or recovering pages that lost traffic/rankings (mode: refresh)."
 argument-hint: "[--mode new|refresh] <topic/keyword or URL of existing content>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "implement", "geo-relevance": "high", "hermes": {"tags": ["marketing", "seo-geo", "implement"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Content Writer

@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when optimizing content for AI engines like ChatGPT, Perplexity, AI Overviews, Gemini, Claude, or Copilot. Also for AI citation optimization, generative engine visibility, AI引用优化, AI搜索优化, GEO优化, or 让AI引用我."
 argument-hint: "<content URL or text> [target AI engine]"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "implement", "geo-relevance": "high", "hermes": {"tags": ["marketing", "seo-geo", "implement"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # GEO Content Optimizer

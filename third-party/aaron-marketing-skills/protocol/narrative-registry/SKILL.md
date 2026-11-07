@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when recording/querying a brand's canonical positioning, narrative, message hierarchy, proof/claim pointers, voice/naming rules, conditional boilerplates, or accepting/rejecting a complete canon-version proposal."
 argument-hint: "<brand aggregate-id, canon version, or pending-proposal review>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "📖", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Narrative Registry

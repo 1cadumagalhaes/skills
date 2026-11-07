@@ -87,11 +87,10 @@ resolve, 0 missing.
 `${CLAUDE_PLUGIN_ROOT:-$(git rev-parse --show-toplevel)}` idiom) rewritten to this
 repo's absolute vendored path across 55 files — there is no plugin root and no git
 top level to fall back on from a skills farm. Every linked skill carries
-`disable-model-invocation: true`, so all 104 are invoke-only. `protocol/` (8
-skills) is vendored because 319 references point into it, but it is **not linked**:
-its skill-contract rules are ours already, in `~/.pi/agent/AGENTS.md`.
-`seo-geo/implement/` and `seo-geo/tune/` (8 skills) are vendored but not linked —
-they duplicate the AgriciDaniel port.
+`disable-model-invocation: true`, so all 104 are invoke-only. All 120 skills are linked, including `protocol/` (8, the
+skill-contract and registry rules that 319 references point into) and
+`seo-geo/implement/` + `seo-geo/tune/` (8, which overlap the AgriciDaniel port —
+kept because they are the *checker* half of the same process and cheap to hold).
 
 **Data caveat.** 14-16 of every 16 skills expect connected tools or user-supplied
 exports (`CONNECTORS.md`, `scripts/connectors/*.py` — ledger, youtube, resend,

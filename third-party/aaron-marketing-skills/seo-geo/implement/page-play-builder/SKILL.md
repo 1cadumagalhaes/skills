@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when the user wants to build SEO pages that are NOT a single hand-written article. Programmatic mode: generate hundreds or thousands of pages from one template plus a structured dataset (locations, comparisons, integrations, glossary, personas), pick a pSEO playbook, or audit a template-x-data set for thin/duplicate risk. Parasite mode: choose or stage third-party-platform publishing (Medium, Reddit, LinkedIn Articles, Quora, GitHub, Dev.to, Stack Overflow) that links back to an owned site, or check a plan against Google's site-reputation-abuse policy. Comparison mode: build a vs page, competitor comparison, or alternative/alternatives page. Local mode: optimize a Google Business Profile, audit NAP consistency, build citations, or plan location and service-area pages. Also fires on 程序化SEO, 寄生SEO, 对比页, 本地SEO, GBP, local pack, barnacle SEO."
 argument-hint: "<mode: programmatic|parasite|comparison|local> <primary input> [dataset / competitor / platforms / location]"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "implement", "geo-relevance": "high", "hermes": {"tags": ["marketing", "seo-geo", "implement"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Page Play Builder

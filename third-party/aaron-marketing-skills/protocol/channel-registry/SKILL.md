@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when recording/querying channel handle/state/governance/cadence/voice pointers, UGC permissions, advocate opt-in, or accepting pending social activity/incident proposals."
 argument-hint: "<channel or permission aggregate-id, transition, or proposal review>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "📡", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Channel Registry

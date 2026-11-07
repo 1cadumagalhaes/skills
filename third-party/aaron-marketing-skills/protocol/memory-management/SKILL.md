@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when initializing, querying, consolidating, archiving, exporting, or erasing project memory; also when repairing broken references or reconciling conflicting non-canonical notes."
 argument-hint: "[init|review|archive|consolidate|purge] [scope]"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Memory Management

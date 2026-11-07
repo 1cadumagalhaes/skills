@@ -12,6 +12,7 @@ when_to_use: "Use when checking technical SEO health: site speed, Core Web Vital
 argument-hint: "<URL or domain>"
 allowed-tools: WebFetch
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "tune", "geo-relevance": "low", "hermes": {"tags": ["marketing", "seo-geo", "tune"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Technical SEO Checker

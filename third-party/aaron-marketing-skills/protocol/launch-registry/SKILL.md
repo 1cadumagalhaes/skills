@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when recording/querying launch tier/type/stage/date/embargo, submission events, manifest version, outcome snapshot, or accepting pending launch proposals."
 argument-hint: "<launch aggregate-id, transition, or pending-proposal review>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Launch Registry

@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when recording or querying opt-in/lawful-basis evidence, immediately suppressing an unsubscribe, hard bounce, or complaint, restoring after a fresh authorized opt-in, processing erasure, or reviewing pending consent proposals."
 argument-hint: "<pseudonymous subject-id and consent/suppression event>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Consent Registry

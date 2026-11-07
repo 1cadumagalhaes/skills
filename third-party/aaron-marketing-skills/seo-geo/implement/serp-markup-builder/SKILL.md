@@ -12,6 +12,7 @@ when_to_use: "Use when building anything in the document head for a page — tit
 argument-hint: "[meta|schema] <page URL or content>"
 allowed-tools: WebFetch
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "seo-geo", "phase": "implement", "geo-relevance": "high", "hermes": {"tags": ["marketing", "seo-geo", "implement"], "category": "seo-geo"}, "openclaw": {"emoji": "🔍", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # SERP Markup Builder

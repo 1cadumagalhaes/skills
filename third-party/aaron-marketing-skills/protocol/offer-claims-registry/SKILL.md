@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when registering, updating, expiring, or querying claims/offers; resolving pending [needs source] proposals; recording substantiation, approved wording, disclosures, terms, usage, and review dates."
 argument-hint: "<claim/offer aggregate-id or 'review pending proposals'>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Offer & Claims Registry

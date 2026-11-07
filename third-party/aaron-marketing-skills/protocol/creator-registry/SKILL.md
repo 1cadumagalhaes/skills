@@ -11,6 +11,7 @@ homepage: "https://github.com/aaron-he-zhu/aaron-marketing-skills"
 when_to_use: "Use when consolidating or querying creator roster facts, accepting pending creator proposals, deduplicating handles, or recording closed-cycle rates, rights, exclusivity, compliance events, and performance baselines."
 argument-hint: "<creator aggregate-id/handle or 'review pending proposals'>"
 metadata: {"author": "aaron-he-zhu", "version": "20.2.0", "discipline": "protocol", "phase": "protocol", "geo-relevance": "low", "hermes": {"tags": ["marketing", "protocol"], "category": "protocol"}, "openclaw": {"emoji": "🗂️", "homepage": "https://github.com/aaron-he-zhu/aaron-marketing-skills"}}
+disable-model-invocation: true
 ---
 
 # Creator Registry
