@@ -139,3 +139,43 @@ sources:
       pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
       updated: 2026-11-07T01:51:53.949Z
       modified_by_user: true
+  Kappaemme-git/codex-startup-pressure-test-skill:
+    url: https://github.com/Kappaemme-git/codex-startup-pressure-test-skill.git
+    startup-pressure-test:
+      pin: 247b06546a4b
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+  zubair-trabzada/geo-seo-claude:
+    url: https://github.com/zubair-trabzada/geo-seo-claude.git
+    geo-audit:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-citability:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-technical:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-schema:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-crawlers:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-llmstxt:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-content:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
+    geo-platform-optimizer:
+      pin: 989cae01e8eb
+      updated: 2026-11-07T02:25:19.000Z
+      modified_by_user: true
