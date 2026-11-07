@@ -1,7 +1,6 @@
 ---
 name: dashboard-spec
-description: Spec a dashboard before anyone builds it — the audience and the decision it serves, the questions in priority order, one chart per question with the chart type and why, the defined metric behind each chart, filters, refresh cadence and freshness SLA, and a list of what is deliberately left off, with vanity metrics cut. Use when the user says "spec a dashboard", "what should go on our KPI dashboard", "the BI team needs requirements for a dashboard", "our dashboard has 40 charts and nobody uses it", or "design the exec dashboard".
-disable-model-invocation: true
+description: 'Spec a dashboard before anyone builds it: audience, the decision it serves, questions in priority order, one chart per question with its defined metric, filters, refresh cadence and freshness, and what is deliberately left out.'
 ---
 
 # dashboard-spec

@@ -1,7 +1,6 @@
 ---
 name: dashboard-design
-description: Clean, honest dashboard UI for web and SwiftUI — KPI cards, charts, heatmaps, bullet graphs, comparison periods, ranked breakdowns, date range pickers, filters, empty and loading states, wide and phone layouts, plus a screenshot QA pass. Use when building, redesigning or critiquing an analytics, revenue, metrics, school or admin dashboard, a stats page, or any data-heavy screen.
-disable-model-invocation: true
+description: 'How to draw a dashboard: the encoding ladder for choosing a mark, axes and gridlines, colour scales, layout, KPI tiles and tables, heatmaps and sparklines, plus a screenshot QA pass. Use after the dashboard''s metrics are defined.'
 ---
 
 # Dashboard design
