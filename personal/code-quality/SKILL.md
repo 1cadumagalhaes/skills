@@ -27,7 +27,7 @@ Work in this order. Stop when the budget for the task is spent — a shallow pas
 1. **Correctness** — bounds, nulls, empties, error paths, partial failure, retries/idempotency, resource cleanup, swallowed exceptions. → `references/bugs-and-failure-modes.md`
 2. **Data structures and performance** — does the structure match the access pattern; complexity in the hot path; N+1 round trips; allocation in loops. Measured or reasoned, never guessed. → `references/data-structures-and-performance.md`
 3. **Decomposition** — is this one job; where the seam is; pure step vs hidden state; would a second caller reuse it. → `references/decomposition.md`
-4. **System design** — dependency direction, coupling, failure isolation, what happens when a dependency is down, what is observable. → `~/.agents/skills/dsa-system-design-optimizer/references/system-design-patterns.md`
+4. **System design** — dependency direction, coupling, failure isolation, what happens when a dependency is down, what is observable. → `~/.agents/skills/dsa-system-design/references/system-design-patterns.md`
 5. **Anti-patterns** — name the smell when it is genuinely there (god object, feature envy, shotgun surgery, leaky abstraction, primitive obsession, hidden temporal coupling), and say what it costs here. A smell named without a cost is noise.
 6. **Explicit configuration** — no magic values; parsed and validated at the edge; defaults visible; one source of truth; config vs constant vs secret told apart. → `references/configuration.md`
 
