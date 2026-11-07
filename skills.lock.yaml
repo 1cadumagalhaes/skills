@@ -67,3 +67,21 @@ sources:
       pin: 555cb1a6b8befff83400f90845184b9186aef219
       updated: 2026-11-07T01:28:29.551Z
       modified_by_user: true
+  gabrielgreco1/skills:
+    url: https://github.com/gabrielgreco1/skills.git
+    aula-interativa:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:39.057Z
+      modified_by_user: true
+    diretor-de-edicao:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:39.057Z
+      modified_by_user: true
+    motion-designer:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:39.057Z
+      modified_by_user: true
+    ui-humanizer:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07T01:40:39.057Z
+      modified_by_user: true
