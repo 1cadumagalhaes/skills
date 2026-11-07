@@ -1,5 +1,5 @@
 ---
-name: dsa-system-design-optimizer
+name: dsa-system-design
 description: Audits real codebases for data structure, algorithm, database, caching, scalability, reliability, and AI-system design improvements. Use when users ask to reduce time or space complexity, find hot paths, choose DSA patterns, optimize queries, improve architecture, scale a product, review infra, design RAG/agent systems, or create a measured performance roadmap.
 disable-model-invocation: true
 ---
