@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Vendor wrapper around claude-seo's launcher.
+#
+# Two things are pinned here so the toolchain lives outside the git tree:
+#   CLAUDE_SEO_DATA_DIR - managed venv + Chromium + runtime state. Without it the
+#     launcher treats this directory as a "manual" install and writes ~1.5 GB of
+#     Playwright browsers into the skills repo (it did, once).
+# Bootstrap Python is the system python3 (3.14, inside the supported 3.11-3.14);
+# the managed environment it creates is separate and self-contained.
+export CLAUDE_SEO_DATA_DIR="${CLAUDE_SEO_DATA_DIR:-/home/cadu/.local/share/claude-seo-data}"
+exec "$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)/scripts/claude-seo" "$@"

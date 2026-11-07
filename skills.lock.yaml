@@ -179,3 +179,109 @@ sources:
       pin: 989cae01e8eb
       updated: 2026-11-07T02:25:19.000Z
       modified_by_user: true
+  AgriciDaniel/claude-seo:
+    url: https://github.com/AgriciDaniel/claude-seo.git
+    seo:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-agentic:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-audit:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-backlinks:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-cluster:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-competitor-pages:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-content:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-content-brief:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-dataforseo:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-drift:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-ecommerce:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-flow:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-geo:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-google:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-hreflang:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-image-gen:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-images:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-local:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-maps:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-page:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-plan:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-programmatic:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-schema:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-sitemap:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-sxo:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
+    seo-technical:
+      pin: 6be93f45064f
+      updated: 2026-11-07T02:32:20.000Z
+      modified_by_user: true
