@@ -17,21 +17,9 @@ sources:
       pin: ea30ee454ba2
       updated: 2026-10-28T23:44:13.659Z
       modified_by_user: true
-    grill-with-docs:
-      pin: eedaf2562c83
-      updated: 2026-08-18T16:28:05.320Z
-      modified_by_user: true
     grilling:
       pin: 28aceb4c9567
       updated: 2026-10-28T23:44:12.236Z
-      modified_by_user: true
-    handoff:
-      pin: ce24892bd2d4
-      updated: 2026-10-28T23:44:11.318Z
-      modified_by_user: true
-    implement:
-      pin: 4804b466ab26
-      updated: 2026-10-28T23:44:10.081Z
       modified_by_user: true
     prototype:
       pin: e41d92e171f0
@@ -44,10 +32,6 @@ sources:
     tdd:
       pin: 667dbdd00c09
       updated: 2026-10-28T23:44:04.403Z
-      modified_by_user: true
-    triage:
-      pin: 4cb951d62ecc
-      updated: 2026-10-28T23:44:05.637Z
       modified_by_user: true
     wizard:
       pin: e396d3ba97c7
