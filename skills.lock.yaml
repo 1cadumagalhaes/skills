@@ -767,3 +767,185 @@ sources:
       pin: 3da1c6d96ad4
       updated: 2026-11-07T02:41:01.000Z
       modified_by_user: true
+  gamedev-skills/awesome-gamedev-agent-skills:
+    url: https://github.com/gamedev-skills/awesome-gamedev-agent-skills.git
+    router:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    ai-behavior-trees-utility-ai:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    audio-design:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    camera-systems:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    create-game-assets:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    dialogue-systems:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    game-ai:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    game-feel:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    game-ui-ux:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    input-systems:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    level-design:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    performance-optimization:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    physics-tuning:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    procedural-gen:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    save-systems:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    shader-programming:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    card-game:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    fps-shooter:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    platformer:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    puzzle:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    roguelike:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    rpg:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    survival-crafting:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    tower-defense:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    visual-novel:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-2d-movement:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-3d-essentials:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-animation:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-audio:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-csharp:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-export:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-gdscript:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-gdscript-headless-testing:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-multiplayer:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-nodes-scenes:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-physics:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-resources:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-shaders:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-signals-groups:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-tilemap:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    godot-ui-control:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    game-jam:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    itch-publish:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    prototype-fast:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true
+    steam-publish:
+      pin: 19d93f97c9c1
+      updated: 2026-11-07T02:47:31.000Z
+      modified_by_user: true

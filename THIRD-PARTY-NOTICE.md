@@ -97,3 +97,29 @@ exports (`CONNECTORS.md`, `scripts/connectors/*.py` — ledger, youtube, resend,
 tavily, firecrawl, gdelt, experiment, pageviews). Without a feed they degrade to a
 checklist that asks for the export; nothing here requires a key to *run*, but most
 of them are weaker without one.
+
+## gamedev-skills/awesome-gamedev-agent-skills — Apache-2.0
+
+45 of the repository's 78 skills, from
+https://github.com/gamedev-skills/awesome-gamedev-agent-skills (Apache-2.0; the
+upstream `NOTICE` file is vendored alongside `LICENSE`), pinned in
+`skills.lock.yaml`. Linked: `router`, the 15 engine-neutral `disciplines/`, the 9
+`genres/`, the 16 `godot/` skills, and 4 `workflows/` (game-jam, prototype-fast,
+itch-publish, steam-publish).
+
+**Structure is upstream's** (`skills/<group>/<name>/SKILL.md`, each skill owning
+its own `references/`), so nothing needed rewriting — verified: the only
+`../`-relative reference in the linked set is `../content` inside
+`workflows/steam-publish`, which points at a *game project's* content folder, not
+at this pack. `docs/`, `scripts/` and `templates/` are vendored because skills
+cite them.
+
+`router` is the one skill here that auto-loads: it fingerprints the project,
+picks one engine and names the minimal skill set, so "make a game" reaches it
+without a slash command. It costs ~180 characters of index; the other 44 are
+`disable-model-invocation: true`.
+
+**Vendored but not linked (33):** `unity/` 8, `unreal/` 6, `web-engines/` 6,
+`other-engines/` 12, `ebitengine/` 1 — engine-specific packs for engines not
+chosen yet. Enabling one is: add its pin to `skills.lock.yaml`, run
+`scripts/link-skills.sh`.
