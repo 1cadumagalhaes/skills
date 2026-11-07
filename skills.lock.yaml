@@ -93,3 +93,49 @@ sources:
       pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
       updated: 2026-11-07T01:40:47.127Z
       modified_by_user: true
+  emilkowalski/skills:
+    url: https://github.com/emilkowalski/skills.git
+    emil-design-eng:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    animate:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    review-animations:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    animation-performance:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    improve-animations:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    remove-animations:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    find-animation-opportunities:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    choreograph:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    animation-vocabulary:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    break-ui:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
+    pick-ui-library:
+      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
+      updated: 2026-11-07T01:51:53.949Z
+      modified_by_user: true
