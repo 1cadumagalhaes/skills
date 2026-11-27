@@ -1,6 +1,6 @@
 # OData APIs (v2 / v3 / v4)
 
-OData is a standardized REST-query protocol used heavily by statistics offices and government portals (e.g. Statistics Netherlands / CBS, many Microsoft-backed and SAP-backed portals). When you spot it, you get typed, paginated, filterable data with almost no reverse-engineering — the query grammar is a spec.
+OData is a standardized REST-query protocol used heavily by statistics offices and government portals (e.g. Statistics Netherlands / CBS, many Microsoft-backed and SAP-backed portals). When you spot it, you get typed, paginated, filterable data with almost no reverse-engineering, the query grammar is a spec.
 
 ## When you see this
 
@@ -12,7 +12,7 @@ OData is a standardized REST-query protocol used heavily by statistics offices a
 
 ## How it works
 
-The service root lists **entity sets** (tables). Each is queryable with a uniform grammar. `$metadata` (XML) describes the schema — read it once to learn column names and types.
+The service root lists **entity sets** (tables). Each is queryable with a uniform grammar. `$metadata` (XML) describes the schema, read it once to learn column names and types.
 
 ```
 GET  <root>/                          → service doc: list of entity sets
@@ -20,7 +20,7 @@ GET  <root>/$metadata                 → schema (XML: EntityType, Property, typ
 GET  <root>/<EntitySet>?$top=1        → one row (inspect shape)
 ```
 
-## Pattern — paginated pull with follow-the-nextLink
+## Pattern: paginated pull with follow-the-nextLink
 
 ```python
 import httpx
@@ -58,7 +58,7 @@ $count=true                                             # ask for total count (v
 $expand=Dimensions                                     # inline related entities
 ```
 
-**CBS (Statistics Netherlands) specifics:** a dataset is split into a **typed data table** plus **metadata code tables** (e.g. `RegioS`, `Perioden`). Pull the code tables too and join — the data table stores codes, not labels.
+**CBS (Statistics Netherlands) specifics:** a dataset is split into a **typed data table** plus **metadata code tables** (e.g. `RegioS`, `Perioden`). Pull the code tables too and join, the data table stores codes, not labels.
 
 ```python
 root = "https://odata.cbs.nl/ODataApi/odata/<table_id>"
@@ -73,8 +73,8 @@ periods  = {p["Key"]: p["Title"] for p in odata_all(root, "Perioden")}
 ## Gotchas
 
 - **Version differs in the envelope**: v4 → `value` + `@odata.nextLink` + `@odata.count`; v2/v3 → `d.results` + `d.__next`. Handle both.
-- **`$format=json`** — some v2 services default to XML (Atom). Always request JSON.
-- **`$filter` string literals use single quotes**, and datetime/enum syntax varies by version — check `$metadata` for exact types.
+- **`$format=json`**, some v2 services default to XML (Atom). Always request JSON.
+- **`$filter` string literals use single quotes**, and datetime/enum syntax varies by version, check `$metadata` for exact types.
 - **Server-driven paging wins**: if the response has a next link, follow it and ignore your own `$skip` math (the server may cap page size below your `$top`).
 - **Codes vs labels**: statistics OData almost always stores dimension *codes*; fetch the metadata code tables and join, or your bronze is unreadable.
 - **Bronze rule**: persist raw rows (codes and all) as returned. Do the code→label join in silver, not during the pull.
@@ -83,7 +83,7 @@ periods  = {p["Key"]: p["Title"] for p in odata_all(root, "Perioden")}
 
 ## Related
 
-- `site-patterns/sdmx-jsonstat.md` — the other big statistics-office format family (SDMX-JSON / JSON-stat)
-- `site-patterns/pxweb.md` — PX-Web, common at Nordic statistics offices
-- `site-patterns/ckan-dkan.md` — open-data catalog APIs
-- `reference/medallion-architecture.md` — why the code→label join belongs in silver
+- `site-patterns/sdmx-jsonstat.md`, the other big statistics-office format family (SDMX-JSON / JSON-stat)
+- `site-patterns/pxweb.md`. PX-Web, common at Nordic statistics offices
+- `site-patterns/ckan-dkan.md`, open-data catalog APIs
+- `reference/medallion-architecture.md`, why the code→label join belongs in silver

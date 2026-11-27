@@ -1,4 +1,4 @@
-# Templated CMS — schema drift across deployments
+# Templated CMS: schema drift across deployments
 
 A pattern that bites everyone the first time: a vendor sells a CMS / portal product to many customers. Each customer deploys the same template, but **field names, column headers, and JSON keys drift between installations**. Mapping you wrote for customer A will silently miss data from customer B.
 
@@ -26,7 +26,7 @@ created_at = payload["Created At"]  # KeyError on deployment B
 
 …silently produces null values for an unknown percentage of records, and you discover it weeks later when someone asks why a dashboard is wrong.
 
-## Mitigation — never assume, always validate
+## Mitigation: never assume, always validate
 
 **Rule 1:** When configuring a new deployment, validate against real data before mapping:
 
@@ -80,7 +80,7 @@ FIELD_MAPPING_PER_DEPLOYMENT = {
 }
 ```
 
-Then dashboards can distinguish "0% because the field isn't exposed" from "0% because our mapping is wrong" — a critical difference for debugging.
+Then dashboards can distinguish "0% because the field isn't exposed" from "0% because our mapping is wrong", a critical difference for debugging.
 
 ## Case-sensitivity is the most common bug
 
@@ -98,9 +98,9 @@ WHERE source = :deployment
 GROUP BY k ORDER BY n DESC LIMIT 50;
 ```
 
-Run this immediately after the first batch lands. The list is your ground truth — don't trust intuition from another deployment.
+Run this immediately after the first batch lands. The list is your ground truth, don't trust intuition from another deployment.
 
 ## Related
 
-- `../discovery/devtools-workflow.md` — how to inspect a new deployment cleanly
-- `../parsing/document-extraction.md` — strategies for extracting data from drifting templates
+- `../discovery/devtools-workflow.md`, how to inspect a new deployment cleanly
+- `../parsing/document-extraction.md`, strategies for extracting data from drifting templates

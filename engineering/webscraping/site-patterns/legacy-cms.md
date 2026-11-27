@@ -1,10 +1,10 @@
 # Legacy CMS quirks
 
-A grab-bag of quirks shared by legacy enterprise web platforms (ASP.NET WebForms, classic ASP, ColdFusion, JSP/Struts, older PHP enterprise CMSes). When you encounter any of these, recognize them quickly — they share patterns that confuse tools designed for modern APIs.
+A grab-bag of quirks shared by legacy enterprise web platforms (ASP.NET WebForms, classic ASP, ColdFusion, JSP/Struts, older PHP enterprise CMSes). When you encounter any of these, recognize them quickly, they share patterns that confuse tools designed for modern APIs.
 
-For ASP.NET WebForms specifically, see `aspnet-webforms.md` — this file covers cross-platform behaviors.
+For ASP.NET WebForms specifically, see `aspnet-webforms.md`, this file covers cross-platform behaviors.
 
-## "HTTP 200 + Error" — silent failures
+## "HTTP 200 + Error": silent failures
 
 Legacy CMSes very often return `HTTP 200 OK` with an error page in the body instead of using a proper status code. Symptoms:
 
@@ -43,7 +43,7 @@ When a detail page is reached via `?Id=12345` or `?recordKey=98765`, those numer
 **Implication for scraping:** don't persist these IDs across runs. Always re-search from the entry point and harvest fresh IDs.
 
 Affected platforms include:
-- Salesforce (`Id` like `a0FMp000003MGFhMAO` — globally unique but ACL-checked)
+- Salesforce (`Id` like `a0FMp000003MGFhMAO`, globally unique but ACL-checked)
 - ASP.NET WebForms apps with VIEWSTATE-bound state
 - Java/Struts apps using `formToken`
 - ColdFusion apps with CFID/CFTOKEN session pinning
@@ -58,7 +58,7 @@ Legacy stacks scatter CSRF tokens under different names. Some you'll see:
 - Struts: `struts.token` hidden field, name matches a constant
 - Plain custom: `__RequestVerificationToken`, `authenticity_token`
 
-Always echo back **all** hidden inputs from the previous response — don't filter to fields you think you understand. Token validation often combines multiple fields.
+Always echo back **all** hidden inputs from the previous response, don't filter to fields you think you understand. Token validation often combines multiple fields.
 
 ## Referer-checked endpoints
 
@@ -71,7 +71,7 @@ headers = {
 }
 ```
 
-This is independent of CSRF tokens — it's an additional check.
+This is independent of CSRF tokens, it's an additional check.
 
 ## Stateful navigation: you can't skip steps
 
@@ -132,6 +132,6 @@ Many legacy systems use `dd/mm/yyyy` (UK/AU/NZ-style) regardless of locale setti
 
 ## Related
 
-- `aspnet-webforms.md` — specifics of the ASP.NET flavor (VIEWSTATE, `__doPostBack`)
-- `../networking/proxy-zyte.md` — sticky session is mandatory for these sites
-- `../anti-bot/error-decoders.md` — the response-symptom decoder table
+- `aspnet-webforms.md`, specifics of the ASP.NET flavor (VIEWSTATE, `__doPostBack`)
+- `../networking/proxy-zyte.md`, sticky session is mandatory for these sites
+- `../anti-bot/error-decoders.md`, the response-symptom decoder table

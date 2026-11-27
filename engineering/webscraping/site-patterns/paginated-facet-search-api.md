@@ -1,6 +1,6 @@
 # Paginated facet-search API
 
-A pattern that recurs whenever the frontend has a "search results page with sidebar filters" UI — open-data portals, e-commerce catalogs, document libraries, classifieds. The server exposes a single endpoint that takes a query string + a set of `refine.<field>=<value>` filters and returns a paginated list of records plus the **facet counts** that power the filter sidebar.
+A pattern that recurs whenever the frontend has a "search results page with sidebar filters" UI, open-data portals, e-commerce catalogs, document libraries, classifieds. The server exposes a single endpoint that takes a query string + a set of `refine.<field>=<value>` filters and returns a paginated list of records plus the **facet counts** that power the filter sidebar.
 
 The defining quirk: these endpoints almost always have a **hard offset cap** (usually 10 000) below the actual dataset size. Naively iterating `start=0, 100, 200, ...` will silently stop returning rows after the cap is hit, *even if `nhits` reports millions*. The workaround is to slice the query by facet value into sub-queries each smaller than the cap.
 
@@ -18,11 +18,11 @@ The endpoint is a thin wrapper over a search engine (Elasticsearch, Solr, Algoli
 1. The full-text query (`q=`)
 2. Filters specified by `refine.<field>=<value>` repeated params (multiple values = OR within field, AND between fields)
 3. Paginates via `start` + `rows`
-4. Computes facet counts for the `facet=` fields declared in the request — those are what populate the sidebar
+4. Computes facet counts for the `facet=` fields declared in the request, those are what populate the sidebar
 
 The result is `nhits` (total matching documents) + the current page of records + facet groups with count-per-value. You walk pages until `start + len(records) >= nhits`.
 
-## Pattern — simple pagination
+## Pattern: simple pagination
 
 ```python
 import httpx
@@ -84,29 +84,29 @@ When even a two-facet slice doesn't shrink enough, the only remaining options ar
 - Switch to the API's `q=` full-text predicate as an artificial slice (`q=a*`, `q=b*`, ...)
 - Accept that you can only get a sample and document the limit
 
-## Bulk export — try this first
+## Bulk export: try this first
 
-Many platforms expose a separate `/exports/json` or `/exports/csv` URL on the same dataset that **bypasses the offset cap entirely** — it streams the full result set in one shot (often gzipped). Always check for it before building a facet-slice scraper:
+Many platforms expose a separate `/exports/json` or `/exports/csv` URL on the same dataset that **bypasses the offset cap entirely**: it streams the full result set in one shot (often gzipped). Always check for it before building a facet-slice scraper:
 
 ```bash
 curl -s 'https://host/api/explore/v2.1/catalog/datasets/<slug>/exports/json?limit=-1' \
   | jq 'length'
 ```
 
-If it works, you're done — that's a single request for the whole dataset, no pagination needed.
+If it works, you're done, that's a single request for the whole dataset, no pagination needed.
 
 ## Gotchas
 
-- **Hard offset cap is invisible.** No error, no warning — pages just become empty. `nhits` keeps reporting the true total. Always test: if `start=cap` returns zero rows but `nhits > cap`, that's the cap.
+- **Hard offset cap is invisible.** No error, no warning, pages just become empty. `nhits` keeps reporting the true total. Always test: if `start=cap` returns zero rows but `nhits > cap`, that's the cap.
 - **Facet count != record count in a slice.** A facet count is the number of *unique documents* matching that value within the broader filter. When you apply `refine.<field>=<value>` and walk the records, you may get fewer rows than the facet count if some records lack the field. Use the slice's own `nhits` as the truth, not the facet count from the unsliced query.
 - **`refine.` parameter syntax varies.** OpenDataSoft uses `refine.field=value`, Algolia uses `facetFilters[]=field:value`, Solr uses `fq=field:value`, Elasticsearch fronts often use `filter[field]=value`. Inspect a real HAR.
 - **Multi-value semantics.** `refine.field=A&refine.field=B` is **OR** in OpenDataSoft (matches A or B). Filtering across different fields is **AND**. Confirm by sending two refines and comparing `nhits` to the union you expect.
 - **Sort parameter is non-portable.** `sort=-date` (descending) on one platform is `sort=date desc` on another. If you need stable pagination across requests, use a unique-id sort, not a date sort.
-- **Geo facets are different.** Some platforms expose `geofilter.distance=lat,lon,radius_m` or `geofilter.polygon=`. These are not facets in the count-by-value sense — they're spatial predicates. Different API.
+- **Geo facets are different.** Some platforms expose `geofilter.distance=lat,lon,radius_m` or `geofilter.polygon=`. These are not facets in the count-by-value sense, they're spatial predicates. Different API.
 - **Counts may be approximated** at high cardinality. Elasticsearch backends often return `nhits` as an approximation when the value is large (the `track_total_hits` flag controls this). The number is correct to within a few percent, not exact.
 
 ## Related
 
-- `arcgis-feature-server.md` — when the dataset is spatial, the ArcGIS path may be available alongside or instead of this one
-- `../discovery/har-driven-workflow.md` — recovering the endpoint shape and refine-param convention from a real session
-- `templated-cms-schema-drift.md` — the same SaaS-platform-vendor deployed on many tenants uses the same protocol but the facet field names will differ per dataset
+- `arcgis-feature-server.md`, when the dataset is spatial, the ArcGIS path may be available alongside or instead of this one
+- `../discovery/har-driven-workflow.md`, recovering the endpoint shape and refine-param convention from a real session
+- `templated-cms-schema-drift.md`, the same SaaS-platform-vendor deployed on many tenants uses the same protocol but the facet field names will differ per dataset

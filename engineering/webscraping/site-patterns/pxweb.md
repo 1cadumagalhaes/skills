@@ -1,6 +1,6 @@
 # PX-Web API (statistics offices)
 
-PX-Web is the query engine behind many national statistics bureaus — Statistics Finland (StatFi), Statistics Sweden (SCB), Norway (SSB), Denmark, and others. Data is organized as a **navigable table tree**; each leaf table is queried by **POSTing a variable selection** and getting back JSON-stat (or CSV/px). Once you know the shape, it's a clean, documented API.
+PX-Web is the query engine behind many national statistics bureaus. Statistics Finland (StatFi), Statistics Sweden (SCB), Norway (SSB), Denmark, and others. Data is organized as a **navigable table tree**; each leaf table is queried by **POSTing a variable selection** and getting back JSON-stat (or CSV/px). Once you know the shape, it's a clean, documented API.
 
 ## When you see this
 
@@ -61,17 +61,17 @@ df = pyjstat.from_json_stat(data)[0]     # → tidy DataFrame, one row per cell,
 
 ## Gotchas
 
-- **Per-query cell cap.** PX-Web rejects requests exceeding a cell limit (often ~100k–1M cells). If `['*'] × ['*'] × ['*']` is too big, **slice by one variable** (usually year or region) and loop — accumulate to bronze.
+- **Per-query cell cap.** PX-Web rejects requests exceeding a cell limit (often ~100k-1M cells). If `['*'] × ['*'] × ['*']` is too big, **slice by one variable** (usually year or region) and loop, accumulate to bronze.
 - **`filter: "item"`** selects explicit value codes; `"all"` selects everything; `"top"`/`"agg"` exist for top-N and aggregations. Start with `"item"` + `["*"]` and narrow if capped.
 - **Rate limits are real** and modest (e.g. ~30 requests/10s on some instances). Add `time.sleep()` between slices; respect any documented cap.
-- **`json-stat2` vs `json-stat`** — request v2 (`json-stat2`); `pyjstat` reads both but v2 is cleaner.
-- **Codes vs labels** — the cube carries dimension codes; keep both `values` and `valueTexts` from the metadata so silver can map codes → human labels.
+- **`json-stat2` vs `json-stat`**, request v2 (`json-stat2`); `pyjstat` reads both but v2 is cleaner.
+- **Codes vs labels**: the cube carries dimension codes; keep both `values` and `valueTexts` from the metadata so silver can map codes → human labels.
 - **Bronze rule**: persist the raw JSON-stat response per slice. Explode to rows in silver.
 
 ---
 
 ## Related
 
-- `site-patterns/sdmx-jsonstat.md` — SDMX-JSON / JSON-stat from OECD/Eurostat/ECB (sibling format)
-- `site-patterns/odata.md` — OData statistics APIs (e.g. CBS Netherlands)
-- `reference/libraries.md` — `pyjstat` for JSON-stat, `sdmx1` for SDMX
+- `site-patterns/sdmx-jsonstat.md`. SDMX-JSON / JSON-stat from OECD/Eurostat/ECB (sibling format)
+- `site-patterns/odata.md`. OData statistics APIs (e.g. CBS Netherlands)
+- `reference/libraries.md`:`pyjstat` for JSON-stat, `sdmx1` for SDMX

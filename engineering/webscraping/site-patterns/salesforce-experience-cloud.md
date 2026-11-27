@@ -1,6 +1,6 @@
 # Salesforce Experience Cloud (Aura / Lightning Community)
 
-Public-facing Salesforce portals — used by enterprises, governments, NGOs, and SaaS vendors worldwide for customer/community sites. Common URL form: `<tenant>.my.site.com` or `<tenant>.force.com`.
+Public-facing Salesforce portals, used by enterprises, governments, NGOs, and SaaS vendors worldwide for customer/community sites. Common URL form: `<tenant>.my.site.com` or `<tenant>.force.com`.
 
 The interesting thing: most of these portals expose **Apex methods reachable without authentication** via the Aura framework. If you find the right method, you get clean JSON.
 
@@ -45,7 +45,7 @@ The response wraps the return value in two layers:
 }
 ```
 
-## Pattern — minimal request
+## Pattern: minimal request
 
 ```python
 import json
@@ -130,7 +130,7 @@ The `classname` and `method` come from the live site. Three reliable ways:
 2. **Request header `x-sfdc-lds-endpoints`** is the cleanest source. It contains `ApexActionController.execute:MyController.myMethod`.
 3. **HAR file** → grep for `descriptor.*ApexAction` or `x-sfdc-lds-endpoints`.
 
-## `fwuid` — framework UID, rotates on org upgrade
+## `fwuid`: framework UID, rotates on org upgrade
 
 `fwuid` is a hash identifying the Aura framework version deployed in this Salesforce org. **It rotates when Salesforce upgrades the customer's org** (every few weeks/months).
 
@@ -159,7 +159,7 @@ Common caps observed in the wild: 200, 250, 500. Plan accordingly.
 
 Aura APIs are usually `pageNumber` + `pageSize`. Two styles:
 
-**Style 1 — known total:**
+**Style 1, known total:**
 ```python
 total = first_page["totalRecords"]
 pages = math.ceil(total / page_size)
@@ -167,7 +167,7 @@ for p in range(1, pages + 1):
     yield from call_apex(..., params={"pageNumber": p, "pageSize": page_size})["records"]
 ```
 
-**Style 2 — fetch until short page:**
+**Style 2, fetch until short page:**
 ```python
 page = 1
 while True:
@@ -199,7 +199,7 @@ for year in range(2015, today.year + 1):
 
 The `seen` set is essential because adjacent slices can return the same record if a date boundary straddles your filter logic.
 
-## Authentication — when you need it
+## Authentication: when you need it
 
 Most public-facing Salesforce community portals expose at least one anonymous Apex method (typically a "search" or "list" method). Send `aura.token=null` and it works.
 
@@ -213,12 +213,12 @@ If the method requires login, you'll get `"state": "ERROR"` with `"exceptionType
 
 - The endpoint URL must include `?r=<small_int>` and `aura.ApexAction.execute=1`. The `r` value is a counter; reuse `5` and you're fine.
 - `message`, `aura.context`, `aura.pageURI`, `aura.token` all need URL-encoding. Use `urllib.parse.quote(..., safe='')` to be safe.
-- The response is JSON, but the outer shape is `{"actions": [...]}` — even single-action calls. Always navigate to `["actions"][0]["returnValue"]["returnValue"]`.
+- The response is JSON, but the outer shape is `{"actions": [...]}`, even single-action calls. Always navigate to `["actions"][0]["returnValue"]["returnValue"]`.
 - `state` can be `SUCCESS`, `ERROR`, or `INCOMPLETE`. Only `SUCCESS` is usable.
-- `cacheable: false` should usually stay false for scraping — caching is for browser UX, irrelevant here.
+- `cacheable: false` should usually stay false for scraping, caching is for browser UX, irrelevant here.
 - The `Referer` header should match the page where the action would naturally originate. Sites occasionally validate this.
 
 ## Related
 
-- `../discovery/har-driven-workflow.md` — extract `classname`, `method`, `fwuid`, and full request shape from a HAR file
-- `../browser-automation/session-cache.md` — capturing `sid` cookie + `aura.token` via Playwright login
+- `../discovery/har-driven-workflow.md`, extract `classname`, `method`, `fwuid`, and full request shape from a HAR file
+- `../browser-automation/session-cache.md`, capturing `sid` cookie + `aura.token` via Playwright login

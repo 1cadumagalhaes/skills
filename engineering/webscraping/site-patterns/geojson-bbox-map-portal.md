@@ -1,6 +1,6 @@
 # GeoJSON map portal with bbox query
 
-A "search on a map" UI can expose a custom spatial API — for example, a catalog of locations displayed on a Leaflet, Mapbox GL, or OpenLayers map. The frontend sends the visible map bounds and selected filters, then receives GeoJSON features.
+A "search on a map" UI can expose a custom spatial API, for example, a catalog of locations displayed on a Leaflet, Mapbox GL, or OpenLayers map. The frontend sends the visible map bounds and selected filters, then receives GeoJSON features.
 
 If your target speaks ArcGIS REST, see `arcgis-feature-server.md` instead. This page covers custom APIs whose request schema must be discovered from observed traffic.
 
@@ -79,7 +79,7 @@ def quadtree_fetch(client, bbox: dict, cap: int = 5000, max_depth: int = 16):
         yield from quadtree_fetch(client, sub, cap, max_depth - 1)
 ```
 
-Deduplicate features by stable ID at the end — features on shared boundaries may be returned twice. If many records share a location, spatial splitting alone may never avoid the cap; use another filter or a bulk endpoint.
+Deduplicate features by stable ID at the end, features on shared boundaries may be returned twice. If many records share a location, spatial splitting alone may never avoid the cap; use another filter or a bulk endpoint.
 
 ## Discovering the request schema
 
@@ -103,6 +103,6 @@ python3 -c "import json,sys; r=json.load(open(sys.argv[1])); \
 
 ## Related
 
-- `arcgis-feature-server.md` — documented Esri ArcGIS APIs
-- `../discovery/har-driven-workflow.md` — recover an endpoint and its request schema from a session
-- `spa-frameworks.md` — API discovery for map interfaces rendered by an SPA
+- `arcgis-feature-server.md`, documented Esri ArcGIS APIs
+- `../discovery/har-driven-workflow.md`, recover an endpoint and its request schema from a session
+- `spa-frameworks.md`. API discovery for map interfaces rendered by an SPA

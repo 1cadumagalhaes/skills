@@ -1,6 +1,6 @@
 # ASP.NET WebForms
 
-A whole family of legacy enterprise sites (government portals, universities, judicial systems, intranet apps) run on ASP.NET WebForms. They share a recognizable HTTP shape that, once you know it, makes them very scrapeable — but they're nothing like a modern JSON API.
+A whole family of legacy enterprise sites (government portals, universities, judicial systems, intranet apps) run on ASP.NET WebForms. They share a recognizable HTTP shape that, once you know it, makes them very scrapeable, but they're nothing like a modern JSON API.
 
 ## When you see this
 
@@ -25,7 +25,7 @@ ASP.NET WebForms simulates desktop-app UI on top of HTTP by **serializing the en
 
 **Implication for scraping:** you cannot just GET a deep page. You must replay the user's click sequence, carrying the VIEWSTATE forward at each step.
 
-## Pattern — multi-step navigation
+## Pattern: multi-step navigation
 
 A typical flow has 2-4 sequential POSTs before you reach a results page. Each step must echo back ALL hidden fields from the previous response. The control names below are illustrative; discover the target's actual names from its DOM.
 
@@ -75,17 +75,17 @@ soup3 = BeautifulSoup(r3.text, "html.parser")
 # Step 4: parse results from soup3, paginate from here
 ```
 
-## Pagination — two flavors
+## Pagination: two flavors
 
 WebForms apps paginate one of two ways. Look at the page source / capture a HAR to see which:
 
-**Flavor A — URL query param:**
+**Flavor A. URL query param:**
 ```
 GET https://app.example.com/Results.aspx?PageNumber=3
 ```
 You can replay this directly with GET. Easiest to scrape.
 
-**Flavor B — Event postback:**
+**Flavor B. Event postback:**
 ```python
 session.post(
     results_url,
@@ -98,7 +98,7 @@ session.post(
 ```
 You must POST and carry forward the VIEWSTATE. The `__EVENTTARGET` value is the `name` attribute of the pagination button.
 
-**Flavor C — grid-control event:**
+**Flavor C, grid-control event:**
 ```python
 data["__EVENTTARGET"] = "ctl00$Main$Results"
 data["__EVENTARGUMENT"] = "Page$3"
@@ -120,7 +120,7 @@ session.get(
 
 Always set `Referer` to the results page URL when fetching detail. Cookies alone are not enough.
 
-## "HTTP 200 + Error" — invisible failures
+## "HTTP 200 + Error": invisible failures
 
 ASP.NET apps return `200 OK` with a generic error page in three common situations:
 
@@ -142,7 +142,7 @@ def _is_aspnet_error_page(soup: BeautifulSoup) -> bool:
     return "aspxerrorpath" in body
 ```
 
-Call this after every navigation step. If true: re-boot the whole nav sequence from step 1 — don't try to "fix" the existing session.
+Call this after every navigation step. If true: re-boot the whole nav sequence from step 1, don't try to "fix" the existing session.
 
 ## Dynamic control IDs (`ctl04`, `ctl09`, etc.)
 
@@ -174,14 +174,14 @@ Don't try to persist these IDs across runs. Always re-search and re-collect IDs 
 
 ## ViewState as a data source
 
-A non-obvious variant: some WebForms apps embed the **entire search result set inside `__VIEWSTATE`** rather than rendering it as HTML rows. After a search POST, the visible page is almost empty — the data lives base64-encoded in the hidden VIEWSTATE blob, and a small JS snippet hydrates the table client-side.
+A non-obvious variant: some WebForms apps embed the **entire search result set inside `__VIEWSTATE`** rather than rendering it as HTML rows. After a search POST, the visible page is almost empty, the data lives base64-encoded in the hidden VIEWSTATE blob, and a small JS snippet hydrates the table client-side.
 
 When you see this:
 - The response HTML has no `<tr>` rows for the data you expected, only a small loader or "0 results" placeholder
 - `__VIEWSTATE` ballooned from typical ~10 KB to hundreds of KB or megabytes
 - View-source contains a giant base64 string and almost nothing else
 
-The data IS there — just decode the VIEWSTATE:
+The data IS there, just decode the VIEWSTATE:
 
 ```python
 import base64, re
@@ -204,8 +204,8 @@ Some hosted WebForms products serve multiple tenants. Keep the entry URL and ten
 ## Gotchas
 
 - `__VIEWSTATE` is **massive** (often >10 KB). Don't log it or store it in payload. Echo it forward, then drop it.
-- The `__VIEWSTATE` value depends on the response that generated it — you can't construct one from scratch. Always grab it from the previous response.
-- Some sites add `__VIEWSTATE` validation against IP address — losing the sticky proxy session breaks the form. See `../networking/proxy-zyte.md`.
+- The `__VIEWSTATE` value depends on the response that generated it, you can't construct one from scratch. Always grab it from the previous response.
+- Some sites add `__VIEWSTATE` validation against IP address, losing the sticky proxy session breaks the form. See `../networking/proxy-zyte.md`.
 - A catalog's list page may show only item names and summaries; specifications or stock history may require detail-page requests. Check the required fields before planning N+1 fetches.
 - Pages may have multiple `<table>` elements. Inspect the DOM to identify the results table instead of assuming a particular ID.
 
@@ -242,8 +242,8 @@ def crawl(from_date: str, to_date: str, proxy_url: str | None = None) -> Iterato
 
 ## Related
 
-- `../networking/proxy-zyte.md` — sticky session is essential for VIEWSTATE-based sites
-- `../anti-bot/error-decoders.md` — HTTP 421 misdirected, "200 + Error" deep dive
-- `../reliability/concurrency-curl-cffi.md` — per-thread sessions when parallelizing N+1 detail fetches
-- `templated-cms-schema-drift.md` — same template, different field names per deployment
-- `legacy-cms.md` — adjacent quirks (ColdFusion, JSP, classic ASP)
+- `../networking/proxy-zyte.md`, sticky session is essential for VIEWSTATE-based sites
+- `../anti-bot/error-decoders.md`. HTTP 421 misdirected, "200 + Error" deep dive
+- `../reliability/concurrency-curl-cffi.md`, per-thread sessions when parallelizing N+1 detail fetches
+- `templated-cms-schema-drift.md`, same template, different field names per deployment
+- `legacy-cms.md`, adjacent quirks (ColdFusion, JSP, classic ASP)

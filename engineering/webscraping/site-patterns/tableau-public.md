@@ -7,7 +7,7 @@ Public Tableau vizzes render as a canvas with no scrapeable DOM, but the data is
 - URL under `public.tableau.com/views/<workbook>/<sheet>` or an `<iframe>`/`<tableau-viz>` embed pointing there.
 - Network shows `…/bootstrapSession/sessions/<id>` and `…/sessions/<id>/commands/tabsrv/…` requests.
 - A `tsConfigContainer` script/element in the page holding a JSON config blob.
-- The visible chart is a `<canvas>` — no table elements to select.
+- The visible chart is a `<canvas>`, no table elements to select.
 
 ---
 
@@ -17,11 +17,11 @@ Public Tableau vizzes render as a canvas with no scrapeable DOM, but the data is
 2. The response is **two concatenated JSON documents** prefixed by byte lengths: `<len>;{...info...}<len>;{...data...}`. The second doc holds the initial worksheet data (the "dataDictionary" + "presModel").
 3. Further interactions (change a filter, select a mark) POST to `/sessions/<id>/commands/tabsrv/...` and return updated data.
 
-`tableauscraper` speaks all of this — but it needs a **live session id + config**, which you bootstrap with a real browser.
+`tableauscraper` speaks all of this, but it needs a **live session id + config**, which you bootstrap with a real browser.
 
 ---
 
-## Pattern — bootstrap in browser, then hand off to tableauscraper
+## Pattern: bootstrap in browser, then hand off to tableauscraper
 
 ```python
 import re, json
@@ -99,17 +99,17 @@ This is how you enumerate every value of a dashboard filter (e.g. one region, st
 
 ## Gotchas
 
-- **Session ids expire** — bootstrap fresh each run; don't cache the session across runs.
+- **Session ids expire**: bootstrap fresh each run; don't cache the session across runs.
 - **The bootstrap payload is dual-JSON with byte-length prefixes**, not a single object. Parse by reading the length, not by regex-splitting on `{`.
-- **`X-Tsi-Active-Tab` / api-version headers** may be needed on command requests — `tableauscraper` sets them, but if you hand-roll, copy them from the config blob (`tsConfigContainer`).
-- **Filter values can be paginated/virtualized** in huge dashboards — read the filter's full domain from the data model, don't assume the first response lists them all.
-- **Tableau Server (non-public)** behind auth: bootstrap after logging in with the browser, then carry cookies — same handoff.
+- **`X-Tsi-Active-Tab` / api-version headers** may be needed on command requests:`tableauscraper` sets them, but if you hand-roll, copy them from the config blob (`tsConfigContainer`).
+- **Filter values can be paginated/virtualized** in huge dashboards, read the filter's full domain from the data model, don't assume the first response lists them all.
+- **Tableau Server (non-public)** behind auth: bootstrap after logging in with the browser, then carry cookies, same handoff.
 
 ---
 
 ## Related
 
-- `site-patterns/embedded-bi-dashboard.md` — Power BI / Looker / Metabase (sibling BI stacks)
-- `browser-automation/browser-techniques.md` — network-listener + cookie handoff mechanics
-- `browser-automation/session-cache.md` — persisting the harvested session
-- `discovery/har-driven-workflow.md` — capturing the bootstrap + command requests
+- `site-patterns/embedded-bi-dashboard.md`. Power BI / Looker / Metabase (sibling BI stacks)
+- `browser-automation/browser-techniques.md`, network-listener + cookie handoff mechanics
+- `browser-automation/session-cache.md`, persisting the harvested session
+- `discovery/har-driven-workflow.md`, capturing the bootstrap + command requests
