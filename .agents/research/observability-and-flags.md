@@ -40,6 +40,32 @@ Fontes primárias lidas, não resumos:
 | Use uma API de avaliação vendor-neutral (OpenFeature) para que a escolha do fornecedor não entre no código. | OpenFeature intro |
 | Regra que já temos e continua valendo: faça flag de tudo que **não** dá para reverter redeployando a imagem anterior. | `backend/references/service-contract.md:53` |
 
+## Quatro categorias, e a experiment não é sobre deploy
+
+Correção de uma frase minha anterior: eu escrevi que "flag que existe só para evitar deploy ruim é sintoma
+do deploy". Isso vale para **release** e **ops**, não para experimento. O Fowler define a categoria com
+todas as letras:
+
+> "Experiment Toggles are used to perform multivariate or A/B testing. Each user of the system is placed into
+> a cohort and at runtime the Toggle Router will consistently send a given user down one codepath or the
+> other, based upon which cohort they are in."
+
+E três consequências que o mesmo texto dá:
+
+| Regra de experimento | Origem |
+|---|---|
+| A atribuição precisa ser **consistente para o mesmo usuário**: coorte derivada do id (o exemplo do artigo é módulo do user id), nunca sorteio por request. | Fowler, canary e experiment toggles |
+| A flag fica **com a mesma configuração** tempo suficiente para resultado estatisticamente significativo: horas ou semanas conforme o tráfego. | Fowler §Experiment Toggles |
+| Ficar mais tempo **não é melhor**: outras mudanças no sistema invalidam o resultado. | Fowler, mesma seção |
+| Canary não é experimento. Canary pergunta "é seguro?" e olha métricas de negócio para decidir liberar; experimento pergunta "qual variante é melhor?" e precisa de desenho. | Fowler §§Canary releasing, Experiment Toggles |
+| A decisão no fim é explícita: embarca, itera ou descarta. Flag de experimento que sobrevive à decisão virou dívida. | corolário da taxonomia |
+| Multivariado exige volume que a maioria dos serviços internos não tem; sem tráfego, o teste não conclui nada. | consequência do tamanho de amostra |
+
+A matemática (poder, tamanho de amostra, peeking, intervalos) fica fora da skill e a referência canônica é
+Kohavi, Tang e Xu, *Trustworthy Online Controlled Experiments*. A skill carrega a disciplina que se pode
+verificar no código: unidade de randomização estável, exposição registrada uma vez por unidade, configuração
+congelada durante a janela, e decisão registrada no fim.
+
 ## Mecanismo: env var, arquivo, banco ou serviço de verdade
 
 O artigo do Fowler lista cinco degraus de configuração, e a regra é subir só quando uma necessidade
@@ -63,7 +89,7 @@ Três coisas que o mecanismo decide e que precisam estar escritas antes de ligar
    de ops sem esse parágrafo é um botão sem dono.
 2. **Rollout e rollback são perguntas diferentes.** Rollout é como a novidade chega (canary, percentual,
    targeting); rollback é a garantia de voltar. Flag de release permite rollback em segundos; deploy
-   anterior permite rollback em minutos. Se a flag existe só para evitar deploy ruim, o problema é o deploy.
+   anterior permite rollback em minutos. Se uma flag de **release** existe só para evitar deploy ruim, o problema é o deploy. Flag de experimento não entra nessa conta: ela existe para medir.
 3. **Estado da flag é estado de produção.** Entra no runbook, no monitoramento (erro de provider, latência de
    avaliação) e na resposta a incidente. Flag avaliada no cliente com provider fora do ar é o default
    silencioso, e ninguém descobre isso durante o incidente.
