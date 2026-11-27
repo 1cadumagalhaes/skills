@@ -188,8 +188,12 @@ if os.path.isdir(farm):
         if os.path.islink(entry_path):
             farm_links.add(entry)
 # Real skill directories that live in the farm instead of being linked from the repo.
-farm_real = {e for e in farm_entries if os.path.isdir(os.path.join(farm, e))
-             and not os.path.islink(os.path.join(farm, e)) and e.startswith("instabox")}
+# Real directories live in the farm on purpose: instabox on one machine, personal skills on
+# another. They are not drift. A real directory that shadows a repository skill is, because
+# the stale copy silently wins over the linked one.
+farm_real = {e for e in farm_entries
+             if os.path.isdir(os.path.join(farm, e)) and not os.path.islink(os.path.join(farm, e))
+             and not e.startswith(".")}
 farm_skills = farm_links | farm_real
 
 known = {s["name"] for s in skills.values() if s["name"]}
@@ -553,14 +557,10 @@ for label, mdir in mirrors.items():
                         + (f" (+{len(extra) - 5} more)" if len(extra) > 5 else ""))
     mirror_report.append(f"{label}: {', '.join(bits)}")
 
-# Real directories can live in the farm: instabox* are another project's skills, tracked
-# in dotfiles rather than linked from this repo. Anything else that is not a link is drift.
-FARM_REAL_DIRS = ("instabox",)
-if farm_links:
-    no_link = sorted(e for e in set(farm_entries) - farm_links
-                     if not e.startswith(FARM_REAL_DIRS))
-    if no_link:
-        problems.append(f"farm: {len(no_link)} non-link entr{'y' if len(no_link) == 1 else 'ies'} in {farm}: {', '.join(no_link[:5])}")
+shadowed = sorted(farm_real & known)
+if shadowed:
+    problems.append(f"farm: {len(shadowed)} real director{'y' if len(shadowed) == 1 else 'ies'} shadow a repository skill: {', '.join(shadowed[:5])}"
+                    + " (the stale copy wins; remove it so the link applies)")
 
 # --- report --------------------------------------------------------------
 edge_count = sum(len(v) for v in edges.values())
