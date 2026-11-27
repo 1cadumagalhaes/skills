@@ -40,6 +40,19 @@ Fontes primárias lidas, não resumos:
 | Use uma API de avaliação vendor-neutral (OpenFeature) para que a escolha do fornecedor não entre no código. | OpenFeature intro |
 | Regra que já temos e continua valendo: faça flag de tudo que **não** dá para reverter redeployando a imagem anterior. | `backend/references/service-contract.md:53` |
 
+## Flags no cliente: o que só existe no browser
+
+Frontend não é "o mesmo assunto com outro SDK". As fontes acima mostram quatro propriedades que mudam o
+desenho:
+
+| Regra | Origem |
+|---|---|
+| Toda avaliação **exige um valor default**, e é ele que sai em qualquer erro. Sem provider configurado, o SDK entra em no-op e devolve o default. O default é o que o usuário vê quando a flag falha, então default = comportamento seguro e antigo. | OpenFeature Evaluation API e Providers |
+| O provider tem estado: pronto, erro e configuração alterada. Sem esperar a prontidão, o primeiro render acontece com o default e a tela troca depois. Escolher entre bloquear o render ou aceitar a troca é decisão explícita, não acidente. | OpenFeature Events |
+| Flag no cliente é **visível**: chave, default e valor estão no bundle. Flag de cliente nunca é controle de segurança; quem autoriza é o servidor. | consequência do modelo, não de fornecedor |
+| Em renderização no servidor, servidor e cliente precisam avaliar com o mesmo contexto, ou a hidratação diverge. | consequência do modelo |
+| Evento de exposição de experimento dispara uma vez por exposição, não a cada render. | prática; o SDK entrega o evento de configuração, o app é que conta | 
+
 ## O que entra em cada skill proposta
 
 **`observability`** (folha, cluster engineering; apontada por `infra`, `backend`, `code-audit`):
@@ -48,9 +61,12 @@ budget; instrumentação suficiente como critério de pronto; nome e unidade de 
 cardinalidade de label; o que nunca vai para log; propagação de contexto; alerta por burn rate com duas
 janelas, e a distinção sintoma/causa.
 
-**`feature-flags`** (folha, cluster engineering; apontada por `backend`, `infra`): a categoria decide a
-vida e o dono; a convenção Off-antigo/On-novo; as três configurações de teste; decisão separada da lógica;
-configuração estática antes de distribuída; expiração e remoção como parte da entrega; API vendor-neutral.
+**`feature-flags`** (folha, cluster engineering; apontada por `backend`, `frontend-build` e `infra`): a
+categoria decide a vida e o dono; a convenção Off-antigo/On-novo; as três configurações de teste; decisão
+separada da lógica; configuração estática antes de distribuída; expiração e remoção como parte da entrega;
+API vendor-neutral. E uma seção de superfície: **servidor** (autoriza, decide antes do efeito) e
+**cliente** (default obrigatório, provider pronto, hidratação, flag nunca é segurança, exposição uma vez
+por render). A mesma skill serve os dois porque a taxonomia e a dívida são as mesmas; só o mecanismo muda.
 
 ## O que fica de fora, de propósito
 
