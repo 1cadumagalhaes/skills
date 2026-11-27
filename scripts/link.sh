@@ -300,6 +300,7 @@ MIRRORS = (
     ("codex", os.path.join(home, ".codex", "skills")),
     ("kiro", os.path.join(home, ".kiro", "skills")),
     ("gemini", os.path.join(home, ".gemini", "config", "skills")),
+    ("opencode", os.path.join(home, ".config", "opencode", "skills")),
 )
 
 drift = farm_counts["drift"]
