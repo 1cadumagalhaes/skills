@@ -309,7 +309,7 @@ BODY_WARN = 12000
 # oversized body warns; an accepted one is still listed, so the debt stays visible.
 BODY_ACCEPTED = {
     "webscraping": "kept by decision; 16 invocations",
-    "frontend-taste": "cost driver was the re-read instruction, now fixed; split pending",
+    "frontend-taste": "page run split into references/run-*; body is branch, index and house rules",
     "frontend-stress": "every phase ends on a completion criterion",
     "motion-sequence": "canonical tables moved to references; the rest is sequencing rules",
     "motion-performance": "canonical tables moved to references; per-frame diagnostics remain",
