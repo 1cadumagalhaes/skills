@@ -4,8 +4,8 @@
 # Active third-party attribution is in ATTRIBUTION.md; no vendors are tracked here.
 
 external:
-  olorin: /home/cadu/Projects/olorin/integrations/skills/olorin
-  graphify: /home/cadu/.pi/agent/skills/graphify
+  olorin: ~/Projects/olorin/integrations/skills/olorin
+  graphify: ~/.pi/agent/skills/graphify
 parked:
   Kappaemme-git/codex-startup-pressure-test-skill:
     pack: marketing
