@@ -389,10 +389,12 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
 # notice calls unmodified changes someone else's text without authority.
 VENDORED = ("frontend/revenue-design/", "frontend/platform-docs/guides/", "frontend/platform-docs/NOTICE.md")
 ref_debt = []
-for path in sorted(glob.glob(os.path.join(repo, "*", "*", "references", "**", "*.md"), recursive=True)
-                   + glob.glob(os.path.join(repo, "*", "*", "reference", "**", "*.md"), recursive=True)):
+ref_paths: list[str] = []
+for cluster in CLUSTERS:
+    ref_paths += glob.glob(os.path.join(repo, cluster, "**", "*.md"), recursive=True)
+for path in sorted(ref_paths):
     rel_path = os.path.relpath(path, repo)
-    if any(rel_path.startswith(v) for v in VENDORED):
+    if rel_path.endswith("/SKILL.md") or any(rel_path.startswith(v) for v in VENDORED):
         continue
     owner = rel_path.split("/")[1]
     prose = prose_only(open(path, encoding="utf-8", errors="replace").read())
