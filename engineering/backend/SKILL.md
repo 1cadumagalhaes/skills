@@ -23,6 +23,7 @@ Rules for the five places backends fail or lose data. Principles apply equally a
 | Transactions | Where is the boundary, and which isolation anomaly am I buying? | `references/transactions-and-consistency.md` |
 | Async and jobs | What happens when this message arrives twice? | `references/async-and-jobs.md` |
 | Service contract | What happens when a dependency is slow, absent, or deploying? | `references/service-contract.md` |
+| Rolling out, hiding or disabling a behaviour | `~/.agents/skills/feature-flags/SKILL.md` |
 
 For auditing existing backend code, use `code-audit`. For large-scale architecture patterns (sharding, consensus, storage engines), read `~/.agents/skills/system-design/SKILL.md`.
 

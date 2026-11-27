@@ -134,3 +134,11 @@ por render). A mesma skill serve os dois porque a taxonomia e a dívida são as 
 - Preço e UI de fornecedor (LaunchDarkly, Unleash, GrowthBook): muda toda hora e não é conhecimento.
 - Custo de observabilidade em si (retenção, sampling caro): já mora em `infra/references/cost-and-observability.md`.
 - Dogma de "três pilares": o OTel hoje lista quatro sinais com baggage, e logs não são cidadão de segunda classe.
+
+## Decisões tomadas
+
+- **`feature-flags`**: uma skill só, folha em `engineering/`, apontada por `backend`, `frontend-build` e `infra`. Duas
+  skills duplicariam a taxonomia e a segunda viraria um "veja a outra".
+- **`observability`**: porta automática. Três dos cinco gatilhos reais (depurar produção, definir SLO, alerta
+  ruidoso) não têm porta que os alcance, e são justamente os de contexto de incidente.
+- Consequência aceita: o índice ficou em 2.787 de 2.800, e a próxima porta exige enxugar descrição.

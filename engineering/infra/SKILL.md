@@ -17,6 +17,7 @@ Six places infrastructure becomes expensive or fragile, ordered by operational i
 | Building or fixing a CI/CD pipeline | `references/ci-cd.md` |
 | Changing Helm/ArgoCD manifests or Terraform/OpenTofu | `references/iac-and-gitops.md` |
 | Cutting cloud spend or fixing observability gaps | `references/cost-and-observability.md` |
+| Degrading or disabling a behaviour under load | `~/.agents/skills/feature-flags/SKILL.md` |
 
 `cloud-iam.md` maps GCP first with AWS and Azure equivalents so every identity rule transfers across clouds.
 
