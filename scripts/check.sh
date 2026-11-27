@@ -341,11 +341,23 @@ HYGIENE = (
 )
 def prose_only(body: str) -> str:
     """Drop fenced blocks and inline code spans: a dash or a glyph inside a code
-    specimen is part of the specimen, not prose that unslop governs."""
-    out, fence = [], False
+    specimen is part of the specimen, not prose that unslop governs.
+
+    A fence closes only on its own marker character, so a ``` inside a ~~~ block is
+    content. Two shapes stay out of reach by design, and scripts/check-selftest.py
+    pins them: a four-space indented block (indistinguishable from a list continuation
+    in Markdown), and a backtick span that wraps a line.
+    """
+    out: list[str] = []
+    fence: tuple[str, int] | None = None
     for line in body.splitlines():
-        if re.match(r"^\s*(```|~~~)", line):
-            fence = not fence
+        marker = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if marker:
+            token = marker.group(1)
+            if fence is None:
+                fence = (token[0], len(token))
+            elif token[0] == fence[0] and len(token) >= fence[1]:
+                fence = None
             continue
         if fence:
             continue
