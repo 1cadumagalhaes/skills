@@ -1,0 +1,3 @@
+# Model output from eval runs: evidence, not source. The judged verdict goes in
+# evals/VERDICTS.md, which is tracked.
+evals/*/results/
