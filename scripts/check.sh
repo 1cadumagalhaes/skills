@@ -526,7 +526,10 @@ for label, mdir in mirrors.items():
     unmanaged = sorted(set(all_entries) - set(entries))
     broken = [e for e in entries if not os.path.exists(os.path.join(mdir, e))]
     missing = sorted(farm_links - set(entries))
-    extra = sorted(set(entries) - farm_links)
+    # A mirror may carry a skill of its own that the farm does not have: graphify is
+    # linked into the gemini farm from the Pi skill directory on purpose.
+    MIRROR_ONLY = {"gemini": {"graphify"}}
+    extra = sorted(set(entries) - farm_links - MIRROR_ONLY.get(label, set()))
     bits = [f"{len(entries)} link(s)"]
     if unmanaged:
         bits.append(f"{len(unmanaged)} non-link entr{'y' if len(unmanaged) == 1 else 'ies'} ({', '.join(unmanaged[:3])})")
