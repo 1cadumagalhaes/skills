@@ -332,15 +332,45 @@ HYGIENE = (
     ("em dash", re.compile(r"[\u2013\u2014]")),
     ("curly quote", re.compile(r"[\u201c\u201d\u2018\u2019]")),
     ("banned word", re.compile(r"\b(delve|leverage|utilize|foster|tapestry|vibrant|testament|underscore|pivotal|showcase|additionally|crucial|enhance)\b", re.I)),
+    ("not just X but Y", re.compile(r"\bnot just\b[^.;]{3,60}\bbut\b", re.I)),
+    ("chatbot phrase", re.compile(r"\b(I hope this helps|let me know if|feel free to|happy to help)\b", re.I)),
+    ("praise opener", re.compile(r"^(great|absolutely|sure|certainly|of course|perfect)[,.!]", re.I | re.M)),
+    ("serves as", re.compile(r"\b(serves as|stands as|boasts)\b", re.I)),
+    ("bold restates its line", re.compile(r"\*\*([^*:\n]{3,40}):\*\*\s+\1", re.I)),
+    ("ing tail", re.compile(r",\s+(highlighting|ensuring|showcasing|enabling|allowing|providing|creating|making)\b", re.I)),
 )
+def prose_only(body: str) -> str:
+    """Drop fenced blocks and inline code spans: a dash or a glyph inside a code
+    specimen is part of the specimen, not prose that unslop governs."""
+    out, fence = [], False
+    for line in body.splitlines():
+        if re.match(r"^\s*(```|~~~)", line):
+            fence = not fence
+            continue
+        if fence:
+            continue
+        out.append(re.sub(r"`[^`]*`", " ", line))
+    return "\n".join(out)
+
+
+# A defined term that collides with a banned vowel-word stays, with a reason.
+BANNED_ALLOW = {"module-design": {"leverage"}, "tdd": {"leverage"}}
+
 hygiene_debt = []
 for s in sorted(skills.values(), key=lambda x: x["rel"]):
     counts = []
+    prose = prose_only(s["body"])
     for label, pat in HYGIENE:
         # unslop lists the banned words as patterns, so the rule would always fire.
-        if s["name"] == "unslop" and label == "banned word":
+        # unslop quotes the patterns it bans, so every pattern-shaped rule fires on it.
+        if s["name"] == "unslop" and label in (
+            "banned word", "not just X but Y", "chatbot phrase", "serves as", "bold restates its line"
+        ):
             continue
-        n = len(pat.findall(s["body"]))
+        hits = pat.findall(prose)
+        if label == "banned word":
+            hits = [h for h in hits if h.lower() not in BANNED_ALLOW.get(s["name"], set())]
+        n = len(hits)
         if n:
             counts.append(f"{n} {label}")
     if not counts:
