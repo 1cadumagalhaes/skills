@@ -28,7 +28,7 @@ Do not file for: a bug in the user's own code, a missing dependency you can inst
 One file, `papercuts/YYYY-MM-DD-<skill>.md`, named for the skill that misled you. A second report for the same skill the same day gets `-2`.
 
 ```markdown
-# <skill> — <one line>
+# <skill>: <one line>
 
 - Tried: the exact command, path or step, and where the instruction came from (`file:line`).
 - Expected: what the skill or doc promised.

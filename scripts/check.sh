@@ -321,6 +321,33 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
     else:
         lint.append(f"lint: {s['name']}: body is {len(s['body'])} chars, consider moving detail to references/")
 
+# Hygiene. Enforced on the clusters we author (base, process); reported as a count
+# for absorbed vendor prose, where a mechanical rewrite of hundreds of em dashes
+# would change inherited documentation without a reason. Fix those file by file as
+# they are touched.
+HYGIENE = (
+    ("em dash", re.compile(r"[\u2013\u2014]")),
+    ("curly quote", re.compile(r"[\u201c\u201d\u2018\u2019]")),
+    ("banned word", re.compile(r"\b(delve|leverage|utilize|foster|tapestry|vibrant|testament|underscore|pivotal|showcase|additionally|crucial|enhance)\b", re.I)),
+)
+hygiene_debt = []
+for s in sorted(skills.values(), key=lambda x: x["rel"]):
+    counts = []
+    for label, pat in HYGIENE:
+        # unslop lists the banned words as patterns, so the rule would always fire.
+        if s["name"] == "unslop" and label == "banned word":
+            continue
+        n = len(pat.findall(s["body"]))
+        if n:
+            counts.append(f"{n} {label}")
+    if not counts:
+        continue
+    line = f"{s['name']} ({', '.join(counts)})"
+    if s["cluster"] in ("base", "process"):
+        problems.append(f"{s['rel']}: " + ", ".join(counts))
+    else:
+        hygiene_debt.append(line)
+
 # One table, one home. A skill that lists three or more harness mechanisms inline
 # has copied process/delegate's table and will drift from it.
 HARNESS_RE = re.compile(r"(\bsubagent\b|invoke_subagent|spawn_agent|`Agent`|use_subagent|@agent)", re.I)
@@ -390,6 +417,8 @@ if not quiet:
     for line in mirror_report:
         print(f"  {line}")
     print(f"lint     {len(lint)} warning(s)")
+    if hygiene_debt:
+        print(f"hygiene  {len(hygiene_debt)} absorbed skill(s) carry inherited dashes or banned words: " + "; ".join(hygiene_debt))
     if accepted_bodies:
         print(f"bodies   {len(accepted_bodies)} accepted over {BODY_WARN} chars: " + "; ".join(accepted_bodies))
 
