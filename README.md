@@ -1,8 +1,9 @@
 # skills
 
 Personal and curated agent skills for this machine. One tree here, mounted into
-`~/.agents/skills` and mirrored into the Claude, Codex, Kiro and Gemini skill
-farms.
+`~/.agents/skills` and mirrored into the Claude, Codex, Kiro and Gemini farms. Gemini
+covers both the `gemini` CLI and Antigravity (`agy`), verified inside T3 as well as from
+the shell.
 
 Inventory, tiers and edges per skill: `SKILL-MAP.md` (generated, never edited by
 hand).

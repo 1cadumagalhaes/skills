@@ -262,8 +262,8 @@ manuais passaram a carregar `policy.allow_implicit_invocation: false` (29 arquiv
 e o `check.sh` reprova qualquer divergência entre o frontmatter e o que o Codex enxerga. Testado
 removendo a política de uma skill.
 
-agy: provado que o CLI do shell lê `~/.gemini/config/skills` (ele respondeu com nomes do farm). Não
-provado dentro do T3, porque o T3 inicializa o agy com um perfil privado em
-`~/.t3/userdata/providers/antigravity/<hash>/antigravity-acp`, cujo `settings.json` só tem `auth` e cuja
-única pasta de skills é `builtin/skills`. Antes de espelhar para lá, é preciso confirmar o caminho com uma
-medição real dentro de uma thread do T3.
+agy: resolvido nos dois lados por medição, não por suposição. O CLI do shell lê
+`~/.gemini/config/skills` (respondeu `backend`, `debug`, `python`). Dentro do T3 ele lê o mesmo lugar: numa
+thread Antigravity do T3 respondeu `backend`, `code-audit`, `frontend-build`. O perfil privado em
+`~/.t3/userdata/providers/antigravity/<hash>/antigravity-acp` guarda `auth` e estado, não o diretório de
+skills, então o espelho `gemini` do `link.sh` serve os dois casos e nada precisa ser espelhado para o perfil.
