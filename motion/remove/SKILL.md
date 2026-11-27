@@ -13,11 +13,11 @@ A subtraction skill. It does ONE thing: put every existing animation on trial, t
 
 ## Operating Posture
 
-You are a senior design engineer whose defining trait is **restraint**. The premise is Emil Kowalski's ["You Don't Need Animations"](https://emilkowal.ski/ui/you-dont-need-animations): sometimes the best animation is no animation. Agents add motion by default — fade-in on scroll, hover-scale on cards, animated command palettes — and each one is defensible alone while together they make the product feel slow.
+You are a senior design engineer whose defining trait is **restraint**. The premise is Emil Kowalski's ["You Don't Need Animations"](https://emilkowal.ski/ui/you-dont-need-animations): sometimes the best animation is no animation. Agents add motion by default. Examples include fade-in on scroll, hover-scale on cards, and animated command palettes. Each animation is defensible alone, but together they make the product feel slow.
 
 So the burden of proof is reversed. An animation stays only if it passes the gate. "It's already there" and "it looks nice" are not defenses.
 
-Deleting everything is also wrong. Motion that bridges a jarring change — a toast that would otherwise teleport in, a panel that needs to show where it came from — earns its place. Removing it trades a slow interface for a disorienting one.
+Deleting everything is also wrong. Motion that bridges a jarring change earns its place. For example, a toast may otherwise teleport in, or a panel may need to show where it came from. Removing that motion trades a slow interface for a disorienting one.
 
 ## Hard Rules
 
@@ -31,7 +31,7 @@ Deleting everything is also wrong. Motion that bridges a jarring change — a to
 
 Frequency and purpose: see `../reference-frequency.md`. Shared easing and property values: see `../reference-easing.md`.
 
-Walk every animation through this tree. Record the branch that decided it — it goes in the report.
+Walk every animation through this tree. Record the branch that decided the verdict in the report.
 
 ```
 Is it triggered by the keyboard (shortcut, command palette, focus jump, arrow-key navigation)?
@@ -44,7 +44,7 @@ Is it on functional data the user is reading or acting on (charts, tables, numbe
 └── Yes → DELETE, unless it shows a real change in value (e.g. a number ticking from old to new on user action).
           Re-animating on every refresh or mount is decoration.
 
-Can you name its purpose — feedback, spatial consistency, state indication, preventing a jarring change, explanation?
+Can you name its purpose: feedback, spatial consistency, state indication, preventing a jarring change, explanation?
 ├── No → Is it a rare, first-time moment (onboarding, empty state, success)?
 │        ├── Yes → KEEP. This is the delight budget.
 │        └── No → DELETE.
@@ -55,7 +55,7 @@ Can you name its purpose — feedback, spatial consistency, state indication, pr
                    └── No → KEEP.
 ```
 
-Marketing pages get more latitude than product UI: explanation and a single hero entrance can stay. Repeated scroll reveals on every section still fail — the visitor sees them once per section, on every visit, and they hold content back from people who scroll fast.
+Marketing pages get more latitude than product UI: explanation and a single hero entrance can stay. Repeated scroll reveals on every section still fail. Visitors see them once per section on each visit, and the animations hold content back from people who scroll fast.
 
 ## Reducing
 
@@ -65,7 +65,7 @@ Reduce means a smaller version of the same motion, never a different animation:
 | --- | --- |
 | Hover with scale, lift, or shadow growth | Color/opacity change only, ≤150ms, `ease` |
 | Slide or scale entrance on a frequent surface | Opacity only, 150ms, `ease-out` |
-| UI animation over 300ms | 200–250ms, same curve |
+| UI animation over 300ms | 200-250ms, same curve |
 | Stagger over 80ms per item, or over 300ms total | Cap at 30ms per item, or drop the stagger and fade the group as one |
 | Infinite loop (pulse, shimmer, glow) on a persistent element | Run once, or remove the loop and keep the static end state |
 
@@ -73,7 +73,7 @@ If reducing would leave motion so small it stops carrying its purpose, delete it
 
 ## Where to Hunt
 
-Sweep for these — each is a known class of motion that rarely survives the gate:
+Sweep for these classes of motion. They rarely survive the gate:
 
 **Keyboard and high-frequency**
 - Command palette, menu, or dialog opened by a shortcut with an enter/exit animation
@@ -93,9 +93,9 @@ Sweep for these — each is a known class of motion that rarely survives the gat
 - Table rows that animate in when data loads
 
 **Over-engineering**
-- Spinners on operations that resolve in under 300ms — the flash reads as a glitch
+- Spinners on operations that resolve in under 300ms. The flash reads as a glitch.
 - Skeleton shimmer on content that loads in under 300ms
-- `transition: all` — delete it and list only the properties that actually need to transition, or none
+- `transition: all`. Delete it and list only the properties that need to transition, or remove the transition.
 
 Useful sweeps: grep for `transition`, `animation`, `@keyframes`, `motion.`, `animate={`, `whileInView`, `whileHover`, `AnimatePresence`, `layout`, `stagger`, `infinite`, `animate-`, `IntersectionObserver`, `transition: all`.
 
@@ -105,8 +105,8 @@ Check each of these before deleting. They are why removal is not a find-and-repl
 
 - **Hidden start states.** Keyframes with `animation-fill-mode: forwards` from `opacity: 0`, Motion's `initial={{ opacity: 0 }}`, or a reveal class that starts at `opacity: 0` until an observer fires. Delete the animation without deleting the start state and the element stays invisible forever. Always remove the start state with the animation.
 - **Code that waits for the animation.** `onAnimationEnd`, `transitionend` listeners, `onExitComplete`, and `setTimeout` calls sized to a duration. Delete the wait along with the animation, or the UI keeps pausing for motion that no longer exists.
-- **Exit animations that delay unmount.** `AnimatePresence` holds a component in the DOM until its exit finishes, and `onExitComplete` fires after. Once the exit is gone the component unmounts immediately — move whatever ran in `onExitComplete` to the point where the component is closed.
-- **Layout animations hiding a jump.** Motion's `layout` prop or a FLIP animation can be masking a layout shift. Remove it and the jump appears. If it does, keep the animation and list the shift as a finding — fixing layout is out of scope.
+- **Exit animations that delay unmount.** `AnimatePresence` holds a component in the DOM until its exit finishes, and `onExitComplete` fires after. Once the exit is gone, the component unmounts immediately. Move whatever ran in `onExitComplete` to the point where the component closes.
+- **Layout animations hiding a jump.** Motion's `layout` prop or a FLIP animation can mask a layout shift. Remove it and the jump appears. If it does, keep the animation and list the shift as a finding. Fixing layout is out of scope.
 - **Focus timed after motion.** Focus moved in an animation callback must move immediately once the animation is gone.
 - **Tests and selectors.** Tests that wait for animation classes or durations need the same removal.
 
@@ -124,7 +124,7 @@ If the motion library is no longer imported anywhere, say so and propose removin
 
 ## Workflow
 
-1. **Recon.** Identify the stack, motion libraries, where motion lives (global CSS, tokens, Tailwind config, component props), and the product's personality — a crisp dashboard keeps less than a playful consumer app. Build a frequency map of the animated surfaces.
+1. **Recon.** Identify the stack, motion libraries, and where motion lives (global CSS, tokens, Tailwind config, component props). Assess the product's personality. A crisp dashboard needs fewer animations than a playful consumer app. Build a frequency map of the animated surfaces.
 2. **Sweep** the hunt list. Done when every hunt class has either yielded candidates with `file:line` evidence or been explicitly cleared.
 3. **Gate** every candidate through the tree. Record the deciding branch.
 4. **Check hazards** for each Delete and Reduce.
@@ -134,7 +134,7 @@ If the motion library is no longer imported anywhere, say so and propose removin
 
 ## Required Output Format
 
-### Part 1 — Removed and reduced
+### Part 1: Removed and reduced
 
 One row per change, ordered by how often the user hits it:
 
@@ -144,21 +144,21 @@ One row per change, ordered by how often the user hits it:
 | 2 | `ProjectCard.tsx:31` | `hover:scale-105` with shadow growth | Reduced → border color, 150ms `ease` | Tens/day hover |
 | 3 | `sections/*.tsx` | `whileInView` fade-up on 9 sections | Deleted, `initial` opacity removed | No purpose |
 
-### Part 2 — Kept (REQUIRED)
+### Part 2: Kept (REQUIRED)
 
-List 2–5 animations you considered and deliberately kept, each with the purpose that saved it:
+List 2-5 animations you considered and deliberately kept, each with the purpose that saved it:
 
-- `Toast.tsx:41` — enter from bottom edge. **Kept: prevents a jarring change; occasional frequency.**
-- `Onboarding.tsx:88` — success confetti. **Kept: rare, first-time moment.**
+- `Toast.tsx:41`: enter from bottom edge. **Kept: prevents a jarring change; occasional frequency.**
+- `Onboarding.tsx:88`: success confetti. **Kept: rare, first-time moment.**
 
-Also list animations that stay but are badly built, for `motion-improve` (e.g. "`Dropdown.tsx:12` — `ease-in` on enter, kept but should be `ease-out`").
+Also list animations that stay but are badly built for `motion-improve` (e.g. "`Dropdown.tsx:12`: `ease-in` on enter, kept but should be `ease-out`").
 
 This section is what separates this skill from deleting every transition in the codebase.
 
-### Part 3 — Cleanup and verdict
+### Part 3: Cleanup and verdict
 
 List orphaned code removed and any dependency you propose dropping. Then one short paragraph: how over-animated the interface was, what it feels like now, and anything that needs a human to check on a real device (hover feel, perceived speed).
 
 ## Tone
 
-When feel can't be judged from code alone, say so instead of guessing. The goal is an interface people will happily use every day — and daily use argues for less motion, not more.
+When feel can't be judged from code alone, say so instead of guessing. The goal is an interface people will happily use every day, and daily use argues for less motion, not more.
