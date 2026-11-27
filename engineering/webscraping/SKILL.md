@@ -25,9 +25,9 @@ Ask concisely in plain text or your harness's native question tool when choices 
 
 ---
 
-## Output contract — bronze first, silver opt-in
+## Output contract: bronze first, silver opt-in
 
-Every scrape this skill produces lands in a **bronze (raw) layer first**. Bronze means: whatever the source returns, persisted as-is — full payload, full HTML response, original column names, dates as strings — plus minimal capture metadata (source, fetched_at, content hash). Silver (cleaned/typed) and gold (analytics/aggregations) are explicit follow-ups, never silent steps.
+Every scrape this skill produces lands in a **bronze (raw) layer first**. Bronze means whatever the source returns, persisted as-is: the full payload or HTML response, original column names, and dates as strings. Include minimal capture metadata (source, fetched_at, content hash). Silver (cleaned/typed) and gold (analytics/aggregations) are explicit follow-ups, never silent steps.
 
 **Never silently transform.** When the user says "give me X as CSV", deliver bronze CSV: every column the source exposes, no renaming, no derived fields, no parsed dates. They will tell you if they want more.
 
@@ -38,19 +38,19 @@ Gated by the user's experience level (from Q1 of intake). **Do not ask about sil
 | Level | Silver/gold prompting policy |
 |---|---|
 | **New to scraping** | Never ask. Deliver bronze in their chosen format. Stop. |
-| **Some experience** | After bronze is confirmed, offer **once in a single line**: *"Want me to clean & type this — parse dates, dedupe, drop empty rows?"* If no, stop. |
+| **Some experience** | After bronze is confirmed, offer **once in a single line**: *"Want me to clean & type this: parse dates, dedupe, drop empty rows?"* If no, stop. |
 | **Experienced** | After bronze is confirmed, ask explicitly: *"Bronze is in. Want silver (typed/cleaned) on top? Or gold (aggregations, joins, derived metrics)?"* Walk through proposed silver schema before building. |
 
-See `reference/medallion-architecture.md` for the full contract — layer definitions, why bronze-first, minimum bronze schema, bronze form per output format.
+See `reference/medallion-architecture.md` for the full contract. It defines the layers, explains bronze-first, and lists the minimum bronze schema and bronze form for each output format.
 
-### Closing every run — self-critique + recon report
+### Closing every run: self-critique + recon report
 
 Before declaring a scrape complete, run two final steps **in this order**:
 
-1. **Self-critique** — five-category checklist (Gaps / Unvalidated / Assumptions / Staleness / Recommendations). See `reference/self-critique.md`. Output is calibrated per user level.
-2. **Recon report** — generate a single self-contained HTML file in a **clean, neutral monochrome style** summarizing the run (8 sections, ending with the self-critique). Save as `recon-report-<sanitized-domain>-<YYYY-MM-DD>.html` in the user's working directory and share the path. See `reference/recon-report.md` for the full spec, branding rules, and HTML boilerplate.
+1. **Self-critique:** use the five-category checklist (Gaps / Unvalidated / Assumptions / Staleness / Recommendations). See `reference/self-critique.md`. Calibrate the output to the user's level.
+2. **Recon report:** generate a single self-contained HTML file in a **clean, neutral monochrome style** that summarizes the run in 8 sections and ends with the self-critique. Save it as `recon-report-<sanitized-domain>-<YYYY-MM-DD>.html` in the user's working directory and share the path. See `reference/recon-report.md` for the full spec, branding rules, and HTML boilerplate.
 
-The recon report is the closing deliverable — what the user actually shows to their team or archives for the project.
+The recon report is the closing deliverable. The user can show it to their team or archive it with the project.
 
 ---
 
@@ -90,7 +90,7 @@ Level 7 — Anti-bot services + proxies
 
 ---
 
-## Level 1 — Autonomous discovery
+## Level 1: Autonomous discovery
 
 Before asking for anything, spend 5 minutes trying to find the data yourself. See `discovery/autonomous-discovery.md` for the full checklist.
 
@@ -98,12 +98,12 @@ Quick version:
 - `robots.txt`, `sitemap.xml` → leaked API paths
 - Probe `/api`, `/api/v1`, `/graphql`, `/openapi.json`
 - `view-source:` → look for `__NEXT_DATA__`, `__INITIAL_STATE__`, embedded JSON
-- **Structured data** → `<script type="application/ld+json">`, `itemscope`, `og:` meta — data the site publishes for SEO, often the cheapest path (see `parsing/structured-data.md`)
+- **Structured data:** inspect `<script type="application/ld+json">`, `itemscope`, and `og:` metadata. Sites publish this data for SEO, and it is often the cheapest path (see `parsing/structured-data.md`).
 - Google dorks: `site:target.com filetype:csv`
 
 ---
 
-## Level 2 — Replicated hidden API
+## Level 2: Replicated hidden API
 
 If you found the endpoint via autonomous discovery or the user provided a curl:
 
@@ -127,9 +127,9 @@ If this returns 403 or a Cloudflare page → move to Level 3.
 
 ---
 
-## Level 3 — Browser fingerprint impersonation (curl_cffi)
+## Level 3: Browser fingerprint impersonation (curl_cffi)
 
-Most 403 blocks aren't IP-based — they're **TLS fingerprint blocks**. Python's `requests` library has a distinctive TLS handshake (JA3/JA4 signature) that sites detect. `curl_cffi` fixes this by mimicking a real browser's TLS fingerprint.
+Most 403 blocks aren't IP-based. They're **TLS fingerprint blocks**. Python's `requests` library has a distinctive TLS handshake (JA3/JA4 signature) that sites detect. `curl_cffi` mimics a real browser's TLS fingerprint to address this.
 
 ```python
 from curl_cffi import requests  # drop-in replacement
@@ -162,7 +162,7 @@ For high-throughput or async-native work, `primp` and `rnet` (Rust-backed) match
 - Sends the same TLS ClientHello as a real Chrome/Safari/Firefox (matching cipher suites, extensions, GREASE values)
 - HTTP/2 with real browser frame ordering
 - Matching `Accept-Encoding`, `User-Agent`, and header order
-- Sites using Akamai Bot Manager, Cloudflare, PerimeterX check the JA3/JA4 signature — this bypasses them
+- Sites using Akamai Bot Manager, Cloudflare, or PerimeterX check the JA3/JA4 signature. This can bypass those checks.
 
 **When it's still not enough:**
 - Site checks behavioral signals (mouse moves, click patterns) → need Level 4+
@@ -174,14 +174,14 @@ See `anti-bot/browser-impersonation.md` for advanced usage (proxies + curl_cffi,
 
 ---
 
-## Level 4 — Browser request injection
+## Level 4: Browser request injection
 
 Use this when:
 - The site requires valid session cookies that can only be obtained from a real browser login
 - You need to trigger one request in a real browser session and then replicate it with `requests`
 - The token/cookie is rotated frequently and must be refreshed periodically
 
-**The technique:** Open a real browser (Playwright), perform the login or navigation, intercept the API token/cookie from within that session, then extract it and use it in a plain `requests` script — no more browser needed.
+**The technique:** Open a real browser (Playwright), perform the login or navigation, and intercept the API token or cookie from that session. Then extract it and use it in a plain `requests` script. The browser is no longer needed.
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -230,11 +230,11 @@ session.cookies.update(auth["cookies"])
 r = session.get("https://site.com/api/data")
 ```
 
-**Why this matters:** The browser runs once (seconds), then all bulk fetching happens via `requests` — which is 10-100x faster than driving the browser for each request.
+**Why this matters:** The browser runs once for a few seconds. Bulk fetching then happens via `requests`, which is 10-100x faster than driving the browser for each request.
 
 ---
 
-## Level 5 — Headless browser + network listener
+## Level 5: Headless browser + network listener
 
 Use when the API is not discoverable without rendering (the site builds its request URLs dynamically from JavaScript state that can't be predicted).
 
@@ -303,7 +303,7 @@ See `browser-automation/browser-techniques.md` for advanced patterns (route inte
 
 ---
 
-## Concurrency & multi-threading — always ask first
+## Concurrency & multi-threading: always ask first
 
 **Never implement concurrency without asking the user explicitly:**
 
@@ -325,16 +325,16 @@ If yes — should I also add proxy rotation as a safety measure?
 | Provider | Type | Price | Best for |
 |----------|------|-------|----------|
 | Webshare | Datacenter rotating | ~$2/GB or $15/mo (2GB) | Testing, non-hostile sites |
-| Bright Data | Residential rotating | ~$8–15/GB | High-security sites |
-| Oxylabs | Residential | ~$8–15/GB | Scale + geo-targeting |
+| Bright Data | Residential rotating | ~$8-15/GB | High-security sites |
+| Oxylabs | Residential | ~$8-15/GB | Scale + geo-targeting |
 | IPRoyal | Residential | ~$7/GB | Mid-tier, good uptime |
 | PacketStream | Residential | ~$1/GB | Budget option, lower quality |
 | **Zyte API** | Managed unblocker (unified) | ~$0.13/1k simple → $0.06/1k at commit | Difficulty-tiered; cheapest on easy sites |
 | **Bright Data Web Unlocker** | Managed unblocker | ~$3/1k successful | Hard walls; also Scraping Browser (remote CDP) |
 | Oxylabs Web Unblocker | Managed unblocker | ~$9.40/GB | Few large pages |
-| ScrapingBee / ZenRows | Managed (browser) | ~$0.0025–0.004/req | Cloudflare-heavy sites, no setup |
+| ScrapingBee / ZenRows | Managed (browser) | ~$0.0025-0.004/req | Cloudflare-heavy sites, no setup |
 
-Managed **unblockers** (Zyte API, Web Unlocker) take a URL and return unblocked HTML/JSON — they pick the proxy, render JS, and solve the challenge internally. They're the honest answer for DataDome/Kasada/F5 and hard Cloudflare when you don't want to run browsers yourself. See `networking/proxy-providers.md`.
+Managed **unblockers** (Zyte API, Web Unlocker) take a URL and return unblocked HTML or JSON. They pick the proxy, render JS, and solve the challenge internally. They are the right choice for DataDome/Kasada/F5 and hard Cloudflare when you don't want to run browsers yourself. See `networking/proxy-providers.md`.
 
 When the user approves multi-threading:
 
@@ -363,9 +363,9 @@ class RateLimitedThreadPool:
 
 ---
 
-## Proxies — setup, geo-targeting, rotation
+## Proxies: setup, geo-targeting, rotation
 
-### Proxy intake — always ask before writing any proxy code
+### Proxy intake: always ask before writing any proxy code
 
 When proxies are needed, ask:
 
@@ -385,7 +385,7 @@ Before I set up the proxy, I need two things:
    Check your provider's dashboard for the exact URI.
 ```
 
-Then generate a `.env` file immediately — never hardcode credentials:
+Then generate a `.env` file immediately. Never hardcode credentials:
 
 ```bash
 # .env  (add to .gitignore — never commit this)
@@ -416,7 +416,7 @@ PROXY_COUNTRY = os.getenv("PROXY_COUNTRY", "")
 
 ### Provider-specific rotation code
 
-Always generate the code matching the user's provider — URI format differs per provider:
+Always generate code for the user's provider because URI formats differ:
 
 ```python
 import os
@@ -674,9 +674,9 @@ if __name__ == "__main__":
 **Rules:**
 - One class per responsibility: Extractor, Parser, Storage, (optionally) Transformer
 - No globals except constants (ALL_CAPS)
-- All network calls go through the `Session` object — never bare `requests.get()`
+- Route all network calls through the `Session` object. Never call `requests.get()` directly.
 - Retry logic in the session adapter, not in the fetch methods
-- `dataclass` for record types — no plain dicts floating around
+- Use `dataclass` for record types instead of plain dicts.
 - Type hints on all public methods
 - **`from __future__ import annotations` caveat:** the template shows it, but on Python 3.10+ native syntax (`list[...]`, `X | None`) works without it, and on 3.14 the future import can *break* libraries that introspect annotations at runtime (dataclasses, pydantic, FastAPI, SQLAlchemy). If the target project runs modern Python or uses those libs, **drop the future import** and use native annotations.
 
@@ -716,11 +716,11 @@ Every extracted dataset must have a `_metadata` block:
 ```
 
 **Quality score guide:**
-- ★★★★★ (5) — Official government or international org, complete EU27, annual updates
-- ★★★★☆ (4) — Reliable source, minor gaps, infrequent updates
-- ★★★☆☆ (3) — Good source, significant gaps or irregular updates
-- ★★☆☆☆ (2) — Proxy data, heavily estimated, or partial coverage
-- ★☆☆☆☆ (1) — Last resort, questionable methodology
+- ★★★★★ (5): Official government or international org, complete EU27, annual updates
+- ★★★★☆ (4): Reliable source, minor gaps, infrequent updates
+- ★★★☆☆ (3): Good source, significant gaps or irregular updates
+- ★★☆☆☆ (2): Proxy data, heavily estimated, or partial coverage
+- ★☆☆☆☆ (1): Last resort, questionable methodology
 
 ---
 
@@ -743,7 +743,7 @@ HEADERS = {
 ```
 
 Always:
-- Use `Session()` — persists cookies across requests
+- Use `Session()` to persist cookies across requests
 - Set realistic `User-Agent` + security headers
 - `timeout=30` on every call
 - `raise_for_status()` immediately after the call
@@ -793,13 +793,13 @@ DataDome / Kasada / PerimeterX / F5-Shape
     or a managed unblocker. Identify the vendor first: anti-bot/anti-bot-vendors.md
 ```
 
-**Before calling a wall unbeatable, probe the gaps.** Anti-bot rules attach to routes, not to data: suffix/format variants (`.js` first, then `.rss`/`.json` where the site publishes them), the XHRs a blocked page calls, other hosts and API versions, feeds and exports often carry the same records with a weaker rule. A route the site did not intend to be public needs the project owner's sign-off before use. See `anti-bot/protection-gaps.md`. And never report a target as blocked without the evidence table in `discovery/exhaustion-checklist.md` — an agent reports `stuck`, never `blocked`.
+**Before calling a wall unbeatable, probe the gaps.** Anti-bot rules attach to routes, not to data. Check suffix/format variants (`.js` first, then `.rss`/`.json` where the site publishes them), the XHRs a blocked page calls, other hosts and API versions, and feeds and exports that may carry the same records with a weaker rule. A route the site did not intend to be public needs the project owner's sign-off before use. See `anti-bot/protection-gaps.md`. Never report a target as blocked without the evidence table in `discovery/exhaustion-checklist.md`. An agent reports `stuck`, never `blocked`.
 
-**Identify the vendor before escalating** — each weights different signals, so the fix differs. And distinguish a **WAF/IP block** ("Sorry, you've been blocked") from a **JS challenge** ("Checking your browser"): the first needs a *different IP*, the second needs a *real browser*. See `anti-bot/anti-bot-vendors.md`.
+**Identify the vendor before escalating.** Each vendor weights different signals, so the fix differs. Distinguish a **WAF/IP block** ("Sorry, you've been blocked") from a **JS challenge** ("Checking your browser"). The first needs a *different IP*; the second needs a *real browser*. See `anti-bot/anti-bot-vendors.md`.
 
 ---
 
-## HAR files — better than curl
+## HAR files: better than curl
 
 When a curl isn't enough (multi-step session, auth tokens, many requests), ask for a HAR:
 
@@ -816,19 +816,19 @@ A HAR contains: every request/response, full headers, response bodies, cookies, 
 
 ---
 
-## Resumable extractions — never lose data
+## Resumable extractions: never lose data
 
 All extractions with >1 request must:
 - Write data incrementally to `.jsonl` (one record per line, append-safe)
 - Save a `checkpoint.json` after every successful item
-- Resume from checkpoint on restart — no data is ever re-fetched or lost
+- Resume from checkpoint on restart. This prevents re-fetching or losing data.
 - Show a progress bar with rate and ETA
 
 See `reliability/resumable-extraction.md` for complete patterns.
 
 ---
 
-## Session cache — cookies as JSON
+## Session cache: cookies as JSON
 
 Session cookies go in `raw/source/.session_cache.json` (gitignored). Never hardcode credentials. The cache stores cookies + auth headers with a TTL. On expiry, harvest fresh cookies via browser automatically.
 
@@ -841,7 +841,7 @@ See `browser-automation/session-cache.md` for the full cookie harvester pattern.
 Before bulk extraction: probe the safe rate with a binary-search test.
 
 When blocked, diagnose WHY before fixing:
-- **429** → rate limit — back off, respect Retry-After
+- **429** means rate limit. Back off and respect Retry-After.
 - **403 + "your ip"** → IP ban → save checkpoint, switch to proxy, resume
 - **403 + "login"** → session expired → refresh cookie cache
 - **Cloudflare JS challenge** → curl_cffi + residential proxy
@@ -855,13 +855,13 @@ See `anti-bot/ban-detection.md`.
 
 ## CAPTCHA solving
 
-**Always identify the CAPTCHA type before recommending a solver** — not all platforms support all types.
+**Always identify the CAPTCHA type before recommending a solver.** Not all platforms support all types.
 
 1. Ask user for a screenshot of the CAPTCHA
 2. Identify from visual + page source (reCAPTCHA v2/v3/Enterprise, hCaptcha, Turnstile, Arkose, GeeTest v4, AWS WAF, DataDome)
 3. Check compatibility table in `anti-bot/captcha-solvers.md`
 4. Quote cost to user before implementing
-5. Use CapSolver (AI-based, fast, 2Captcha-compatible API) or 2Captcha — full integration code in `anti-bot/captcha-solvers.md`. Turnstile/DataDome tokens are IP+UA-bound: solve on, and reuse from, the same proxy IP + User-Agent.
+5. Use CapSolver (AI-based, fast, 2Captcha-compatible API) or 2Captcha. See `anti-bot/captcha-solvers.md` for full integration code. Turnstile/DataDome tokens are IP+UA-bound: solve on, and reuse from, the same proxy IP + User-Agent.
 
 ---
 
@@ -893,13 +893,13 @@ As a last resort, I need you to record what happens when you interact with the s
 With the HAR I can see exactly what requests were made and reconstruct them.
 ```
 
-Only invoke headful automation (controlling a real browser) if HAR analysis still doesn't reveal the pattern — it's slow, detectable, and fragile.
+Only invoke headful automation (controlling a real browser) if HAR analysis still doesn't reveal the pattern. Headful automation is slow, detectable, and fragile.
 
 ---
 
 ## Skill layout
 
-The skill is organized by problem domain. Each folder has a `README.md` describing its scope and listing files. Read the folder README first — it'll point you to the right file.
+The skill is organized by problem domain. Each folder has a `README.md` describing its scope and listing files. Read the folder README first to find the right file.
 
 ```
 .
@@ -936,13 +936,13 @@ The skill is organized by problem domain. Each folder has a `README.md` describi
 
 ### Default conventions
 
-- **Proxy default:** Zyte — now the unified **Zyte API** (which supersedes Smart Proxy Manager / Crawlera; the header-based Crawlera proxy still works). See `networking/proxy-zyte.md` and `networking/proxy-providers.md`. Only suggest alternatives when comparing or when Zyte has a documented gap.
-- **TLS impersonation default:** `curl_cffi` with the generic alias `impersonate="chrome"` (auto-latest — never hardcode an old version). Faster alternatives: `primp`/`rnet`. See `anti-bot/browser-impersonation.md`, `anti-bot/tls-http-clients.md`.
+- **Proxy default:** Use the unified **Zyte API**, which supersedes Smart Proxy Manager / Crawlera. The header-based Crawlera proxy still works. See `networking/proxy-zyte.md` and `networking/proxy-providers.md`. Only suggest alternatives when comparing or when Zyte has a documented gap.
+- **TLS impersonation default:** `curl_cffi` with the generic alias `impersonate="chrome"` (auto-latest; never hardcode an old version). Faster alternatives: `primp`/`rnet`. See `anti-bot/browser-impersonation.md`, `anti-bot/tls-http-clients.md`.
 - **Stealth browser default:** `patchright` (`channel=chrome`) for Cloudflare; `camoufox` (`humanize=True`) for DataDome/behavioral. `playwright-stealth` is superseded. See `anti-bot/modern-stealth-browsers.md`.
-- **AI/adaptive extraction:** when markup is chaotic or drifts, consider `scrapling` (adaptive selectors), `crawl4ai`/`firecrawl` (LLM-ready), or an LLM-with-schema pass — but never over structured/stable APIs. See `reference/ai-extraction.md`.
+- **AI/adaptive extraction:** when markup is chaotic or drifts, consider `scrapling` (adaptive selectors), `crawl4ai`/`firecrawl` (LLM-ready), or an LLM-with-schema pass. Do not use these over structured or stable APIs. See `reference/ai-extraction.md`.
 - **Concurrency default:** ask first. After the user agrees: per-thread `curl_cffi` sessions, ~10 workers. See `reliability/concurrency-curl-cffi.md`.
 - **Idempotent re-runs:** load known IDs at startup, skip before expensive fetches; content-hash to detect change. See `reliability/idempotent-runs.md`.
 
 ### Growing this skill
 
-When you discover a generalizable new pattern (new proxy provider, new site stack, new anti-bot bypass, new library), drop it into the appropriate folder following the existing skeleton: **When you see this** → **How it works** → **Pattern / code** → **Gotchas** → **Related**. Never use project-specific or vendor-customer names; reframe to the underlying technology. Each folder's `README.md` is the table of contents — keep it current.
+When you discover a generalizable new pattern (new proxy provider, new site stack, new anti-bot bypass, new library), add it to the appropriate folder following the existing skeleton: **When you see this** → **How it works** → **Pattern / code** → **Gotchas** → **Related**. Never use project-specific or vendor-customer names; reframe to the underlying technology. Each folder's `README.md` is the table of contents. Keep it current.
