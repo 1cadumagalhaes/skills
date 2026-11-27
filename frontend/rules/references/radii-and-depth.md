@@ -22,9 +22,9 @@ A rounded child inside a padded rounded parent looks wrong unless the radii are 
 
 Four places the naive formula breaks:
 
-1. `[conv]` **Borders** sit between padding and the outer edge — subtract the border width too, as above.
+1. `[conv]` **Borders** sit between padding and the outer edge. Subtract the border width too, as above.
 2. `[conv]` **Pills** are `height ÷ 2`, not `999px`. A huge value *renders* like `height/2` because CSS clamps a radius to half the box, but it breaks the concentric math for anything nested inside, and it lies to the next reader. Use `border-radius: 50%`/`calc(var(--h) / 2)` for a fixed-height pill; `calc(infinity * 1px)` is the semantic form where support is acceptable.
-3. `[conv]` **Focus rings sit outside** the element, so their radius *adds*: `ring-radius = inner + offset + ring-width`. Subtracting here is the common bug — it makes the ring cut the corners.
+3. `[conv]` **Focus rings sit outside** the element, so their radius *adds*: `ring-radius = inner + offset + ring-width`. Subtracting here is the common bug. It makes the ring cut the corners.
    ```css
    :focus-visible {
      outline: 2px solid var(--color-focus);
@@ -46,8 +46,8 @@ Four places the naive formula breaks:
 
 ## Depth
 
-- `[taste]` Layered `box-shadow` reads as depth better than a border. Stack 2–3 shadows: a tight one for the edge, a wider soft one for the lift.
-- `[taste]` Give images a `1px` outline offset by `-1px` — black at ~8 % in light mode, white at ~8 % in dark — so photos on white/dark grounds do not bleed.
+- `[taste]` Layered `box-shadow` reads as depth better than a border. Stack 2-3 shadows: a tight one for the edge, a wider soft one for the lift.
+- `[taste]` Give images a `1px` outline offset by `-1px`, black at ~8 % in light mode and white at ~8 % in dark, so photos on white/dark grounds do not bleed.
 - `[conv]` Do not use a shadow *and* a border to do the same job; pick which one carries the edge.
 - `[conv]` Hairlines (1px) on hidpi: a `0.5px`-style hairline needs `box-shadow: 0 0 0 0.5px` or a transform trick; a plain `1px` border at 2× is visibly heavier than at 1×.
 
@@ -58,6 +58,6 @@ Four places the naive formula breaks:
 - `[conv]` Button press: `scale(0.95–0.98)`, ~200 ms, `ease-out`.
 - `[conv]` Exit animations should be shorter and smaller than entrances (~4 px travel + `blur(4px)` fading out).
 - `[conv]` Menus opened frequently: animate the close, not the open.
-- `[conv]` If an element jitters 1–2 px mid-animation, `will-change: transform` (Safari/iOS especially).
+- `[conv]` If an element jitters 1-2 px mid-animation, `will-change: transform` (Safari/iOS especially).
 - `[conv]` Stagger entrances in small groups rather than animating one large block; keep frequent interactions instant.
 - `[conv]` No entrance animation on page load unless it is the point.

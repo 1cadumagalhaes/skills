@@ -22,7 +22,7 @@
 |---|---|---|---|
 | <date range> | <last complete week> | <all> | |
 
-Left off as filters: <dimension> — <why, e.g. fans out order-level metrics>
+Left off as filters: <dimension>, because <why, e.g. fans out order-level metrics>
 
 ## Refresh and freshness
 
@@ -51,5 +51,5 @@ Left off as filters: <dimension> — <why, e.g. fans out order-level metrics>
 
 ## Open questions
 
-- [ ] <undefined metric> — needs a written definition (numerator, denominator, timezone, exclusions), owner <role>
+- [ ] <undefined metric>: needs a written definition (numerator, denominator, timezone, exclusions), owner <role>
 - [ ] <data gap or unconfirmed target>

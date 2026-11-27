@@ -12,7 +12,7 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 
 **Non-interactive runs** (subagent, CI, headless): derive the audience and decision from the input and tag them `[assumption]`. A metric with no definition is marked `undefined` in the chart table, not invented. No audience and no decision derivable from the input → emit `BLOCKED: need the audience and the decision this dashboard serves`.
 
-2. **Write the decision statement in one sentence:** who, decides what, how often. ✅ *"Regional support leads decide each Monday which queues get extra staff this week."* — ❌ *"Give visibility into support performance."* If no decision can be named, say so plainly: what the user wants is a report or an archive, and the spec says that instead of designing charts nobody acts on.
+2. **Write the decision statement in one sentence:** who, decides what, how often. ✅ *"Regional support leads decide each Monday which queues get extra staff this week."*, ❌ *"Give visibility into support performance."* If no decision can be named, say so plainly: what the user wants is a report or an archive, and the spec says that instead of designing charts nobody acts on.
 
 3. **List the questions in priority order, at most seven.** Each is a question the audience would ask out loud, paired with the action a bad answer triggers: ✅ *"Which queue is furthest over its response-time target this week? → move staff to it."* Question 1 is the reason the dashboard exists and goes top left. If you have more than seven, the dashboard serves more than one audience; split it.
 
@@ -40,9 +40,9 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 
 ## Useful references in this skill
 
-- [`reference.md`](reference.md) — the chart chooser with when-not-to rules, the vanity-metric test with common cuts, and refresh cadence by decision type
-- [`templates/dashboard-spec.md`](templates/dashboard-spec.md) — the spec skeleton
-- [`examples/support-staffing.md`](examples/support-staffing.md) — worked example: a support dashboard request with 14 asked-for metrics, cut to five questions
+- [`reference.md`](reference.md): the chart chooser with when-not-to rules, the vanity-metric test with common cuts, and refresh cadence by decision type
+- [`templates/dashboard-spec.md`](templates/dashboard-spec.md): the spec skeleton
+- [`examples/support-staffing.md`](examples/support-staffing.md): a worked example of a support dashboard request, 14 asked-for metrics cut to five questions
 
 ## Quality bar
 
@@ -65,9 +65,9 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 
 ## When NOT to use this skill
 
-- ❌ Defining how one metric is calculated (formula, filters, timezone) — that's the metric owner's call; this skill flags the gap, it doesn't fill it
-- ❌ Choosing which metric judges a feature, with targets and a decision rule — that's `success-metrics`
-- ❌ Service health dashboards, SLOs and alerting — that's `observability-plan`
+- ❌ Defining how one metric is calculated (formula, filters, timezone). That's the metric owner's call; this skill flags the gap, it doesn't fill it
+- ❌ Choosing which metric judges a feature, with targets and a decision rule. That's `success-metrics`
+- ❌ Service health dashboards, SLOs and alerting. That's `observability-plan`
 
 ## Anti-patterns to avoid
 

@@ -9,7 +9,7 @@ reason).
 - `[conv]` `spellCheck={false}` on emails, codes, usernames and search-as-you-type.
 - `[conv]` A checkbox or radio and its label share one hit target (wrap, or
   `label[for]`); never a tiny box next to a large dead label.
-- `[req]` Allow password managers and paste everywhere — no `onPaste` with
+- `[req]` Allow password managers and paste everywhere. No `onPaste` with
   `preventDefault`, no `autocomplete="off"` on credentials.
 - `[conv]` Never ask for the same information twice in one flow (WCAG 3.3.7);
   prefill what you already know.
@@ -23,7 +23,7 @@ reason).
 ## Media
 
 - `[conv]` Below-the-fold images `loading="lazy"`; the LCP/hero image
-  `fetchpriority="high"` — do not lazy-load the hero.
+  `fetchpriority="high"`. Do not lazy-load the hero.
 - `[conv]` Prefer `<video autoplay muted loop playsinline>` over an animated GIF:
   far smaller, and it honours `prefers-reduced-motion` through your own logic.
 - `[conv]` Every `<img>` has `width` and `height` (or an aspect-ratio box) so it
@@ -45,7 +45,7 @@ reason).
 - `[conv]` `overscroll-behavior: contain` inside modals and drawers so scrolling
   them does not scroll the page behind.
 - `[conv]` Full-bleed layouts respect `env(safe-area-inset-*)`.
-- `[conv]` `autoFocus` sparingly, and never on mobile without a reason — it
+- `[conv]` `autoFocus` sparingly, and never on mobile without a reason. It
   summons the keyboard and jumps the page.
 
 ## Theming and browser chrome
@@ -86,9 +86,9 @@ reason).
 - The API error reaches only `console.error`.
 - An icon button has no accessible name, or every row's button says the same
   word.
-- “Done” was said without opening the page.
+- "Done" was said without opening the page.
 
 Adapted from the `senior-frontend` skill in claude-code-templates (MIT, commit
-30f72e1) — itself adapted from Vercel's Web Interface Guidelines and Addy
-Osmani's web-quality-skills — deduplicated against `semantics-and-a11y.md` and
+30f72e1), itself adapted from Vercel's Web Interface Guidelines and Addy
+Osmani's web-quality-skills, deduplicated against `semantics-and-a11y.md` and
 `type-and-rhythm.md`. Attribution in the skills repo's `ATTRIBUTION.md`.

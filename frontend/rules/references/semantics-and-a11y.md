@@ -4,7 +4,7 @@ Requirements marked `[req]` map to WCAG 2.2 (W3C Recommendation, 2024-12-12). Ci
 
 ## Structure
 
-- `[req]` Native elements first: `<button>` for actions, `<a href>` for navigation, `<table>` for tabular data, `<ul>/<ol>` for lists, `<label for>` for inputs. ARIA cannot add keyboard behaviour, focus handling or form submission — it only renames what is there.
+- `[req]` Native elements first: `<button>` for actions, `<a href>` for navigation, `<table>` for tabular data, `<ul>/<ol>` for lists, `<label for>` for inputs. ARIA cannot add keyboard behaviour, focus handling or form submission. It only renames what is there.
 - `[req]` Heading order follows structure (`h1` → `h2`), not visual size. Style the level you need instead of skipping levels for looks.
 - `[req]` Landmarks: one `<main>`, `<nav>`, `<header>`, `<footer>`. They are how screen reader users jump around a page.
 - `[conv]` `tabindex` only `0` or `-1`. Positive values break the expected order.
@@ -13,7 +13,7 @@ Requirements marked `[req]` map to WCAG 2.2 (W3C Recommendation, 2024-12-12). Ci
 ## Focus
 
 - `[req]` Focus is always visible (WCAG 2.4.7) and never entirely hidden behind sticky headers or overlays (WCAG 2.4.11). A sticky header needs `scroll-margin-top` on anchor targets.
-- `[req]` Style `:focus-visible`, not bare `:focus` — the latter draws a ring on mouse clicks too, which is why people remove it, which is how focus gets lost.
+- `[req]` Style `:focus-visible`, not bare `:focus`. The latter draws a ring on mouse clicks too, which is why people remove it, which is how focus gets lost.
 - `[conv]` Focus rings sit outside the element and add to the radius (see `radii-and-depth.md`); 2px minimum width, 3:1 contrast against the adjacent background.
 - `[conv]` A custom control must show focus *and* respond to Enter/Space (buttons) or arrows/Home/End (composites). If that is hard, the native element was the answer.
 - `[conv]` Move focus deliberately: opening a dialog focuses its first meaningful element, closing returns focus to the trigger, submitting focuses the first invalid field.
@@ -23,7 +23,7 @@ Requirements marked `[req]` map to WCAG 2.2 (W3C Recommendation, 2024-12-12). Ci
 - `[req]` Target size ≥ 24×24 CSS px (WCAG 2.5.8); 44×44 on touch, 40×40 desktop is the comfortable aim. Targets must not overlap.
 - `[conv]` Inline links inside text are exempt; still avoid 1-character click areas.
 - `[conv]` `type` and `inputmode` must match the data: `type="email"`, `inputmode="numeric"` for codes, `autocomplete="one-time-code"` for OTP. This is what gives mobile users the right keyboard.
-- `[req]` Never block paste — people paste passwords, codes and addresses.
+- `[req]` Never block paste. People paste passwords, codes and addresses.
 - `[conv]` Keep the submit button enabled until submission starts; validate on submit, not on every keystroke, and never validate a field the person has not finished.
 
 ## Forms and errors

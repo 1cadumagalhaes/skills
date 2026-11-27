@@ -27,7 +27,7 @@ f=T('Font.ttf',lazy=True); \
 print('tnum' in {r.FeatureTag for r in f['GSUB'].table.FeatureList.FeatureRecord})"
 ```
 
-If it has no `tnum`, either switch fonts for numeric cells or fall back to a monospace stack for those cells — do not ship a rule that does nothing.
+If it has no `tnum`, either switch fonts for numeric cells or fall back to a monospace stack for those cells. Do not ship a rule that does nothing.
 
 Other notes:
 
@@ -38,7 +38,7 @@ Other notes:
 ## Columns and alignment
 
 - `[conv]` Right-align numeric columns (`text-align: end`, logical not `right`), left-align text; headers align with their column, and a numeric header is right-aligned too.
-- `[conv]` Pad decimals to a unit (`2`, not `2.0` vs `2.00` mixing) — alignment is about the decimal point, not just digit width.
+- `[conv]` Pad decimals to a unit (`2`, not `2.0` vs `2.00` mixing). Alignment is about the decimal point, not just digit width.
 - `[conv]` Align on the decimal where magnitudes vary by orders; otherwise align right.
 - `[conv]` Numbers inside a sentence stay proportional; numbers in a cell are tabular.
 

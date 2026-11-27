@@ -1,4 +1,4 @@
-# Third-party notices — frontend-verify
+# Third-party notices: frontend-verify
 
 `scripts/check_ui.mjs` and `scripts/page-audit.mjs` are taken, unmodified, from
 the `senior-frontend` skill in
