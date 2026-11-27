@@ -16,15 +16,15 @@ The three modern tools each answer this differently:
 
 | Tool | Approach to the CDP problem | Base browser |
 |---|---|---|
-| **nodriver** | No Playwright/Selenium shim at all — drives real Chrome directly over CDP, avoids the leaky calls | Chromium |
+| **nodriver** | No Playwright/Selenium shim at all; drives real Chrome directly over CDP, avoids the leaky calls | Chromium |
 | **patchright** | Playwright fork that *patches* the leaks (suppresses the observable `Runtime.enable`, closes other CDP tells), `channel=chrome` for real Chrome TLS | Chromium |
-| **camoufox** | Different engine entirely — a Firefox fork with spoofing compiled in at the C level | Firefox |
+| **camoufox** | Different engine entirely; a Firefox fork with spoofing compiled in at the C level | Firefox |
 
 ---
 
-## nodriver — CDP-direct, lightest footprint
+## nodriver: CDP-direct, lightest footprint
 
-The official successor to `undetected-chromedriver` (same author, `ultrafunkamsterdam`). Launches a real Chrome and talks CDP directly — **no WebDriver, so no `navigator.webdriver`, and none of the Playwright CDP tells.**
+The official successor to `undetected-chromedriver` (same author, `ultrafunkamsterdam`). Launches a real Chrome and talks CDP directly. It uses no WebDriver, so it exposes no `navigator.webdriver` and none of the Playwright CDP tells.
 
 ```python
 import nodriver as uc
@@ -40,10 +40,10 @@ uc.loop().run_until_complete(main())
 ```
 
 - **Best for:** targets with basic or no active WAF where you just need real JS execution without the Playwright fingerprint. Lightest memory footprint of the three.
-- **Weakness:** it does **not** simulate mouse movement, scroll, or keystroke timing. Against DataDome, Akamai Bot Manager, or PerimeterX — which score behavior — it gets blocked fast. Add human-like interaction yourself or use camoufox.
+- **Weakness:** it does **not** simulate mouse movement, scroll, or keystroke timing. Against DataDome, Akamai Bot Manager, or PerimeterX, which score behavior, it gets blocked fast. Add human-like interaction yourself or use camoufox.
 - `zendriver` is a maintained community fork if nodriver stalls.
 
-## patchright — the practical Playwright upgrade
+## patchright: the practical Playwright upgrade
 
 A drop-in Playwright fork (Python **and** Node) that patches the known CDP-leak signals at startup. If you already have Playwright code, this is the smallest diff to a real stealth gain.
 
@@ -61,10 +61,10 @@ with sync_playwright() as p:
 ```
 
 - **Best for:** Cloudflare-protected sites, and any team already on Playwright. Use `channel="chrome"` (real installed Chrome), not bundled Chromium, so the TLS fingerprint is genuine.
-- Keep the API identical to Playwright — everything in `browser-automation/browser-techniques.md` (network listener, request injection, route interception) works unchanged.
+- Keep the API identical to Playwright: everything in `browser-automation/browser-techniques.md` (network listener, request injection, route interception) works unchanged.
 - **Good fit when you must pull a Cloudflare-gated file download** (e.g. an XLSX behind a JS challenge) via `expect_download()`.
 
-## camoufox — Firefox fork for the hardest targets
+## camoufox: Firefox fork for the hardest targets
 
 An anti-detect Firefox build with canvas/WebGL/navigator/screen spoofing done at the **C++ level** (not injected JS, so there's no JS shim to detect). It presents a genuinely legitimate Firefox fingerprint because it *is* Firefox with modified internals. Playwright-compatible driver.
 
@@ -79,26 +79,26 @@ with Camoufox(headless=False, humanize=True, geoip=True) as browser:
     html = page.content()
 ```
 
-- **Best for:** the toughest fingerprinting (DataDome especially — camoufox has succeeded where patchright failed). `humanize=True` adds human-like cursor movement; `geoip=True` aligns the spoofed locale/timezone with your proxy's exit IP.
-- **Weakness:** Firefox has smaller real-world share than Chrome, so a Firefox UA is slightly more "notable" on Chrome-heavy sites — but a *real* Firefox fingerprint beats a *fake* Chrome one every time.
-- **Higher-level wrapper:** Scrapling's `StealthyFetcher` is Camoufox under the hood with `solve_cloudflare=True` and the adaptive parser bolted on — reach for it if you want the Camoufox stealth without managing the browser directly (`reference/scrapling.md`).
+- **Best for:** the toughest fingerprinting (DataDome especially: camoufox has succeeded where patchright failed). `humanize=True` adds human-like cursor movement; `geoip=True` aligns the spoofed locale/timezone with your proxy's exit IP.
+- **Weakness:** Firefox has smaller real-world share than Chrome, so a Firefox UA is slightly more "notable" on Chrome-heavy sites: but a *real* Firefox fingerprint beats a *fake* Chrome one every time.
+- **Higher-level wrapper:** Scrapling's `StealthyFetcher` is Camoufox under the hood with `solve_cloudflare=True` and the adaptive parser bolted on: reach for it if you want the Camoufox stealth without managing the browser directly (`reference/scrapling.md`).
 
 ---
 
-## Choosing — and validating
+## Choosing: and validating
 
 **Escalation order for a browser-required target:**
-1. `patchright` with `channel=chrome` — cheapest upgrade, clears most Cloudflare.
-2. `camoufox` with `humanize=True` + geo-aligned residential proxy — for DataDome / behavioral scorers.
-3. Managed browser (Bright Data Scraping Browser, Browserbase) — when you don't want to run/scale browsers yourself. See `networking/`.
+1. `patchright` with `channel=chrome`: cheapest upgrade, clears most Cloudflare.
+2. `camoufox` with `humanize=True` + geo-aligned residential proxy: for DataDome / behavioral scorers.
+3. Managed browser (Bright Data Scraping Browser, Browserbase): when you don't want to run/scale browsers yourself. See `networking/`.
 
 `nodriver` sits *below* this ladder: reach for it when the target is light and you want minimal overhead, not when you're fighting a real WAF.
 
 **Validate your fingerprint before a big run** against public probes:
-- **CreepJS** (`abrahamjuliot.github.io/creepjs`) — the reference fingerprint/entropy test.
+- **CreepJS** (`abrahamjuliot.github.io/creepjs`): the reference fingerprint/entropy test.
 - `bot.sannysoft.com`, `browserleaks.com/tls` (check your JA3/JA4), `arh.antoinevastel.com/bots`.
 
-Load one through your stealth browser + proxy and read the report — it tells you exactly which signal is leaking before a real target does.
+Load one through your stealth browser + proxy and read the report. It tells you exactly which signal is leaking before a real target does.
 
 ---
 
@@ -115,7 +115,7 @@ Add these explicitly on hard targets. `slow_mo=` + scripted mouse moves + `page.
 
 ## Gotchas
 
-- **Headful beats headless** on the hardest sites — headless Chrome still has GPU/rendering tells. Run headful under `Xvfb`/`xvfb-run` on servers.
+- **Headful beats headless** on the hardest sites: headless Chrome still has GPU/rendering tells. Run headful under `Xvfb`/`xvfb-run` on servers.
 - **Proxy + fingerprint must agree.** A German residential IP with a `en-US`/`America/New_York` browser locale is a contradiction. Use camoufox `geoip=True` or set locale/timezone to match the exit IP.
 - **`channel="chrome"` needs Chrome installed** on the machine; bundled Chromium has a subtly different fingerprint.
 - **These are heavier and slower than HTTP.** Follow the ladder: use a browser only to *harvest tokens/cookies*, then replicate bulk fetches with `curl_cffi` (see SKILL.md Level 4). Don't drive a browser per record.
@@ -124,7 +124,7 @@ Add these explicitly on hard targets. `slow_mo=` + scripted mouse moves + `page.
 
 ## Related
 
-- `anti-bot/anti-bot-vendors.md` — which vendor scores behavior vs. TLS vs. JS, and per-vendor bypass
-- `anti-bot/tls-http-clients.md` — the cheaper HTTP-only layer to try first
-- `browser-automation/browser-techniques.md` — capture/inject/route patterns (work under patchright & camoufox too)
-- `networking/proxy-providers.md` — residential/mobile proxies + managed browsers
+- `anti-bot/anti-bot-vendors.md`: which vendor scores behavior vs. TLS vs. JS, and per-vendor bypass
+- `anti-bot/tls-http-clients.md`: the cheaper HTTP-only layer to try first
+- `browser-automation/browser-techniques.md`: capture/inject/route patterns (work under patchright & camoufox too)
+- `networking/proxy-providers.md`: residential/mobile proxies + managed browsers

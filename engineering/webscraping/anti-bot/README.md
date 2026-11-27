@@ -6,13 +6,13 @@ When `requests` works fine, skip this folder. When it returns 403, Cloudflare ch
 
 ## Escalation order
 
-1. Realistic headers (Referer, sec-ch-ua, User-Agent) — see `error-decoders.md`
-2. TLS/HTTP fingerprint impersonation (`curl_cffi`, or faster `primp`/`rnet`) — see `browser-impersonation.md`, `tls-http-clients.md`
-3. **Identify the vendor and whether it's a WAF/IP block or a JS challenge** — see `anti-bot-vendors.md`, `ban-detection.md`
-4. Real stealth browser for JS challenges (`patchright` / `camoufox` / `nodriver`) — see `modern-stealth-browsers.md`
-5. CAPTCHA/token solver if it's a CAPTCHA (Turnstile/DataDome/reCAPTCHA) — see `captcha-solvers.md`
-6. Probe protection gaps before paid escalation (suffix/format variants, sibling routes, other hosts, feeds, exports) — see `protection-gaps.md`
-7. Managed unblocker for the hardest walls (Zyte API / Web Unlocker) — see `../networking/proxy-providers.md`
+1. Realistic headers (Referer, sec-ch-ua, User-Agent): see `error-decoders.md`
+2. TLS/HTTP fingerprint impersonation (`curl_cffi`, or faster `primp`/`rnet`): see `browser-impersonation.md`, `tls-http-clients.md`
+3. **Identify the vendor and whether it's a WAF/IP block or a JS challenge**: see `anti-bot-vendors.md`, `ban-detection.md`
+4. Real stealth browser for JS challenges (`patchright` / `camoufox` / `nodriver`): see `modern-stealth-browsers.md`
+5. CAPTCHA/token solver if it's a CAPTCHA (Turnstile/DataDome/reCAPTCHA): see `captcha-solvers.md`
+6. Probe protection gaps before paid escalation (suffix/format variants, sibling routes, other hosts, feeds, exports): see `protection-gaps.md`
+7. Managed unblocker for the hardest walls (Zyte API / Web Unlocker): see `../networking/proxy-providers.md`
 
 ## Files
 

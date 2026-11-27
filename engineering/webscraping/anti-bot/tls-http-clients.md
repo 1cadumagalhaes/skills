@@ -20,7 +20,7 @@ Rule of thumb: **start with curl_cffi.** Only switch to primp/rnet when profilin
 
 ---
 
-## curl_cffi — profiles are the thing that goes stale
+## curl_cffi: profiles are the thing that goes stale
 
 The library is actively maintained (lexiforest fork; `curl_cffi` 0.11.x line). **Do not hardcode an old Chrome number.** Fingerprints rot: as real Chrome advances, sites raise their floor and an old `chrome124` starts looking anomalous.
 
@@ -49,13 +49,13 @@ mobile:   chrome99_android, chrome131_android
 other:    edge99, edge101, tor145
 ```
 
-- The **`a` suffix** (e.g. `chrome133a`) is an *alternative* fingerprint observed in the wild from Chrome A/B testing — not an official browser build. Try it when the plain number is blocked.
+- **The `a` suffix**: an *alternative* fingerprint observed in the wild from Chrome A/B testing. It is not an official browser build. Try it when the plain number is blocked.
 - Check what your installed version actually supports:
   ```python
   from curl_cffi import requests
   print(requests.BrowserTypeLiteral.__args__)   # or read the docs' targets page for your version
   ```
-- Keep `curl_cffi` itself updated (`uv pip install -U curl_cffi`) — new browser targets ship in new releases.
+- Keep `curl_cffi` itself updated (`uv pip install -U curl_cffi`): new browser targets ship in new releases.
 
 **Rotate profiles as a fallback ladder**, but bias toward the latest:
 
@@ -79,7 +79,7 @@ def fetch(url, **kw):
 
 ---
 
-## primp — the fast drop-in
+## primp: the fast drop-in
 
 ```python
 import primp
@@ -90,10 +90,10 @@ print(r.status_code, r.json())
 ```
 
 - Python binding to the Rust `rquest` engine. Consistently benchmarks as the fastest impersonating client.
-- API is close to `requests`. Impersonation targets use an underscore style (`chrome_131`, `safari_18`); also takes `impersonate_os`.
+- API is close to `requests`. Impersonation targets use names such as `chrome_131` and `safari_18`; it also accepts `impersonate_os`.
 - Was renamed from `pyreqwest-impersonate` → **`primp`**. If you find old `pyreqwest_impersonate` imports, they're the same lineage.
 
-## rnet — async-native, rich emulation
+## rnet: async-native, rich emulation
 
 ```python
 import asyncio, rnet
@@ -109,7 +109,7 @@ asyncio.run(main())
 - Rust-backed (same lineage as `reqwest-impersonate`/`wreq`). Native async, HTTP/2 control, browser emulation beyond just TLS.
 - Reach for it in high-concurrency async crawlers where you'd otherwise wrap curl_cffi's `AsyncSession`.
 
-## tls-client — when you must hand-tune
+## tls-client: when you must hand-tune
 
 ```python
 import tls_client
@@ -130,8 +130,8 @@ r = session.get("https://site.com/api")
 
 Fingerprinting is moving to **HTTP/3 over QUIC**. A growing number of sites negotiate h3, and the QUIC handshake has its own fingerprintable shape. Most Python impersonation clients are still HTTP/1.1 + HTTP/2 only.
 
-- **Practical stance today:** stay on HTTP/2 — sites still serve it, and h3 is opt-in via `Alt-Svc`. If a target *forces* h3 or behaves differently over h3, you currently need a real browser (Chromium speaks h3 natively) rather than an HTTP client.
-- **Exception:** **Scrapling's `Fetcher.get(url, http3=True)`** already exposes HTTP/3 from Python (see `reference/scrapling.md`) — a genuine edge when a site treats h3 clients differently.
+- **Practical stance today:** stay on HTTP/2: sites still serve it, and h3 is opt-in via `Alt-Svc`. If a target *forces* h3 or behaves differently over h3, you currently need a real browser (Chromium speaks h3 natively) rather than an HTTP client.
+- **Exception:** **Scrapling's `Fetcher.get(url, http3=True)`** already exposes HTTP/3 from Python (see `reference/scrapling.md`): a genuine edge when a site treats h3 clients differently.
 - Watch `curl_cffi`/`rnet` releases for QUIC impersonation; it's the obvious next capability.
 
 ---
@@ -140,14 +140,14 @@ Fingerprinting is moving to **HTTP/3 over QUIC**. A growing number of sites nego
 
 - **A fingerprint client fixes the network layer only.** It sends no JavaScript execution, no canvas/WebGL, no behavioral signals. Against Cloudflare-managed-challenge/DataDome/Kasada it gets you a clean TLS handshake and then a challenge page. See `anti-bot/anti-bot-vendors.md`.
 - **Match headers to the profile.** Impersonating `chrome146` while sending a `chrome/124` `User-Agent` and mismatched `sec-ch-ua` is a tell. curl_cffi sets sane defaults; if you override headers, keep them consistent with the chosen profile.
-- **Proxies + impersonation compose** — pass `proxies=` exactly as with `requests`. See `networking/`.
+- **Proxies + impersonation compose.** Pass `proxies=` exactly as with `requests`. See `networking/`.
 - **Profile availability is version-locked.** `chrome146` won't exist in an old curl_cffi. Upgrade the lib, don't downgrade your target.
 
 ---
 
 ## Related
 
-- `anti-bot/browser-impersonation.md` — curl_cffi deep dive, JA3/JA4 explainer
-- `anti-bot/anti-bot-vendors.md` — what each vendor checks; where TLS alone stops working
-- `anti-bot/modern-stealth-browsers.md` — when you need a real browser (nodriver/patchright/camoufox)
-- `reference/libraries.md` — the full library map
+- `anti-bot/browser-impersonation.md`: curl_cffi deep dive, JA3/JA4 explainer
+- `anti-bot/anti-bot-vendors.md`: what each vendor checks; where TLS alone stops working
+- `anti-bot/modern-stealth-browsers.md`: when you need a real browser (nodriver/patchright/camoufox)
+- `reference/libraries.md`: the full library map

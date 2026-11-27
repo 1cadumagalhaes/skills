@@ -1,6 +1,6 @@
 # CAPTCHA Identification & Solving
 
-## Step 1 — Always identify the CAPTCHA type first
+## Step 1: Always identify the CAPTCHA type first
 
 **Never recommend or use a solver without knowing the exact CAPTCHA type.** Different CAPTCHAs require different solvers, and not all services support all types.
 
@@ -75,9 +75,9 @@ Always verify support before recommending. This table reflects known support as 
 | Kasada | ❌ | ⚠️ | ❌ | ❌ | Proof-of-work; specialist/managed only, unreliable via generic solvers |
 | Text/Image CAPTCHA | ✅ | ✅ | ✅ | ✅ | Human workers or OCR |
 
-**CapSolver is AI/ML-based** (not human-worker like classic 2Captcha/Anti-Captcha), so it's fast on token-type challenges — Turnstile and reCAPTCHA v3 typically resolve in **under 3s**. Its API is **2Captcha-compatible**, so migration between the two is mostly a base-URL swap.
+**CapSolver is AI/ML-based** (not human-worker like classic 2Captcha/Anti-Captcha), so it's fast on token-type challenges. Turnstile and reCAPTCHA v3 typically resolve in **under 3s**. Its API is **2Captcha-compatible**, so migration between the two is mostly a base-URL swap.
 
-**When none support it (Kasada, F5/Shape, hard DataDome):** use a managed unblocker that handles the challenge internally — Zyte API, Bright Data Web Unlocker, ZenRows. See `networking/proxy-providers.md`.
+**When none support it (Kasada, F5/Shape, hard DataDome):** use a managed unblocker that handles the challenge internally, such as Zyte API, Bright Data Web Unlocker, or ZenRows. See `networking/proxy-providers.md`.
 
 ---
 
@@ -269,6 +269,6 @@ page.click("button[type='submit']")
 | Turnstile | ~$1.00/1000 | ~$1.20/1000 | Solves in <3s (CapSolver) |
 | GeeTest v4 | ~$4.00/1000 | ~$1.20/1000 | |
 | Arkose Labs | ~$4.00/1000 | ~$3.00/1000 | Low success rate |
-| DataDome | — | quote per volume | Token task; pair with matching proxy/UA |
+| DataDome | No | quote per volume | Token task; pair with matching proxy/UA |
 
-**Always tell the user the cost before implementing.** Example: "This site uses hCaptcha. Solving 10,000 CAPTCHAs = ~$15–20 with 2captcha."
+**Always tell the user the cost before implementing.** Example: "This site uses hCaptcha. Solving 10,000 CAPTCHAs = ~$15-20 with 2captcha."

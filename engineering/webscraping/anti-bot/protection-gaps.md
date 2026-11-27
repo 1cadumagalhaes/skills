@@ -1,4 +1,4 @@
-# Protection gaps — surfaces the anti-bot does not cover
+# Protection gaps: surfaces the anti-bot does not cover
 
 ## When you see this
 
@@ -213,7 +213,7 @@ A route that returns records is not automatically usable. Classify it:
 
 ## Related
 
-- `anti-bot-vendors.md` — identify the vendor first; its rules are scoped per path and host, which is why some sibling routes and suffixes sit outside them
-- `ban-detection.md` — distinguish a WAF/IP block from a JS challenge before probing gaps
-- `../discovery/autonomous-discovery.md` — sitemaps, embedded JSON and common API paths
-- `../discovery/exhaustion-checklist.md` — this file is family D of the checklist
+- `anti-bot-vendors.md`: identify the vendor first; its rules are scoped per path and host, which is why some sibling routes and suffixes sit outside them
+- `ban-detection.md`: distinguish a WAF/IP block from a JS challenge before probing gaps
+- `../discovery/autonomous-discovery.md`: sitemaps, embedded JSON and common API paths
+- `../discovery/exhaustion-checklist.md`: this file is family D of the checklist

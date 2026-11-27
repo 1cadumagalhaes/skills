@@ -2,17 +2,17 @@
 
 ## Why plain requests gets blocked
 
-Python's `requests` library uses the system's SSL stack (OpenSSL) which produces a distinctive TLS ClientHello — a fingerprint called **JA3** (or the newer **JA4**). Bot detection services (Cloudflare, Akamai, PerimeterX, DataDome) maintain databases of known JA3 signatures and immediately flag `requests` and `httpx` as bots.
+Python's `requests` library uses the system's SSL stack (OpenSSL), which produces a distinctive TLS ClientHello. This fingerprint is called **JA3** (or the newer **JA4**). Bot detection services (Cloudflare, Akamai, PerimeterX, DataDome) maintain databases of known JA3 signatures and immediately flag `requests` and `httpx` as bots.
 
 The fix: use `curl_cffi`, which compiles against a patched version of libcurl that reproduces the exact TLS ClientHello of real browsers.
 
 ## What the fingerprint includes
 
-- **Cipher suites** — which encryption algorithms are proposed, in what order
-- **TLS extensions** — what extensions the client supports (ALPN, SNI, etc.)
-- **GREASE values** — random-looking bytes that real Chrome inserts for forward-compatibility
-- **HTTP/2 settings frames** — real browsers use specific initial window sizes and HPACK table settings
-- **Header order** — browsers send headers in a consistent order that differs from requests
+- **Cipher suites**: which encryption algorithms are proposed, in what order
+- **TLS extensions**: what extensions the client supports (ALPN, SNI, etc.)
+- **GREASE values**: random-looking bytes that real Chrome inserts for forward-compatibility
+- **HTTP/2 settings frames**: real browsers use specific initial window sizes and HPACK table settings
+- **Header order**: browsers send headers in a consistent order that differs from requests
 
 All of these together create a fingerprint that's almost impossible to fake without using libcurl.
 
@@ -22,7 +22,7 @@ All of these together create a fingerprint that's almost impossible to fake with
 pip install curl-cffi
 ```
 
-No system dependencies needed — ships as a wheel with libcurl built in.
+No system dependencies are needed. The wheel includes libcurl.
 
 ## Basic usage
 
@@ -41,7 +41,7 @@ r = session.get("https://site.com/data")
 
 ## Available impersonation profiles
 
-**Don't hardcode an old Chrome number** — fingerprints go stale as real browsers advance, and an old `chrome124` starts looking anomalous. Prefer the **generic aliases**, which auto-select the newest profile your installed version ships:
+**Don't hardcode an old Chrome number.** Fingerprints go stale as real browsers advance, and an old `chrome124` starts looking anomalous. Prefer the **generic aliases**, which auto-select the newest profile your installed version ships:
 
 ```python
 requests.get(url, impersonate="chrome")          # newest Chrome
@@ -51,7 +51,7 @@ requests.get(url, impersonate="chrome_android")   # newest Chrome / Android
 requests.get(url, impersonate="safari_ios")       # newest Safari / iOS
 ```
 
-Profiles in the current (0.11.x) line — pin a specific one only when a site fingerprints a known-good older build:
+Profiles in the current (0.11.x) line. Pin a specific one only when a site fingerprints a known-good older build:
 ```
 chrome:   chrome110 … chrome124, chrome131, chrome133a, chrome136, chrome142, chrome145, chrome146
 safari:   safari153, safari155, safari170, safari180, safari184, safari260, safari2601
@@ -60,12 +60,12 @@ firefox:  firefox133, firefox135, firefox144, firefox147
 mobile:   chrome99_android, chrome131_android
 other:    edge99, edge101, tor145
 ```
-The **`a` suffix** (e.g. `chrome133a`) is an *alternative* fingerprint observed from Chrome A/B testing — try it when the plain number is blocked. Keep `curl_cffi` itself updated (`uv pip install -U curl_cffi`) — new browser targets ship in new releases.
+The **`a` suffix** (e.g. `chrome133a`) is an *alternative* fingerprint observed from Chrome A/B testing. Try it when the plain number is blocked. Keep `curl_cffi` itself updated (`uv pip install -U curl_cffi`). New browser targets ship in new releases.
 
 **Recommendation order:**
-1. `impersonate="chrome"` — newest Chrome, matches the majority of users
-2. `impersonate="safari"` — good for Apple-targeted sites or Apple-specific detection
-3. `impersonate="firefox"` — some sites allowlist Firefox but not unknown clients
+1. `impersonate="chrome"`: newest Chrome, matches the majority of users
+2. `impersonate="safari"`: good for Apple-targeted sites or Apple-specific detection
+3. `impersonate="firefox"`: some sites allowlist Firefox but not unknown clients
 4. Pin an older specific build only if a site bans the newest (rare)
 
 **Faster alternatives:** for high-throughput or async-native work, `primp` and `rnet` (Rust-backed) match curl_cffi's fingerprinting and benchmark faster. See `anti-bot/tls-http-clients.md`.
@@ -125,22 +125,22 @@ results = asyncio.run(fetch_all(["https://api.site.com/1", "https://api.site.com
 
 ## When curl_cffi is not enough
 
-1. **Site checks behavioral signals** — The site loads JS and checks for mouse movement, scroll events, interaction timing. `curl_cffi` sends no such signals.
+1. **Site checks behavioral signals**: The site loads JS and checks for mouse movement, scroll events, interaction timing. `curl_cffi` sends no such signals.
    → Real stealth browser: `patchright` (Cloudflare) or `camoufox` (DataDome/behavioral). See `anti-bot/modern-stealth-browsers.md`. (`playwright-stealth` is largely superseded.)
 
-2. **Login-gated content** — The session cookie can only be obtained after a real browser login.
+2. **Login-gated content**: The session cookie can only be obtained after a real browser login.
    → Use browser injection (Level 4 in SKILL.md)
 
-3. **Cloudflare managed challenge / Turnstile** — Needs actual JS execution, not just a JA3 match.
-   → Managed challenge: real browser (`patchright`) → harvest `cf_clearance`, or a managed unblocker (Zyte API / Web Unlocker). Turnstile widget: solver (CapSolver/2Captcha). See `anti-bot/anti-bot-vendors.md`. (`cloudscraper`/FlareSolverr lag current Cloudflare — don't lead with them.)
+3. **Cloudflare managed challenge / Turnstile**: Needs actual JS execution, not just a JA3 match.
+   → Managed challenge: real browser (`patchright`) → harvest `cf_clearance`, or a managed unblocker (Zyte API / Web Unlocker). Turnstile widget: solver (CapSolver/2Captcha). See `anti-bot/anti-bot-vendors.md`. (`cloudscraper`/FlareSolverr lag current Cloudflare. don't lead with them.)
 
 ## Alternatives to curl_cffi
 
 The impersonation-client field has grown. Full comparison in `anti-bot/tls-http-clients.md`; the short version:
 
-- **`primp`** (Rust `rquest`) — fastest; `requests`-like API; `impersonate="chrome_131"`. Formerly `pyreqwest-impersonate`.
-- **`rnet`** (Rust `wreq`/reqwest-impersonate) — async-native, rich HTTP/2 emulation; best for high-concurrency async crawlers.
-- **`tls-client`** (Go, bogdanfinn) — low-level knobs when you must hand-tune:
+- **`primp`** (Rust `rquest`): fastest; `requests`-like API; `impersonate="chrome_131"`. Formerly `pyreqwest-impersonate`.
+- **`rnet`** (Rust `wreq`/reqwest-impersonate): async-native, rich HTTP/2 emulation; best for high-concurrency async crawlers.
+- **`tls-client`** (Go, bogdanfinn): low-level knobs when you must hand-tune:
   ```python
   import tls_client
   session = tls_client.Session(client_identifier="chrome_133", random_tls_extension_order=True)

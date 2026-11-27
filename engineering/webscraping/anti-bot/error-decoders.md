@@ -8,8 +8,8 @@ Symptom → cause → fix table for non-obvious responses. When a scrape fails i
 
 **Cause:** TLS / SNI / certificate mismatch. The target's CDN received a request for a hostname it doesn't serve on the connection used. Two typical scenarios:
 
-1. **HTTP/2 connection coalescing** — your HTTP client reused a connection that the CDN considers stale or for a different hostname.
-2. **Proxy rotated IPs mid-session** — your previous request went through Tokyo, this one through Frankfurt, and the target's CDN won't serve content cross-region for security/contractual reasons.
+1. **HTTP/2 connection coalescing**: your HTTP client reused a connection that the CDN considers stale or for a different hostname.
+2. **Proxy rotated IPs mid-session**: your previous request went through Tokyo, this one through Frankfurt, and the target's CDN won't serve content cross-region for security/contractual reasons.
 
 **Fix:**
 - If proxied: pin a sticky proxy session BEFORE the first TLS handshake. See `../networking/proxy-zyte.md`.
@@ -41,7 +41,7 @@ def is_silent_error(html: str) -> bool:
 - Stale VIEWSTATE / EVENTVALIDATION
 - Missing `Referer` header
 - Tried to fetch a stateful detail page (numeric ID) without going through the search flow
-- Stateful internal ID belongs to a previous session — re-search and re-collect
+- Stateful internal ID belongs to a previous session: re-search and re-collect
 
 See `../site-patterns/legacy-cms.md` and `../site-patterns/aspnet-webforms.md` for stack-specific context.
 
@@ -54,7 +54,7 @@ See `../site-patterns/legacy-cms.md` and `../site-patterns/aspnet-webforms.md` f
 **Fix:**
 - Verify `X-Crawlera-Region` is a valid ISO 3166 alpha-2 country code, uppercase (e.g. `AU`, `US`, `DE`).
 - Check Zyte plan covers the geo (dashboard).
-- Retry — the pool may refill in seconds.
+- Retry: the pool may refill in seconds.
 
 See `../networking/proxy-zyte.md` for the full decoder.
 
@@ -64,7 +64,7 @@ See `../networking/proxy-zyte.md` for the full decoder.
 
 **Cause:** Your sticky session ID expired or never existed (sessions are TTL-limited, ~30 min default).
 
-**Fix:** Drop the stale SID, send `X-Crawlera-Session: create` again to get a fresh one, then re-boot the navigation. Old session cookies on the target may also be invalid — clear them.
+**Fix:** Drop the stale SID, send `X-Crawlera-Session: create` again to get a fresh one, then re-boot the navigation. Old session cookies on the target may also be invalid. Clear them.
 
 ## HTTP 407 Proxy Authentication Required
 
@@ -94,7 +94,7 @@ See `../networking/proxy-zyte.md` for the full decoder.
 
 **Causes (in order of likelihood):**
 1. **Geo-block:** Your IP is not in a country the target accepts. Often correlates with "site works fine in browser when you're in country X, fails everywhere else."
-2. **IP ban:** Your IP was blocked by the target's WAF. Different from rate limit — typically connection-refused or silent timeout rather than 403.
+2. **IP ban:** Your IP was blocked by the target's WAF. Different from rate limit: typically connection-refused or silent timeout rather than 403.
 3. **Network issue:** Your egress is broken (rare in normal infra).
 
 **Differentiating:**
@@ -125,7 +125,7 @@ If proxy ALSO times out: target is down, or your proxy egress is bad too.
 
 **Symptom:** 403, body text references the user's IP or "your network".
 
-**Cause:** IP-level ban — datacenter IP range blocked, or specific IP burnt from prior bursts.
+**Cause:** IP-level ban. datacenter IP range blocked, or specific IP burnt from prior bursts.
 
 **Fix:** Switch to residential proxy. Datacenter proxies usually share the same fate. See `../networking/proxy-zyte.md`.
 
@@ -142,7 +142,7 @@ If proxy ALSO times out: target is down, or your proxy egress is bad too.
 **Symptom:** You posted to a JSON endpoint, got HTML back.
 
 **Cause:** One of:
-- Session expired — server redirected to login (often with 302 swallowed by your client)
+- Session expired: server redirected to login (often with 302 swallowed by your client)
 - Wrong endpoint URL (typo)
 - Auth header missing
 - Target deployed a maintenance page
@@ -160,14 +160,14 @@ If proxy ALSO times out: target is down, or your proxy egress is bad too.
 **Causes:**
 - Missing required header (very often `Referer` or `Origin`)
 - Missing required cookie set by an earlier page load
-- Different filter defaults applied — your request implicitly filters to "today only" instead of the user's view
+- Different filter defaults applied: your request implicitly filters to "today only" instead of the user's view
 - Server bug where empty result is returned for unauthenticated requests with no error
 
 **Fix:** Diff your request headers/cookies against the real browser request (HAR file). The smallest missing piece is usually the cause.
 
 ## Related
 
-- `ban-detection.md` — broader diagnosis flowchart
-- `../networking/proxy-zyte.md` — Zyte-specific error semantics
-- `../site-patterns/legacy-cms.md` — "200 + Error" deep dive
-- `../site-patterns/aspnet-webforms.md` — VIEWSTATE / EVENTVALIDATION rejections
+- `ban-detection.md`: broader diagnosis flowchart
+- `../networking/proxy-zyte.md`: Zyte-specific error semantics
+- `../site-patterns/legacy-cms.md`: "200 + Error" deep dive
+- `../site-patterns/aspnet-webforms.md`: VIEWSTATE / EVENTVALIDATION rejections
