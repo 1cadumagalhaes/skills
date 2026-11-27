@@ -6,7 +6,7 @@ Broken access control is the top of every list because it is the easiest thing t
 
 - `[req]` Session cookies: `HttpOnly`, `Secure`, `SameSite=Lax` (or `Strict` where it does not break flows). A session token readable by JavaScript is an XSS-to-account-takeover pipeline.
 - `[req]` Tokens are compared in constant time and stored hashed where possible; a token in a database dump is a credential.
-- `[conv]` Short-lived access tokens + refresh rotation, or server sessions — pick one model and be strict about it. Access tokens in `localStorage` are the weak default; prefer cookies or in-memory with refresh.
+- `[conv]` Short-lived access tokens + refresh rotation, or server sessions. Pick one model and be strict about it. Access tokens in `localStorage` are the weak default; prefer cookies or in-memory with refresh.
 - `[conv]` Invalidate server-side on logout and on password change. A logout that only clears the client is theatre.
 - `[conv]` Absolute and idle timeouts, and a session list a user can revoke.
 
@@ -31,9 +31,9 @@ Broken access control is the top of every list because it is the easiest thing t
 
 For every endpoint that takes an identifier:
 
-1. Where did the id come from — the principal, or the request?
+1. Where did the id come from, the principal, or the request?
 2. Does the query filter by owner/tenant, and does that filter come from the principal?
-3. What does the response reveal for something the caller cannot see — 403 (exists), 404 (doesn't), or a list count?
+3. What does the response reveal for something the caller cannot see, 403 (exists), 404 (doesn't), or a list count?
 4. Are bulk endpoints looping the same check per item, or assuming the first one covered them?
 
 ## Object-level and function-level
@@ -50,7 +50,7 @@ For every endpoint that takes an identifier:
 
 ## Review questions
 
-1. Can a user of tenant A reach tenant B's data by editing one id? (Try it — on a staging env, with two real accounts.)
+1. Can a user of tenant A reach tenant B's data by editing one id? (Try it, on a staging env, with two real accounts.)
 2. What happens when the permission service errors: deny or allow?
 3. Which endpoints skip the policy middleware, and why?
 4. Does the admin path share the customer path's code, and if so, what stops a customer from using it?

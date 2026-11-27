@@ -18,14 +18,14 @@ A client must be able to answer three questions from the docs alone: *may I retr
 | no content | `204` |
 | malformed request (unparseable, wrong types) | `400` |
 | parses but violates business rules | `422` |
-| not found — **and** not visible to this caller | `404` for both, never `403` (a 403 leaks existence) |
+| not found **and** not visible to this caller | `404` for both, never `403` (a 403 leaks existence) |
 | not allowed to act on something you can see | `403` |
 | state conflict (already paid, version mismatch) | `409` |
 | precondition failed (ETag/If-Match) | `412` |
 | rate limited | `429` + `Retry-After` |
 | server fault, retry with backoff allowed | `5xx` + `Retry-After` when known |
 
-Never `200 OK` with `{"success": false}` — that makes every client parse two error channels.
+Never `200 OK` with `{"success": false}`. That makes every client parse two error channels.
 
 ## One error shape
 
@@ -38,7 +38,7 @@ Use RFC 9457 (`application/problem+json`) and use it everywhere, including valid
       "instance": "/invoices/abc/charge",
       "errors": [{"field": "amount", "code": "gt_budget"}] }
 
-`type` is a stable URI clients can branch on; `detail` is for humans and may change. No stack traces, no SQL, no upstream vendor strings — log those, return a correlation id.
+`type` is a stable URI clients can branch on; `detail` is for humans and may change. No stack traces, no SQL, no upstream vendor strings. Log those and return a correlation id.
 
 ## Idempotency
 
@@ -55,7 +55,7 @@ Use RFC 9457 (`application/problem+json`) and use it everywhere, including valid
 ## Pagination
 
 - `[conv]` **Cursor** for anything that changes or is large; `offset` only for small, static, human-browsable lists. Offset pagination skips and repeats rows when items are inserted above the cursor.
-- `[conv]` The cursor is opaque (an encoded key, not an offset the client can compute), stable under ties (order by a unique tiebreaker), and carries the filter it was created with — or the result set silently changes meaning.
+- `[conv]` The cursor is opaque (an encoded key, not an offset the client can compute), stable under ties (order by a unique tiebreaker), and carries the filter it was created with. Otherwise the result set silently changes meaning.
 - `[conv]` No total counts by default; they cost a second query and go stale. Offer them behind a flag.
 
 ## Long-running work
@@ -67,4 +67,4 @@ Use RFC 9457 (`application/problem+json`) and use it everywhere, including valid
 
 - `[conv]` Additive first: new fields are optional, new endpoints are new paths. Renaming or removing is a breaking change.
 - `[conv]` Deprecate with RFC 9745: `Deprecation: @1735689600` plus `Link: <https://.../>; rel="deprecation"`, and tell clients the timeline. A `Sunset` header plus a changelog entry beats a surprise 404.
-- `[conv]` Version in the path (`/v2`) or a dated media type — pick one per product and never both.
+- `[conv]` Version in the path (`/v2`) or a dated media type. Pick one per product and never both.

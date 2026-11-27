@@ -22,7 +22,7 @@ Ask: what is the dominant operation, how many times per request, and over how ma
 ## Complexity in the hot path
 
 - `[check]` Nested loops over the same collection (O(n²)) where an index would do O(n).
-- `[check]` A query, HTTP call or file read inside a loop — N+1. Batch it, or join it.
+- `[check]` A query, HTTP call or file read inside a loop is N+1. Batch it, or join it.
 - `[check]` Sorting inside a loop; re-sorting the same collection per item.
 - `[check]` Repeated work per row that depends only on the loop-invariant: compile the regex, parse the config, build the index once.
 - `[check]` String concatenation in a loop where a join/comprehension belongs.
@@ -31,14 +31,14 @@ Ask: what is the dominant operation, how many times per request, and over how ma
 
 ## Allocation and copying
 
-- `[check]` Building a list only to iterate it once — generator or streaming.
+- `[check]` Building a list only to iterate it once. Use a generator or streaming.
 - `[check]` Copying large frames/arrays defensively at every step (`df.copy()`, full slices).
 - `[check]` Loading a whole table/file into memory when the consumer processes it row-wise.
 - `[check]` Materializing intermediate collections in a pipeline that could be lazy.
 
 ## Caching
 
-- `[check]` Cache key includes everything that changes the answer (tenant, filters, version) — or the cache is wrong.
+- `[check]` Cache key includes everything that changes the answer (tenant, filters, version), or the cache is wrong.
 - `[check]` Invalidation exists and is testable; "it never changes" is an assumption, not an invalidation.
 - `[check]` Memory is bounded (size / TTL); no unbounded dict keyed by request.
 - `[check]` Staleness is acceptable for this caller; a dashboard can be 5 minutes old, a balance cannot.
@@ -48,10 +48,10 @@ Ask: what is the dominant operation, how many times per request, and over how ma
 - Before: the measurement. `EXPLAIN ANALYZE` for a query, `cProfile`/`py-spy` for Python, a timing harness around the function with realistic sizes.
 - After: the same measurement, same inputs. State the delta and the units.
 - Guard against small-n: O(n²) on 10 rows beats a hash map's constant factor. Say the size at which the analysis holds.
-- A perf change must preserve semantics: ordering, stability, error behaviour, and what happens on empty input. If it changes any of those, it is not a perf change, it is a behaviour change — say so.
+- A perf change must preserve semantics: ordering, stability, error behaviour, and what happens on empty input. If it changes any of those, it is not a perf change, it is a behaviour change. Say so.
 
 ## Report
 
-    [major] path/etl.py:132 — O(n²): every row scans the full `products` list (12k) → ~144M
+    [major] path/etl.py:132 - O(n²): every row scans the full `products` list (12k) → ~144M
       comparisons per run, measured 41 s. Fix: build `by_sku = {p.sku: p for p in products}`
       once before the loop; lookup becomes O(1).

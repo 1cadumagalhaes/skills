@@ -4,7 +4,7 @@ Correctness first, because everything else is wasted on code that is wrong. Thes
 
 ## Inputs and boundaries
 
-- `[check]` Empty vs missing vs null vs zero vs `""` — are they distinguished, or silently equivalent?
+- `[check]` Empty vs missing vs null vs zero vs `""`. Are they distinguished, or silently equivalent?
 - `[check]` Off-by-one at the edges: inclusive/exclusive ranges, `<` vs `<=`, slicing a list of length 0 or 1.
 - `[check]` Parsing without validation: `int(x)` on user input, JSON without a schema, a timestamp assumed to be a datetime.
 - `[check]` Silent truncation or coercion: floats for money, ints for IDs wider than they look, timezone-naive datetimes.
@@ -12,16 +12,16 @@ Correctness first, because everything else is wasted on code that is wrong. Thes
 
 ## Error paths
 
-- `[check]` `except: pass`, bare `except Exception`, `catch {}` — what error is being swallowed, and who needed to know?
+- `[check]` `except: pass`, bare `except Exception`, `catch {}`. What error is being swallowed, and who needed to know?
 - `[check]` Errors converted into falsy returns (`return None`, `return []`) so callers cannot distinguish "none" from "failed".
 - `[check]` Partial writes: half the records written, then an exception, with no transaction or compensation.
-- `[check]` Cleanup not in `finally`/context manager — a file handle, lock, connection or temp file leaked on the error path.
+- `[check]` Cleanup not in `finally`/context manager. A file handle, lock, connection or temp file leaked on the error path.
 - `[check]` Retries without idempotency: a payment, an insert, an email, sent twice because the caller retried a timeout.
 
 ## Concurrency and state
 
 - `[check]` Shared mutable state without a lock; a global cache mutated by request handlers.
-- `[check]` Check-then-act races: read a value, branch on it, write — between two threads or two processes.
+- `[check]` Check-then-act races: read a value, branch on it, write, between two threads or two processes.
 - `[check]` Ordering assumptions: dict iteration, `set` order, filesystem listing, "the callback fires before the next line".
 - `[check]` Async without cancellation: a task that outlives its request, a timeout that does not stop the work.
 - `[check]` Re-entrancy: a function that calls back into itself through an event handler or a lazy property.

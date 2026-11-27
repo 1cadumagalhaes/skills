@@ -12,7 +12,7 @@ Therefore: `[req]` every consumer must be idempotent, and that is not "it usuall
 
 ## Idempotent consumers
 
-- `[req]` Dedupe on a **business key** (payment id, order id), not the broker's message id — a republish gets a new id and the effect re-applies.
+- `[req]` Dedupe on a **business key** (payment id, order id), not the broker's message id. A republish gets a new id and the effect re-applies.
 - `[conv]` Implement as an effect table with a unique constraint, or an upsert keyed on the business identity. "Check if it exists, then insert" is a race.
 - `[conv]` Record the outcome, not just the attempt, so a duplicate can replay the original response instead of recomputing.
 
@@ -21,7 +21,7 @@ Therefore: `[req]` every consumer must be idempotent, and that is not "it usuall
 - `[conv]` Exponential backoff with **jitter**, a cap, and a max attempt count. Fixed-interval retries synchronise a fleet into a thundering herd.
 - `[req]` Classify the failure: transient (timeout, 5xx, deadlock) retries; permanent (validation, 4xx, malformed) goes straight to the dead-letter queue. Retrying a poison message burns the queue.
 - `[conv]` DLQ with a **replay path and a reason per message**; a DLQ nobody reads is where data goes to die quietly.
-- `[conv]` Alert on DLQ depth and on age of the oldest message — not only on error rate.
+- `[conv]` Alert on DLQ depth and on age of the oldest message, not only on error rate.
 
 ## Broker mechanics that cause duplicates
 
@@ -33,7 +33,7 @@ Therefore: `[req]` every consumer must be idempotent, and that is not "it usuall
 ## Scheduling
 
 - `[conv]` Distinguish scheduled work (cron, at a time) from queued work (as soon as possible). Different failure modes: cron overlaps, queues pile up.
-- `[req]` A scheduled job must be a **singleton** in a multi-instance deployment — a lock, a leader election, or a "claim the row" pattern. Otherwise N instances run it N times.
+- `[req]` A scheduled job must be a **singleton** in a multi-instance deployment. Use a lock, a leader election, or a "claim the row" pattern. Otherwise N instances run it N times.
 - `[conv]` Timezones: schedule in UTC, and decide explicitly whether "daily" means 24 h or midnight local.
 - `[conv]` Missed runs: catch-up policy (run once for the latest, or backfill every skipped window) written down, not discovered.
 

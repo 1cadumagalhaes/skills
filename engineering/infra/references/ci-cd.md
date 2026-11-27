@@ -12,7 +12,7 @@ The pipeline holds production credentials, runs third-party code on every push, 
 ## Supply chain
 
 - `[req]` **Pin third-party actions by full commit SHA**, with the version in a comment. A tag is mutable; a compromised action runs with your token.
-- `[req]` Never use `pull_request_target` with a checkout of the PR head — that combination hands write tokens and secrets to fork code.
+- `[req]` Never use `pull_request_target` with a checkout of the PR head. That combination hands write tokens and secrets to fork code.
 - `[conv]` Pin the base images, the toolchain and the lockfiles the build uses; a build that resolves `latest` is not reproducible.
 - `[conv]` Produce provenance (SLSA) and an SBOM per build; deploy by digest, not tag, so what is running is what was built.
 - `[conv]` Scan dependencies and images in the pipeline and fail on the thresholds you actually care about.
@@ -20,7 +20,7 @@ The pipeline holds production credentials, runs third-party code on every push, 
 ## Speed and feedback
 
 - `[conv]` Tier the tests: fast checks (lint, types, unit) on every push; slow suites on PR; full matrix and end-to-end before merge or on main. A pipeline that takes 40 minutes for a typo gets bypassed.
-- `[conv]` Cache what is expensive (package manager, build layers, test fixtures) keyed on the lockfile hash — and make a cache miss slow, not wrong.
+- `[conv]` Cache what is expensive (package manager, build layers, test fixtures) keyed on the lockfile hash, and make a cache miss slow, not wrong.
 - `[conv]` `concurrency` with `cancel-in-progress` per branch: pushing twice should not run the suite twice.
 - `[conv]` Fail fast: order jobs so the cheapest failure happens first, and do not run the matrix until the single-version build passes.
 
@@ -28,7 +28,7 @@ The pipeline holds production credentials, runs third-party code on every push, 
 
 - `[req]` One pipeline path to production, the same one used for every change. A hotfix that skips the gates is a different system nobody has tested.
 - `[conv]` Environment protection rules for prod: required reviewer, restricted branches, deploy windows if the business has them.
-- `[conv]` Deploy by immutable digest, with the commit SHA in the image label and the deploy annotation — the link from "what is running" to "which change" must be one lookup.
+- `[conv]` Deploy by immutable digest, with the commit SHA in the image label and the deploy annotation. The link from "what is running" to "which change" must be one lookup.
 - `[conv]` Migrations run as an explicit step before the new code, with the old code still able to run against the new schema (`backend` → `data-modelling.md`).
 - `[conv]` Rollback is a pipeline operation, not a person with `kubectl`. Test it on the first deploy of every new service.
 
@@ -41,5 +41,5 @@ The pipeline holds production credentials, runs third-party code on every push, 
 ## What to alert on
 
 - `[conv]` Failed deploys and rollbacks, not every failed job (a lint failure is not an incident).
-- `[conv]` Deployment frequency, lead time, change-failure rate, time to restore — the four that tell you whether the pipeline is healthy.
+- `[conv]` Deployment frequency, lead time, change-failure rate, and time to restore are the four that tell you whether the pipeline is healthy.
 - `[conv]` Drift between what Git says should be deployed and what is running (see `iac-and-gitops.md`).

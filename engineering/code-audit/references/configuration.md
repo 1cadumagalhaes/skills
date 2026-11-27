@@ -15,7 +15,7 @@ A secret is never a config default. A constant is never an env var "just in case
 ## Magic values
 
 - `[check]` Bare numbers and strings in logic: `sleep(300)`, `if status == 3`, `timeout=30`. Name them, and put the unit in the name: `TIMEOUT_SECONDS = 30`.
-- `[check]` The same literal in several places — one source of truth, or they will drift.
+- `[check]` The same literal in several places. One source of truth, or they will drift.
 - `[check]` A boolean argument that switches behaviour: `run(dry=True)`. Two functions or an explicit enum reads better and cannot be passed positionally by accident.
 - `[check]` Magic keys: `os.environ["FOO"]` scattered around; define the name once.
 - `[check]` Environment-sniffing branches: `if settings.ENV == "prod": do_things_differently()`. Configuration decides; code paths should not fork on environment, with rare, named exceptions.
@@ -32,7 +32,7 @@ A secret is never a config default. A constant is never an env var "just in case
     def load_settings(env=os.environ) -> Settings:  # called once at startup
         ...
 
-- `[check]` Validation happens once, at startup, with a message that names the variable and what was expected — not on first use, three hours later, in a background job.
+- `[check]` Validation happens once, at startup, with a message that names the variable and what was expected, not on first use, three hours later, in a background job.
 - `[check]` Types and ranges are enforced (`int`, `> 0`, one of a set), not assumed.
 - `[check]` Required vs optional is explicit; an optional value has a visible default in code, not in documentation.
 - `[check]` Invalid configuration fails at boot. A service that starts with a half-broken config and fails at 3 a.m. is a defect.
@@ -52,6 +52,6 @@ A secret is never a config default. A constant is never an env var "just in case
 
 ## Reporting
 
-    [major] svc/worker.py:41 — `sleep(300)` hardcoded; the 300 s is also a queue visibility timeout
+    [major] svc/worker.py:41 - `sleep(300)` hardcoded; the 300 s is also a queue visibility timeout
       set in terraform, so changing one silently desynchronises the other. Fix: read
       `settings.queue_visibility_seconds` and assert it at startup.

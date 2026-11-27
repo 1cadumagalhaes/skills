@@ -7,7 +7,7 @@ Every dependency, lockfile, base image, CI action and MCP server is code that ru
 - `[req]` Lockfiles committed and used in CI (`npm ci`, `uv sync --frozen`, `poetry install --no-root`). A build that resolves fresh versions is not reproducible and not reviewable.
 - `[conv]` Pin exact versions in the lock; pin ranges in the manifest only as wide as your update cadence.
 - `[conv]` Adding a dependency is a decision: maintenance status, transitive tree size, what it does at install time (post-install scripts are code execution), and whether it has a licence that fits.
-- `[conv]` Automated updates with tests as the gate — stale is a risk, but so is an unreviewed major bump on a Friday.
+- `[conv]` Automated updates with tests as the gate. Stale is a risk, but so is an unreviewed major bump on a Friday.
 - `[conv]` Scan for known CVEs in CI and fail on fixable criticals. A scan nobody gates on is decoration.
 
 ## Build and provenance
@@ -26,7 +26,7 @@ Every dependency, lockfile, base image, CI action and MCP server is code that ru
 
 ## Containers
 
-- `[conv]` Base images digest-pinned and rebuilt on a schedule; scan the image, not only the source lockfile — the OS packages are part of the surface.
+- `[conv]` Base images digest-pinned and rebuilt on a schedule; scan the image, not only the source lockfile. The OS packages are part of the surface.
 - `[conv]` Non-root, read-only root filesystem, dropped capabilities, no shell in production images where the app allows it (`infra` → `containers.md`).
 - `[conv]` No secrets baked into layers; a secret in a deleted layer is still in the image.
 
@@ -44,6 +44,6 @@ Every dependency, lockfile, base image, CI action and MCP server is code that ru
 
 ## Incident questions
 
-1. If this package were malicious today, what would it reach — the filesystem, the network, the cloud credentials, production?
+1. If this package were malicious today, what would it reach, the filesystem, the network, the cloud credentials, production?
 2. Can we list every artifact built from this repo in the last 90 days, and what was inside it?
 3. Who can publish to our registry, and is that audited?

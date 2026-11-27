@@ -42,5 +42,5 @@ One rule with three dialects: **workloads and pipelines assume an identity; they
 ## Review questions
 
 1. Can this pipeline deploy to production without a stored secret? If not, why not.
-2. If this credential leaked, what is the blast radius — one bucket, one project, or the org?
+2. If this credential leaked, what is the blast radius, one bucket, one project, or the org?
 3. Who is the owner of this identity, and when was it last used? Unused identities are deleted identities.

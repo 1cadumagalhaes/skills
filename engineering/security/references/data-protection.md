@@ -19,7 +19,7 @@ Personal data is a liability with a legal schedule attached. In Brazil, **LGPD**
 
 - `[conv]` TLS everywhere, including service-to-service where the platform allows it; no plaintext fallback for internal traffic.
 - `[conv]` Encryption at rest is table stakes (managed databases have it); it does not replace column-level protection for the fields that would hurt: hash or encrypt identifiers you do not need in clear.
-- `[conv]` Hashing for matching (an id you must join on) is not the same as hashing for secrecy: use a keyed hash (HMAC) with a scoped key so the same CPF in a different context cannot be correlated. Salt/scope by purpose — `'62|cpf|'` style key separation is what makes the digest reusable without being a global registry.
+- `[conv]` Hashing for matching (an id you must join on) is not the same as hashing for secrecy: use a keyed hash (HMAC) with a scoped key so the same CPF in a different context cannot be correlated. Salt/scope by purpose. `'62|cpf|'` style key separation is what makes the digest reusable without being a global registry.
 
 ## Secrets
 
@@ -43,5 +43,5 @@ Personal data is a liability with a legal schedule attached. In Brazil, **LGPD**
 
 1. Where does this person's data end up? (table, warehouse, logs, exports, backups, a prompt)
 2. If they ask for deletion tomorrow, what exactly would we delete, and what would we miss?
-3. Does the response return more fields than the screen shows — internally, or to an API consumer?
+3. Does the response return more fields than the screen shows, internally or to an API consumer?
 4. Is any of this in a log or a trace?

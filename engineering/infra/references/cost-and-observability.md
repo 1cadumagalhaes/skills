@@ -12,11 +12,11 @@ Infrastructure cost is decided in the manifest, not in the invoice review. And a
 
 ## Levers, in order of payoff
 
-1. Requests down to measured usage (with a limit above it) — immediate, no architecture change.
+1. Requests down to measured usage (with a limit above it), immediate, no architecture change.
 2. Autoscaling actually reaching zero or near-zero in low-traffic hours.
 3. Bin-packing: bigger nodes with higher utilization beats many small nodes with idle capacity, unless availability demands spread.
 4. Spot/preemptible for stateless and batch work (handle the interruption), committed-use/savings plans for steady state.
-5. Deleting what nobody uses — the cheapest capacity is the one you stop paying for.
+5. Deleting what nobody uses. The cheapest capacity is the one you stop paying for.
 
 ## Budgets and alerts
 

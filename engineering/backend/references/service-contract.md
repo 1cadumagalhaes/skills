@@ -4,7 +4,7 @@ What the service promises when things go wrong. This is the difference between a
 
 ## Timeouts
 
-- `[req]` Every outbound call — HTTP, database, queue, cache — has an explicit timeout, connect **and** read. Default timeouts are usually infinite or 30+ seconds; both are wrong here.
+- `[req]` Every outbound call, whether HTTP, database, queue or cache, has an explicit timeout, connect **and** read. Default timeouts are usually infinite or 30+ seconds; both are wrong here.
 - `[conv]` A timeout shorter than your caller's timeout. Otherwise you finish the work nobody is waiting for, and it gets retried anyway.
 - `[conv]` Set the whole request budget at the edge and pass a deadline down, rather than multiplying per-hop timeouts.
 
@@ -24,13 +24,13 @@ What the service promises when things go wrong. This is the difference between a
 
 ## Graceful shutdown
 
-- `[req]` On `SIGTERM`: stop accepting new work, fail readiness, finish in-flight requests within a grace period, stop pulling from queues, close pools, exit. Kubernetes sends `SIGKILL` after `terminationGracePeriodSeconds` — stay under it.
+- `[req]` On `SIGTERM`: stop accepting new work, fail readiness, finish in-flight requests within a grace period, stop pulling from queues, close pools, exit. Kubernetes sends `SIGKILL` after `terminationGracePeriodSeconds`. Stay under it.
 - `[conv]` Long jobs checkpoint or re-queue themselves rather than dying mid-write.
 
 ## Health and readiness
 
-- `[conv]` **Liveness** answers "is this process wedged, restart me" — no dependency checks, or a slow database restarts the whole fleet.
-- `[conv]` **Readiness** answers "should traffic come here" — fails when a *required* dependency is down, stays up when an optional one is.
+- `[conv]` **Liveness** answers "is this process wedged, restart me". No dependency checks, or a slow database restarts the whole fleet.
+- `[conv]` **Readiness** answers "should traffic come here". It fails when a *required* dependency is down, and stays up when an optional one is.
 - `[conv]` Health endpoints do not write, do not require auth, and do not leak versions or config.
 
 ## Identity, tenancy, authz
@@ -43,7 +43,7 @@ What the service promises when things go wrong. This is the difference between a
 ## Observability
 
 - `[conv]` One structured log line per request: method, path template, status, duration, principal id, request id, tenant. No PII, no bodies, no tokens.
-- `[conv]` Metrics that answer the three questions: rate, errors, duration — per endpoint and per dependency.
+- `[conv]` Metrics that answer the three questions: rate, errors, duration, per endpoint and per dependency.
 - `[conv]` Propagate `traceparent` (W3C) so a user-visible failure can be followed across services; correlate async work with the same id.
 - `[conv]` Log the *resolved* configuration once at startup, secrets redacted (`code-audit` → `configuration.md`).
 
@@ -51,4 +51,4 @@ What the service promises when things go wrong. This is the difference between a
 
 - `[conv]` Migrations run as a separate step, before the new code, and the deploy waits for them (`backend` → `data-modelling.md`).
 - `[conv]` Feature-flag anything that cannot be rolled back by redeploying the previous image.
-- `[conv]` Draining, rolling, and rollback are tested at least once — an untested rollback is a rumour.
+- `[conv]` Draining, rolling, and rollback are tested at least once. An untested rollback is a rumour.
