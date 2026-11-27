@@ -4,7 +4,7 @@
 
 - Cookies from a browser login expire. Re-logging in for every run is slow and detectable.
 - Saved sessions allow resuming without a browser login for hours/days.
-- Never hardcode credentials in code — store the session artifact (cookies), not the password.
+- Never hardcode credentials in code. store the session artifact (cookies), not the password.
 
 ---
 

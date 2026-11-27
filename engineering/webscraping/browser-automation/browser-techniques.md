@@ -4,7 +4,7 @@ Advanced Playwright patterns for data extraction when plain HTTP fails.
 
 ---
 
-## Technique 1 — Network listener (capture + replicate)
+## Technique 1: Network listener (capture + replicate)
 
 The most powerful technique: let the browser make the real API calls, capture them, then replicate with `requests`. You run the browser once, extract calls for bulk work.
 
@@ -78,7 +78,7 @@ for call in calls:
 
 ---
 
-## Technique 2 — Request listener (capture headers for replication)
+## Technique 2: Request listener (capture headers for replication)
 
 When you need to replicate auth headers or see the full request, not just the response:
 
@@ -117,7 +117,7 @@ print(details[0]["headers"])
 
 ---
 
-## Technique 3 — Browser request injection
+## Technique 3: Browser request injection
 
 Use the browser's fetch context to make API calls that require the browser's session state (cookies, tokens embedded in JS runtime):
 
@@ -165,7 +165,7 @@ data = inject_fetch_in_browser(
 
 ---
 
-## Technique 4 — Iterating API calls inside browser session
+## Technique 4: Iterating API calls inside browser session
 
 When you need to paginate or call many URLs but must stay within the browser session (tokens embedded in JS that can't be extracted):
 
@@ -209,9 +209,9 @@ data = batch_inject_fetches(
 
 ---
 
-## Technique 5 — Route interception (modify requests in flight)
+## Technique 5: Route interception (modify requests in flight)
 
-Playwright can intercept outgoing requests and modify them — useful for adding headers the site normally adds via JS:
+Playwright can intercept outgoing requests and modify them. useful for adding headers the site normally adds via JS:
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -248,9 +248,9 @@ def fetch_with_modified_headers(url: str, extra_headers: dict) -> list[dict]:
 
 ---
 
-## Technique 6 — Stealth mode (avoid detection)
+## Technique 6: Stealth mode (avoid detection)
 
-Headless Chromium has detectable signals (`navigator.webdriver`, missing plugins, etc.), **but the bigger tell in 2026 is the automation protocol itself** — vanilla Playwright leaks the CDP `Runtime.enable` signal, so a "stealthed" Playwright can still be flagged *because it's Playwright*. Patching navigator properties (the old `playwright-stealth` approach) no longer clears serious anti-bot.
+Headless Chromium has detectable signals (`navigator.webdriver`, missing plugins, etc.), **but the bigger tell in 2026 is the automation protocol itself**: vanilla Playwright leaks the CDP `Runtime.enable` signal, so a "stealthed" Playwright can still be flagged *because it's Playwright*. Patching navigator properties (the old `playwright-stealth` approach) no longer clears serious anti-bot.
 
 **Use a stealth-native driver instead of patching vanilla Playwright:**
 
@@ -271,7 +271,7 @@ with Camoufox(headless=False, humanize=True, geoip=True) as browser:
     page.goto("https://datadome-protected-site.com")
 ```
 
-Every technique above (network listener, request/route interception, injection) works unchanged under `patchright` and `camoufox` — they're Playwright-API-compatible. Full decision guide (nodriver vs patchright vs camoufox, CDP `Runtime.enable` leak, CreepJS validation): **`../anti-bot/modern-stealth-browsers.md`**.
+Every technique above (network listener, request/route interception, injection) works unchanged under `patchright` and `camoufox`. they're Playwright-API-compatible. Full decision guide (nodriver vs patchright vs camoufox, CDP `Runtime.enable` leak, CreepJS validation): **`../anti-bot/modern-stealth-browsers.md`**.
 
 > Legacy note: `playwright-stealth`'s `stealth_sync(page)` API was replaced by a `Stealth` class in recent versions and is largely superseded for hard targets. `undetected-chromedriver` is now maintained as **`nodriver`**.
 

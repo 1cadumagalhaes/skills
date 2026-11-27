@@ -82,7 +82,7 @@ params = {
 
 ## Querying DataStore (when the resource has been indexed)
 
-Some resources are imported into CKAN's DataStore, making them queryable via SQL-like access:
+Some resources are imported into CKAN's DataStore, so they become queryable via SQL-like access:
 
 ```python
 r = client.get(f"{BASE}/datastore_search", params={

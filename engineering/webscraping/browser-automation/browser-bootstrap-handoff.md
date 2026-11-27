@@ -2,19 +2,19 @@
 
 A cost-optimization pattern: spin up a real browser **once** to clear an initial challenge (JS-rendered cookies, anti-bot probe, Cloudflare Turnstile, opaque session token), capture the resulting cookies/headers, then close the browser and do all subsequent requests with a cheap HTTP client (`curl_cffi`, `httpx`, `requests`).
 
-Browsers are expensive — RAM, startup time, parallelism caps, detection surface. HTTP clients are cheap. When the site's protection only fires on the initial page load (or on a specific "Accept terms" page) and the actual data endpoints are plain JSON, this pattern gets you the best of both worlds.
+Browsers are expensive. RAM, startup time, parallelism caps, detection surface. HTTP clients are cheap. When the site's protection only fires on the initial page load (or on a specific "Accept terms" page) and the actual data endpoints are plain JSON, this pattern gets you the best of both worlds.
 
 ## When this applies
 
-Look for one of these signals — when the site exhibits *any* of them, this pattern is likely to work:
+Look for one of these signals. when the site exhibits *any* of them, this pattern is likely to work:
 
 - The first GET returns a JS-only challenge page (rotating script, encrypted cookie, "Checking your browser" interstitial); subsequent requests with the cookie set behave normally
 - Initial entry sets an opaque session token cookie (`__cf_bm`, `incap_ses_*`, `_abck`, `XSRF-TOKEN`, custom session ID) that the API endpoint requires; once you have it, the API doesn't re-challenge
 - Terms-of-service / age-gate page must be POST-accepted (`__doPostBack` style or a button click) before data endpoints are reachable
 - A custom session header or CSRF token written to the DOM by JS must be captured live, but doesn't expire for the session's lifetime
-- TLS / fingerprinting passes via the real Chrome — useful when `curl_cffi` impersonation alone isn't enough but a manual cookie copy is
+- TLS / fingerprinting passes via the real Chrome. useful when `curl_cffi` impersonation alone isn't enough but a manual cookie copy is
 
-If the protection re-challenges on every request, or if data is computed client-side after a JS pipeline, this pattern won't work — use full browser automation instead (`browser-techniques.md`).
+If the protection re-challenges on every request, or if data is computed client-side after a JS pipeline, this pattern won't work. use full browser automation instead (`browser-techniques.md`).
 
 ## Pattern
 
@@ -79,7 +79,7 @@ def bulk_fetch(api_url: str, session_state: dict, params: dict | None = None):
 Three things travel from browser → HTTP client:
 
 1. **Cookies.** Always. Both first-party and third-party (some challenges set cookies on a CDN domain).
-2. **User-Agent.** Read from `navigator.userAgent` rather than hardcoding — some challenges check it.
+2. **User-Agent.** Read from `navigator.userAgent` rather than hardcoding. some challenges check it.
 3. **Custom headers.** Anything the server returned that the JS subsequently reads and echoes back. Discover via `page.on("response")` or by inspecting the post-challenge XHR calls in a HAR.
 
 Do NOT carry over: the full Playwright `localStorage` (the HTTP client can't replicate runtime JS state), service workers, or browser fingerprint state. If the API ends up needing those, the pattern doesn't apply and you need full browser automation.
@@ -90,7 +90,7 @@ Captured sessions expire. Strategies depending on how long:
 
 - **Long-lived (hours+):** bootstrap once at the start of a run, scrape everything in one session, dispose. This is the common case.
 - **Medium (~30 min, e.g. Cloudflare `__cf_bm`):** bootstrap, scrape until 4xx, re-bootstrap. Wrap the HTTP fetch in retry logic that re-runs `bootstrap_session()` on 403/401.
-- **Short or per-page:** if every page requires a fresh challenge, the pattern saves no money — go full browser.
+- **Short or per-page:** if every page requires a fresh challenge, the pattern saves no money. go full browser.
 
 To detect mid-run expiry, watch for the HTTP client suddenly getting the original challenge HTML back (instead of JSON), or 403/401 responses that succeed after a fresh bootstrap.
 
@@ -104,17 +104,17 @@ A captured session can usually be reused across **threads** (the cookies + heade
 
 ## Gotchas
 
-- **Cookies have an `expires` field — respect it.** A session captured at noon with cookies expiring at 1pm will silently start failing at 1pm. Read `c["expires"]` and refresh before then.
-- **Some cookies are `httpOnly` and won't appear in `document.cookie`** — but Playwright's `context.cookies()` returns them. If you're tempted to read cookies via JS evaluation, you'll miss the important ones. Use the context API.
+- **Cookies have an `expires` field. respect it.** A session captured at noon with cookies expiring at 1pm will silently start failing at 1pm. Read `c["expires"]` and refresh before then.
+- **Some cookies are `httpOnly` and won't appear in `document.cookie`**: but Playwright's `context.cookies()` returns them. If you're tempted to read cookies via JS evaluation, you'll miss the important ones. Use the context API.
 - **Headless detection happens during bootstrap.** Stock Playwright Chromium is detectable (`navigator.webdriver === true`). Use `patchright`, `playwright-stealth`, or `playwright.chromium.launch_persistent_context(channel="chrome")` to defeat the common probes. See `browser-techniques.md`.
-- **The browser may add headers your HTTP client doesn't.** `Sec-Fetch-Site`, `Sec-Ch-Ua`, `Accept-Language` — these are set automatically by Chrome and a server can require them. `curl_cffi`'s `impersonate="chrome"` reproduces the common set; if the API still 403s, capture the real headers from the post-challenge XHR call in the HAR and copy them verbatim.
+- **The browser may add headers your HTTP client doesn't.** `Sec-Fetch-Site`, `Sec-Ch-Ua`, `Accept-Language`. these are set automatically by Chrome and a server can require them. `curl_cffi`'s `impersonate="chrome"` reproduces the common set; if the API still 403s, capture the real headers from the post-challenge XHR call in the HAR and copy them verbatim.
 - **TLS fingerprint mismatch is the silent killer.** The bootstrap browser presents Chrome's JA3/JA4 fingerprint; `requests` or `httpx` present Python's. Some anti-bot stacks (notably Akamai) record the JA3 of the request that set the cookie and reject subsequent requests with a different JA3 carrying the same cookie. Always use `curl_cffi.requests` with `impersonate="chrome<version>"` matching the browser version, not plain `httpx`.
 - **JavaScript challenge re-fires after navigation.** Cookies set on `/login` may not be valid for `/api/v1/data` if the challenge runs per-path. Bootstrap by visiting the *deepest* URL you can without auth, not just the home page.
 - **Re-bootstrap cost adds up.** If the session expires every 5 minutes and you re-bootstrap each time, the savings vanish. Profile end-to-end before committing to this pattern.
 
 ## Related
 
-- `browser-techniques.md` — full browser automation; use when this handoff doesn't work
-- `session-cache.md` — caching the captured session between runs to avoid re-bootstrapping when the cookies are still valid
-- `../anti-bot/error-decoders.md` — recognizing when a 4xx means "your session expired" vs "the API really rejected you"
-- `../networking/sticky-sessions.md` — pinning HTTP requests to the same IP that ran the bootstrap
+- `browser-techniques.md`. full browser automation; use when this handoff doesn't work
+- `session-cache.md`. caching the captured session between runs to avoid re-bootstrapping when the cookies are still valid
+- `../anti-bot/error-decoders.md`. recognizing when a 4xx means "your session expired" vs "the API really rejected you"
+- `../networking/sticky-sessions.md`. pinning HTTP requests to the same IP that ran the bootstrap

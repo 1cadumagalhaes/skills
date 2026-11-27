@@ -11,11 +11,11 @@ Use this gate to decide whether motion is worth adding or keeping. Judge the int
 | Occasional, including modals, drawers, toasts, and settings | Standard motion is eligible. |
 | Rare or first-time, including onboarding, empty states, success, and celebration | The delight budget is available, when the motion has a purpose. |
 
-**Wording retained from the source skills:** build says “near-imperceptible only” for tens/day and instructs stopping at 100+/day; find says reject or suggest near-imperceptible motion and calls occasional/rare “eligible”; improve and review say “remove or drastically reduce” at tens/day and “standard animation” occasionally. These are compatible guidance, not different frequency thresholds.
+**Wording retained from the source skills:** build says "near-imperceptible only" for tens/day and instructs stopping at 100+/day; find says reject or suggest near-imperceptible motion and calls occasional/rare "eligible"; improve and review say "remove or drastically reduce" at tens/day and "standard animation" occasionally. These are compatible guidance, not different frequency thresholds.
 
 ## Purpose
 
-Name a purpose before adding motion: **feedback**, **spatial consistency**, **state indication**, **preventing a jarring change**, or **explanation** (marketing/onboarding only). **Delight** is reserved for rare or first-time moments. “It looks cool” is not enough. If the motion has no purpose, omit it.
+Name a purpose before adding motion: **feedback**, **spatial consistency**, **state indication**, **preventing a jarring change**, or **explanation** (marketing/onboarding only). **Delight** is reserved for rare or first-time moments. "It looks cool" is not enough. If the motion has no purpose, omit it.
 
 ## Distance and scale
 
