@@ -544,8 +544,12 @@ for label, mdir in mirrors.items():
                         + (f" (+{len(extra) - 5} more)" if len(extra) > 5 else ""))
     mirror_report.append(f"{label}: {', '.join(bits)}")
 
+# Real directories can live in the farm: instabox* are another project's skills, tracked
+# in dotfiles rather than linked from this repo. Anything else that is not a link is drift.
+FARM_REAL_DIRS = ("instabox",)
 if farm_links:
-    no_link = sorted(set(farm_entries) - farm_links)
+    no_link = sorted(e for e in set(farm_entries) - farm_links
+                     if not e.startswith(FARM_REAL_DIRS))
     if no_link:
         problems.append(f"farm: {len(no_link)} non-link entr{'y' if len(no_link) == 1 else 'ies'} in {farm}: {', '.join(no_link[:5])}")
 
