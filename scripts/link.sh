@@ -277,17 +277,16 @@ report("farm", farm, farm_counts)
 # 2. Mirrors: link every farm entry to the farm path, plus farm links that live
 # outside this repo (they are not ours to remove, but harnesses expect them).
 mirror_desired = {name: os.path.join(farm, name) for name in wanted}
-# A real directory in the farm is a skill too: instabox* are owned by another repo and
-# live here rather than being linked from this one, and every harness expects them.
-FARM_REAL_DIRS = ("instabox",)
+# A real directory in the farm is a skill too: instabox on the fleet and a couple of dozen
+# personal skills on the MacBook live here rather than linking from this repo, and every
+# harness expects them. A real directory wins over a link and is never overwritten.
 if os.path.isdir(farm):
     for entry in sorted(os.listdir(farm)):
         path = os.path.join(farm, entry)
         if entry in wanted or entry in excluded_set:
             continue
         if os.path.isdir(path) and not os.path.islink(path):
-            if entry.startswith(FARM_REAL_DIRS):
-                mirror_desired[entry] = path
+            mirror_desired[entry] = path
             continue
         if not os.path.islink(path):
             continue
