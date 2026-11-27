@@ -38,7 +38,7 @@ The HAR will contain every request + response, including authentication tokens a
 
 ---
 
-## HAR analyzer — extract all useful requests
+## HAR analyzer: extract all useful requests
 
 ```python
 import json

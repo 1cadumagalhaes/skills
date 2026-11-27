@@ -4,7 +4,7 @@ How to find the right API request when a website's data loads via XHR/fetch.
 
 ## Core principle
 
-**Start from a visible value, not from the request list.** Trying to guess which of the 80 XHRs has your data is a waste of time. Instead, search for a text you can see on the page — it will point you to the exact response.
+**Start from a visible value, not from the request list.** Trying to guess which of the 80 XHRs has your data is a waste of time. Instead, search for a text you can see on the page. It will point you to the exact response.
 
 ## Step by step
 
@@ -52,10 +52,10 @@ DevTools will search **response bodies** and highlight matches. Each match takes
 ### 5. Choose the best request
 
 If multiple requests match, prefer in this order:
-1. **Clean JSON API** — `application/json` response, small, structured
-2. **GraphQL** — usually POST to `/graphql`, JSON body with `query` field
-3. **HTML fragment with your data** — workable if structured
-4. **Rendered HTML page** — parse with BeautifulSoup (last resort)
+1. **Clean JSON API**: `application/json` response, small, structured
+2. **GraphQL**: usually POST to `/graphql`, JSON body with `query` field
+3. **HTML fragment with your data**: workable if structured
+4. **Rendered HTML page**: parse with BeautifulSoup (last resort)
 
 Avoid requests that:
 - Have a massive response that's mostly analytics or tracking data
@@ -83,9 +83,9 @@ Before running:
 ### Single-page app (Next.js, React, Vue)
 
 Check:
-- `/api/v1/*` — common internal API pattern
-- `/_next/data/{buildId}/{path}.json` — Next.js SSG/SSR data
-- `__NEXT_DATA__` in page HTML (`view-source:`) — initial payload embedded
+- `/api/v1/*`: common internal API pattern
+- `/_next/data/{buildId}/{path}.json`: Next.js SSG/SSR data
+- `__NEXT_DATA__` in page HTML (`view-source:`): initial payload embedded
 
 ### Requires login
 
@@ -132,7 +132,7 @@ r = requests.post(
 
 ### Download buttons
 
-The file download usually triggers a GET that returns binary (often `application/octet-stream` or `application/pdf`). DevTools shows it the same way — copy as cURL, use:
+The file download usually triggers a GET that returns binary (often `application/octet-stream` or `application/pdf`). DevTools shows it the same way. Copy it as cURL and use:
 ```python
 r = requests.get(URL, stream=True)
 with open("file.pdf", "wb") as f:

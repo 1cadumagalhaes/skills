@@ -10,9 +10,9 @@ The fastest path from "user has a target site" to "working scraper" is almost al
 - Target uses any kind of stateful session (cookies, CSRF tokens, VIEWSTATE)
 - You can't predict the API URL ahead of time
 
-For simple GET-the-page sites, you don't need a HAR — just `requests` + BeautifulSoup.
+For simple GET-the-page sites, you don't need a HAR, just `requests` + BeautifulSoup.
 
-## Step 1 — Ask the user to produce a HAR
+## Step 1: Ask the user to produce a HAR
 
 Be specific about what to capture:
 
@@ -30,7 +30,7 @@ Please record a HAR file of the data you want to scrape:
 
 A good HAR captures everything: every request, every response body, all cookies, all headers, full TLS info. Strictly more useful than a single curl.
 
-## Step 2 — Initial inventory
+## Step 2: Initial inventory
 
 Open the HAR in Python and list the unique server-side requests (filter out assets):
 
@@ -62,7 +62,7 @@ for entry in har["log"]["entries"]:
 
 You'll get a clean list of 3-15 endpoints. The data you want is usually behind one or two of them.
 
-## Step 3 — Locate the data endpoint
+## Step 3: Locate the data endpoint
 
 For each candidate endpoint, check the response body:
 
@@ -79,9 +79,9 @@ print(entry["request"]["url"])
 print(entry["request"]["method"])
 ```
 
-Anchor to a unique value you can see on the page — this is faster than guessing endpoint names.
+Anchor to a unique value you can see on the page. This is faster than guessing endpoint names.
 
-## Step 4 — Extract the POST payload (when relevant)
+## Step 4: Extract the POST payload (when relevant)
 
 If the data endpoint is a POST, extract the form / JSON body:
 
@@ -102,13 +102,13 @@ extract_post(entry)
 ```
 
 For form-encoded payloads (`application/x-www-form-urlencoded`), the `params` list is your friend. Pay attention to:
-- Hidden fields (`__VIEWSTATE`, CSRF tokens) — see `../site-patterns/aspnet-webforms.md`
-- Auth-bearing fields (`aura.token`, `authToken`) — see `../site-patterns/salesforce-experience-cloud.md`
+- Hidden fields (`__VIEWSTATE`, CSRF tokens): see `../site-patterns/aspnet-webforms.md`
+- Auth-bearing fields (`aura.token`, `authToken`): see `../site-patterns/salesforce-experience-cloud.md`
 - Dynamic field names (control IDs that may differ per deployment)
 
 For JSON payloads, just inspect the structure and find the parameters you control.
 
-## Step 5 — Extract required headers
+## Step 5: Extract required headers
 
 Many endpoints rejection-test specific headers. Capture them:
 
@@ -126,13 +126,13 @@ for k, v in h.items():
 ```
 
 Headers that often matter and need to be replicated:
-- `Referer` — many legacy sites enforce this
-- `Origin` — common in CORS-protected APIs
+- `Referer`: many legacy sites enforce this
+- `Origin`: common in CORS-protected APIs
 - `X-CSRF-Token`, `X-Requested-With`, `X-Auth-Token`
 - `Cookie` (parse separately, see step 6)
 - Site-specific: `x-sfdc-lds-endpoints` (Salesforce), `X-Crawlera-Session` (Zyte proxy)
 
-## Step 6 — Extract cookies and auth state
+## Step 6: Extract cookies and auth state
 
 ```python
 # Initial cookies (set before the first request)
@@ -148,7 +148,7 @@ If the data endpoint depends on a specific cookie set during login, your scraper
 - Mimic the login flow with `requests`
 - Or harvest cookies via Playwright once and reuse them (see `../browser-automation/session-cache.md`)
 
-## Step 7 — Reconstruct in Python and smoke-test
+## Step 7: Reconstruct in Python and smoke-test
 
 Build the minimal request, then test:
 
@@ -170,21 +170,21 @@ print(f"Got {len(data.get('records', []))} records")
 
 If the smoke test returns the same data shape as the HAR's recorded response, you've successfully replicated the request. From here, the rest is pagination and parsing.
 
-## Step 8 — Diff if it fails
+## Step 8: Diff if it fails
 
 If your reconstructed request doesn't return the expected data, diff against the HAR:
 
-1. **Headers** — print yours vs. theirs side-by-side; one missing header is usually the culprit
-2. **Body** — make sure URL encoding matches (quote characters, encoded vs literal)
-3. **Cookies** — verify all cookies in the HAR's request are present in yours
-4. **TLS profile** — if 403 / blocked: try other `impersonate` profiles (`chrome120`, `safari17_0`)
-5. **Order of operations** — some endpoints require a prior page load to set server-side state; replay the previous N requests first
+1. **Headers**: print yours vs. theirs side-by-side; one missing header is usually the culprit
+2. **Body**: make sure URL encoding matches (quote characters, encoded vs literal)
+3. **Cookies**: verify all cookies in the HAR's request are present in yours
+4. **TLS profile**: if 403 / blocked: try other `impersonate` profiles (`chrome120`, `safari17_0`)
+5. **Order of operations**: some endpoints require a prior page load to set server-side state; replay the previous N requests first
 
 ## Anti-patterns
 
-- ❌ **Sharing a HAR over a chat channel without redacting auth tokens** — HARs often contain `Authorization: Bearer ...` headers. Treat them as secrets.
-- ❌ **Hardcoding session-bound IDs from the HAR** — internal numeric IDs in the HAR (e.g. `?Id=12345`) frequently expire with the session. Re-search from the HAR's search step instead.
-- ❌ **Skipping a "boring" earlier request** — sometimes a noop-looking GET to `/page/init` sets a critical session cookie. When in doubt, replay everything.
+- ❌ **Sharing a HAR over a chat channel without redacting auth tokens**: HARs often contain `Authorization: Bearer ...` headers. Treat them as secrets.
+- ❌ **Hardcoding session-bound IDs from the HAR**: internal numeric IDs in the HAR (e.g. `?Id=12345`) frequently expire with the session. Re-search from the HAR's search step instead.
+- ❌ **Skipping a "boring" earlier request**: sometimes a noop-looking GET to `/page/init` sets a critical session cookie. When in doubt, replay everything.
 
 ## Output checklist
 
@@ -200,7 +200,7 @@ That output translates directly to a crawler module.
 
 ## Related
 
-- `../discovery/devtools-workflow.md` — interactive variant when HAR isn't possible
-- `har-parser.md` — reference for the HAR JSON schema
-- `../site-patterns/aspnet-webforms.md` — common patterns to recognize while parsing
-- `../site-patterns/salesforce-experience-cloud.md` — Aura-specific HAR signatures
+- `../discovery/devtools-workflow.md`: interactive variant when HAR isn't possible
+- `har-parser.md`: reference for the HAR JSON schema
+- `../site-patterns/aspnet-webforms.md`: common patterns to recognize while parsing
+- `../site-patterns/salesforce-experience-cloud.md`: Aura-specific HAR signatures

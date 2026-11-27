@@ -1,4 +1,4 @@
-# Approach — intake flows by experience level
+# Approach: intake flows by experience level
 
 **Scope:** Step 0 of the skill (intake) is gated by the user's self-reported experience level. Each file in this folder is one intake flow.
 

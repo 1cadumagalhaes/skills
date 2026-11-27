@@ -1,6 +1,6 @@
 # Proxy providers (cross-reference)
 
-The default is **Zyte (Smart Proxy Manager)** — see `proxy-zyte.md` for the full playbook. This file is a quick reference for *other* providers, used when comparing costs, when Zyte has a coverage gap, or when the user already has another provider's credentials.
+The default is **Zyte (Smart Proxy Manager)**. See `proxy-zyte.md` for the full playbook. This file is a quick reference for *other* providers, used when comparing costs, when Zyte has a coverage gap, or when the user already has another provider's credentials.
 
 ## Quick comparison
 
@@ -66,7 +66,7 @@ Keep the same `session_id` across all requests in a session. Drop it (and pick a
 
 ## Managed unblockers (proxy + browser + CAPTCHA in one call)
 
-When you don't want to run browsers or solve challenges yourself, a **managed unblocker** takes a URL and returns the unblocked HTML/JSON — it picks the proxy, renders JS, solves the challenge, and retries internally. This is the honest answer for DataDome/Kasada/F5 and hard Cloudflare (see `anti-bot/anti-bot-vendors.md`).
+When you don't want to run browsers or solve challenges yourself, a **managed unblocker** takes a URL and returns the unblocked HTML/JSON. It picks the proxy, renders JS, solves the challenge, and retries internally. This is the honest answer for DataDome/Kasada/F5 and hard Cloudflare (see `anti-bot/anti-bot-vendors.md`).
 
 | Service | Model | Indicative 2026 price | Notes |
 |---|---|---|---|
@@ -76,14 +76,14 @@ When you don't want to run browsers or solve challenges yourself, a **managed un
 | **ZenRows / ScrapingBee** | Per request | per-call | Simple params, JS render + CAPTCHA included |
 | **Apify** | Per compute + proxy | usage-based | Actor marketplace, full pipelines |
 
-Zyte's Smart Proxy Manager / Crawlera is now folded into the **Zyte API** — new integrations should target the unified API, though the header-based Crawlera proxy in `proxy-zyte.md` still works.
+Zyte's Smart Proxy Manager / Crawlera is now folded into the **Zyte API**. New integrations should target the unified API, though the header-based Crawlera proxy in `proxy-zyte.md` still works.
 
 ## When to choose what
 
 - **General purpose, AU/EU/US targets, sites with anti-bot:** Zyte (default)
 - **High volume + cost-sensitive:** Decodo or IPRoyal
-- **Cloudflare-heavy / hostile targets:** managed unblocker (Zyte API, Bright Data Web Unlocker, ZenRows) — they handle the bypass for you
-- **DataDome / Kasada / F5-Shape:** managed unblocker or a real stealth browser (`camoufox`) + residential proxy — HTTP clients alone won't clear these
+- **Cloudflare-heavy / hostile targets:** managed unblocker (Zyte API, Bright Data Web Unlocker, ZenRows). They handle the bypass for you
+- **DataDome / Kasada / F5-Shape:** managed unblocker or a real stealth browser (`camoufox`) + residential proxy. HTTP clients alone won't clear these
 - **Geo-targeted scraping with rare countries:** check Bright Data or Oxylabs coverage
 - **Pure datacenter, low-stakes scraping:** Webshare or any cheap datacenter provider
 
@@ -95,6 +95,6 @@ Zyte's Smart Proxy Manager / Crawlera is now folded into the **Zyte API** — ne
 
 ## Related
 
-- `proxy-zyte.md` — default provider, full playbook
-- `sticky-sessions.md` — universal sticky session concept
-- `geo-targeting.md` — when geo-pin matters
+- `proxy-zyte.md`: default provider, full playbook
+- `sticky-sessions.md`: universal sticky session concept
+- `geo-targeting.md`: when geo-pin matters

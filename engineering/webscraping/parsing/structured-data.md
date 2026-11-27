@@ -1,24 +1,24 @@
-# Structured Data — JSON-LD, microdata, RDFa, OpenGraph
+# Structured Data: JSON-LD, microdata, RDFa, OpenGraph
 
 ## Core principle
 
-Many sites publish the exact data you want **inside the page markup, already structured**, so search engines can read it. This is the cheapest, most stable extraction path after a direct API — more stable than CSS selectors, because sites rarely refactor their SEO markup, and it survives visual redesigns that break scrapers.
+Many sites publish the exact data you want **inside the page markup, already structured**, so search engines can read it. This is the cheapest, most stable extraction path after a direct API. It is more stable than CSS selectors, because sites rarely refactor their SEO markup, and it survives visual redesigns that break scrapers.
 
 **Check for structured data before writing a single CSS/XPath selector.** It is free data the site hands you on purpose.
 
 Priority order (most useful first):
 
-1. **JSON-LD** (`<script type="application/ld+json">`) — a clean JSON object, no DOM walking. By far the best case.
-2. **Microdata** (`itemscope` / `itemprop` attributes) — structured, but you walk the DOM.
-3. **RDFa** (`vocab` / `typeof` / `property` attributes) — same idea, rarer.
-4. **OpenGraph / Twitter Cards** (`<meta property="og:*">`) — title, image, description, sometimes price/availability.
-5. **Plain `<meta>` / `<link rel>`** — canonical URL, pagination (`rel="next"`), author, published date.
+1. **JSON-LD** (`<script type="application/ld+json">`): a clean JSON object, no DOM walking. By far the best case.
+2. **Microdata** (`itemscope` / `itemprop` attributes): structured, but you walk the DOM.
+3. **RDFa** (`vocab` / `typeof` / `property` attributes): same idea, rarer.
+4. **OpenGraph / Twitter Cards** (`<meta property="og:*">`): title, image, description, sometimes price/availability.
+5. **Plain `<meta>` / `<link rel>`**: canonical URL, pagination (`rel="next"`), author, published date.
 
-All of these ride the Level 1–2 HTTP response. No browser needed unless the markup is injected client-side (check: does it appear in `view-source:`? if yes, plain `requests` gets it).
+All of these ride the Level 1-2 HTTP response. No browser needed unless the markup is injected client-side (check: does it appear in `view-source:`? if yes, plain `requests` gets it).
 
 ---
 
-## Step 1 — Is there any?
+## Step 1: Is there any?
 
 One grep tells you if it is worth parsing:
 
@@ -38,7 +38,7 @@ If `json-ld blocks > 0`, go straight to Step 2 and you are probably done.
 
 ---
 
-## Step 2 — JSON-LD (the good case)
+## Step 2: JSON-LD (the good case)
 
 `extruct` handles every flavor at once and is the right default:
 
@@ -96,13 +96,13 @@ products = [b for b in blocks if b.get("@type") == "Product"]
 
 ---
 
-## Step 3 — Microdata / RDFa (walk the DOM)
+## Step 3: Microdata / RDFa (walk the DOM)
 
-Only if there is no JSON-LD. Let `extruct` with `uniform=True` flatten it into JSON-LD shape (above) so your downstream code does not care which syntax the site used. Hand-parsing microdata means walking `itemscope` subtrees and reading `itemprop` — tedious; prefer `extruct`.
+Only if there is no JSON-LD. Let `extruct` with `uniform=True` flatten it into JSON-LD shape (above) so your downstream code does not care which syntax the site used. Hand-parsing microdata means walking `itemscope` subtrees and reading `itemprop`; that is tedious, so prefer `extruct`.
 
 ---
 
-## Step 4 — OpenGraph / meta fallback
+## Step 4: OpenGraph / meta fallback
 
 When there is no schema.org markup, OG tags still give you the headline fields cheaply:
 
@@ -122,14 +122,14 @@ canon = (soup.find("link", rel="canonical") or {}).get("href")
 nxt   = (soup.find("link", rel="next") or {}).get("href")   # pagination for free
 ```
 
-`<link rel="next">` / `rel="prev"` and `<link rel="canonical">` are the cheapest pagination and dedup signals on the page — use them before inventing page-number loops.
+`<link rel="next">` / `rel="prev"` and `<link rel="canonical">` are the cheapest pagination and dedup signals on the page. Use them before inventing page-number loops.
 
 ---
 
 ## Gotchas
 
 - **Lies and staleness.** SEO markup can be wrong, rounded, or stale (price in JSON-LD lagging the cart price). When the number matters, cross-check one record against the rendered DOM or the API before trusting the whole field. Note it in self-critique.
-- **Client-injected JSON-LD.** Some SPAs add JSON-LD after hydration. If `view-source:` has none but the rendered DOM does, you need a browser (Level 5) — or, better, find the API that fed it.
+- **Client-injected JSON-LD.** Some SPAs add JSON-LD after hydration. If `view-source:` has none but the rendered DOM does, you need a browser (Level 5), or better, find the API that fed it.
 - **Multiple blocks, partial data.** Sites split data across several `ld+json` blocks (one `Product`, one `BreadcrumbList`, one `Organization`). Collect all blocks, then filter by `@type`; never assume the first block is the one you want.
 - **`@graph` wrapper and `@id` references.** Nodes reference each other by `@id` (e.g. an `Offer` pointing to a `Product`). Resolve `@id` within the graph when a field you need lives on a referenced node.
 - **HTML entities / trailing commas.** Hand-rolled JSON-LD is sometimes invalid JSON. `extruct` is more forgiving than `json.loads`; wrap manual parsing in try/except and move on rather than crashing the run.
@@ -138,6 +138,6 @@ nxt   = (soup.find("link", rel="next") or {}).get("href")   # pagination for fre
 
 ## Related
 
-- `../discovery/autonomous-discovery.md` — structured-data check belongs in the same first pass as `robots.txt` / `sitemap.xml`.
-- `document-extraction.md` — once you have the record URLs from an `ItemList`, documents behind them are extracted here.
-- `../reference/medallion-architecture.md` — store the raw JSON-LD object in bronze; promote parsed fields to silver.
+- `../discovery/autonomous-discovery.md`: structured-data check belongs in the same first pass as `robots.txt` / `sitemap.xml`.
+- `document-extraction.md`: once you have the record URLs from an `ItemList`, documents behind them are extracted here.
+- `../reference/medallion-architecture.md`: store the raw JSON-LD object in bronze; promote parsed fields to silver.

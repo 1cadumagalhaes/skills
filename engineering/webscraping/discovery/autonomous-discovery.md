@@ -58,13 +58,13 @@ view-source:https://site.com/page
 ```
 
 Ctrl+F for:
-- `__NEXT_DATA__` — initial Next.js payload
-- `__INITIAL_STATE__` — Redux state
-- `window.__preloadedData` — Ember/Angular
-- `<script type="application/ld+json">` — structured data
-- `<script type="application/json">` — generic embedded JSON
+- `__NEXT_DATA__`: initial Next.js payload
+- `__INITIAL_STATE__`: Redux state
+- `window.__preloadedData`: Ember/Angular
+- `<script type="application/ld+json">`: structured data
+- `<script type="application/json">`: generic embedded JSON
 
-These usually contain the whole initial page data already — no API call needed.
+These usually contain the whole initial page data already. No API call is needed.
 
 ## 5. Check if data is in a static file
 
@@ -98,7 +98,7 @@ If current site blocks scraping or has removed data:
 
 ## Time budget
 
-Spend at most 5 minutes on autonomous discovery. If nothing works, switch to the user-guided DevTools workflow — don't waste time guessing.
+Spend at most 5 minutes on autonomous discovery. If nothing works, switch to the user-guided DevTools workflow. Don't waste time guessing.
 
 ## When to stop and ask
 

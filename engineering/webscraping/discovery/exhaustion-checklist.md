@@ -1,4 +1,4 @@
-# Exhaustion checklist — before anyone says "blocked"
+# Exhaustion checklist: before anyone says "blocked"
 
 ## When you see this
 
@@ -39,8 +39,8 @@ Each family points to the file in this skill that holds the technique. Try at le
 | F | **Network path** | datacenter proxy, geo-targeted to the site's country, residential, sticky session, slower pacing, a different time of day | `../networking/` |
 | G | **Real browser** | stealth browser (`patchright`/`camoufox`), managed-unblocker render with response capture, token/cookie harvest replayed in HTTP | `../anti-bot/modern-stealth-browsers.md`, `../browser-automation/` |
 | H | **Challenge handling** | anti-bot vendor identified; CAPTCHA type identified; solver or human takeover tried where the project allows it | `../anti-bot/anti-bot-vendors.md`, `../anti-bot/captcha-solvers.md` |
-| I | **Hard limits** | Login, payment, a signed agreement, and origin bypass (origin IP or unlisted origin host around the CDN) are hard stops: record the exact page and requirement, do not cross. A click-through disclaimer: record its text; if it forbids automated access, mark the route `needs_signoff` | stop here — never get past a login |
-| J | **Asking for access** | an official API key or data request, a public-records/FOIA request where the owner is a public body, contacting the site owner, licensing from an aggregator or data vendor. Evidence: the request drafted (for the project owner to send) or sent, with date and recipient | — |
+| I | **Hard limits** | Login, payment, a signed agreement, and origin bypass (origin IP or unlisted origin host around the CDN) are hard stops: record the exact page and requirement, do not cross. A click-through disclaimer: record its text; if it forbids automated access, mark the route `needs_signoff` | stop here. Never get past a login. |
+| J | **Asking for access** | an official API key or data request, a public-records/FOIA request where the owner is a public body, contacting the site owner, licensing from an aggregator or data vendor. Evidence: the request drafted (for the project owner to send) or sent, with date and recipient | none |
 
 C and D differ by where the URL comes from: C replays requests the page itself issues; D constructs requests the page never issues. A hit in D falls under the sign-off rule in `../anti-bot/protection-gaps.md`; a hit in C usually does not.
 
@@ -67,16 +67,16 @@ When every row is covered, report `stuck` in this shape. It is the input for who
 
 ## Gotchas
 
-- **One 403 is not a block.** Neither is a block from one IP or one country — a target "blocked" from abroad is often open from an IP in its own country.
+- **One 403 is not a block.** Neither is a block from one IP or one country. A target "blocked" from abroad is often open from an IP in its own country.
 - A `200` with a challenge page in the body is a failure, and a `403` on the HTML page says nothing about its XHRs. Record the header and body markers.
 - Login-only *pages* do not make the whole *site* login-only. Check whether the same records appear on a public surface.
-- A partial route (list works, detail blocked; recent pages work, history capped) is progress — report it as `best_partial`, never as "blocked".
+- A partial route (list works, detail blocked; recent pages work, history capped) is progress. Report it as `best_partial`, never as "blocked".
 - A challenger reviewing a stuck report must not repeat recorded attempts; its job is the families and ideas the first agent did not cover.
 - Write down why a row is N/A. "Not applicable" without a reason reads as "skipped".
 - An agent drafts access requests (family J); the project owner decides whether and from whom they are sent.
 
 ## Related
 
-- `../anti-bot/protection-gaps.md` — family D in depth, and the sign-off rule
-- `../anti-bot/ban-detection.md` — reading a block correctly before escalating
-- `../reference/README.md` — self-critique checklist and recon report spec for the end of a run
+- `../anti-bot/protection-gaps.md`: family D in depth, and the sign-off rule
+- `../anti-bot/ban-detection.md`: reading a block correctly before escalating
+- `../reference/README.md`: self-critique checklist and recon report spec for the end of a run

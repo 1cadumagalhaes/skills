@@ -1,4 +1,4 @@
-# Intake flow — Experienced
+# Intake flow: Experienced
 
 Run this flow when the user picked **"Experienced"** at Q1.
 
@@ -6,15 +6,15 @@ Run this flow when the user picked **"Experienced"** at Q1.
 
 **Default: send all six questions in one terse text message.** A power user types `1: url=..., 2: prices+ratings, 3: ~5k, 4: HAR attached, 5: no, 6: parquet` faster than clicking through six dialog boxes. Don't slow them down.
 
-No explanations, no jargon definitions. The user knows curl, HAR, TLS impersonation, persisted queries, proxies, sticky sessions — assume vocabulary parity. Skip the politeness padding. Skip the "let me know if you need help" footer.
+No explanations, no jargon definitions. The user knows curl, HAR, TLS impersonation, persisted queries, proxies, sticky sessions, so assume vocabulary parity. Skip the politeness padding. Skip the closing offer of help.
 
-If they hand you a HAR or curl directly without waiting for the intake, just go — don't insist on filling in every blank.
+If they hand you a HAR or curl directly without waiting for the intake, just go. Don't insist on filling in every blank.
 
-**Alternative: `AskUserQuestion` mode.** If the user has previously asked you to use clickable option boxes (or you're in a client where typing is awkward), batch Q1, Q4, Q5, Q6 as a single multi-question `AskUserQuestion` call (max 4 per batch), with Q2 and Q3 sent as a single short text message alongside. Compact labels — no descriptions longer than 10 words at this level.
+**Alternative: `AskUserQuestion` mode.** If the user has previously asked you to use clickable option boxes (or you're in a client where typing is awkward), batch Q1, Q4, Q5, Q6 as a single multi-question `AskUserQuestion` call (max 4 per batch), with Q2 and Q3 sent as a single short text message alongside. Compact labels, with no description longer than 10 words at this level.
 
 ---
 
-## Default — terse text one-shot
+## Default: terse text one-shot
 
 ```
 Intake:
@@ -26,7 +26,7 @@ Intake:
 6. Output format
 ```
 
-## Alternative — `AskUserQuestion` batch
+## Alternative: `AskUserQuestion` batch
 
 Send Q1, Q4, Q5, Q6 in one `AskUserQuestion` call (4 questions max per batch):
 
@@ -68,7 +68,7 @@ If they picked (c) → `../discovery/google-deep-research.md`.
 
 ---
 
-## Final delivery — bronze first, then explicit silver/gold ask
+## Final delivery: bronze first, then explicit silver/gold ask
 
 Ship bronze in their requested format and confirm it works end-to-end. **Then ask explicitly:**
 
@@ -79,6 +79,6 @@ Bronze is in — [N] records, [content_hash dedup status], [resumable from <wate
 - nothing — bronze is enough.
 ```
 
-Use the full medallion vocabulary. Walk through proposed silver/gold schemas before writing code. Default to recomputable layers — silver and gold should rebuild from bronze without re-scraping.
+Use the full medallion vocabulary. Walk through proposed silver/gold schemas before writing code. Default to recomputable layers. Silver and gold should rebuild from bronze without re-scraping.
 
 See `../reference/medallion-architecture.md` for the canonical contract.

@@ -1,4 +1,4 @@
-# Intake flow — New to scraping
+# Intake flow: New to scraping
 
 Run this flow when the user picked **"New to scraping"** at Q1.
 
@@ -12,13 +12,13 @@ Each question must:
 - Show exactly how to find or produce the answer
 - Define every technical term inline in plain language
 
-**Assume zero technical vocabulary.** Do not just avoid scraping-specific jargon (HAR, curl, TLS, API) — also avoid the implicit jargon that only makes sense once you know how the web works: *request*, *response*, *server*, *endpoint*, *session*, *token*, *credentials*, *cookie*, *header*, *DOM*, *XHR*. If you need to refer to one of those concepts, paraphrase it ("the small bits of data your browser asks the website for", "your login info").
+**Assume zero technical vocabulary.** Avoid scraping-specific jargon (HAR, curl, TLS, API). Also avoid the implicit jargon that only makes sense once you know how the web works: *request*, *response*, *server*, *endpoint*, *session*, *token*, *credentials*, *cookie*, *header*, *DOM*, *XHR*. If you need to refer to one of those concepts, paraphrase it ("the small bits of data your browser asks the website for", "your login info").
 
-Tone: friendly and direct, never patronizing. If the user gives a short or ambiguous answer, acknowledge briefly and move on — don't grill them. The point is to gather context, not to test them.
+Tone: friendly and direct, never patronizing. If the user gives a short or ambiguous answer, acknowledge briefly and move on. Don't grill them. The point is to gather context, not to test them.
 
 ---
 
-## Question 1 — What kind of starting point do you have?
+## Question 1: What kind of starting point do you have?
 
 **Preferred: `AskUserQuestion`**:
 
@@ -62,11 +62,11 @@ Whichever option you pick, just tell me the letter (a / b / c) and paste/describ
 ```
 
 If the user picks **(b)**, after Q1-Q6 are answered, work from `../discovery/link-graph-traversal.md` to locate the data page within the site.
-If the user picks **(c)**, before continuing to Q2, work from `../discovery/google-deep-research.md` Phase 1–4 to surface candidate sites, then come back and resume the intake with the chosen site URL.
+If the user picks **(c)**, before continuing to Q2, work from `../discovery/google-deep-research.md` Phase 1-4 to surface candidate sites, then come back and resume the intake with the chosen site URL.
 
 ---
 
-## Question 2 — What data
+## Question 2: What data
 
 ```
 What **specifically** do you want extracted from that page?
@@ -81,7 +81,7 @@ If a screenshot would be easier than describing it, just drag a screenshot into 
 
 ---
 
-## Question 3 — How much data
+## Question 3: How much data
 
 ```
 Roughly **how much data** do you need? This affects whether we write a quick script or design something more careful.
@@ -96,7 +96,7 @@ A best guess is fine. We'll learn the real number once we look at the site toget
 
 ---
 
-## Question 4 — Looking behind the scenes (the most important one)
+## Question 4: Looking behind the scenes (the most important one)
 
 **Preferred: `AskUserQuestion`** to pick the input type, then follow up with the actual paste/upload/walkthrough based on the choice:
 
@@ -115,12 +115,12 @@ options:
 ```
 
 After the user picks:
-- **"Paste curl"** → reply "Great — paste the curl command here when you're ready."
-- **"Drop HAR"** → reply "Great — drag the .har file into the chat when you're ready."
+- **"Paste curl"** → reply "Great, paste the curl command here when you're ready."
+- **"Drop HAR"** → reply "Great, drag the .har file into the chat when you're ready."
 - **"Walk me through"** → send the full HAR-capture walkthrough below.
 - **"You try first"** → say "Got it, I'll attempt autonomous discovery and come back if I'm stuck." and proceed.
 
-**Fallback (plain text — when `AskUserQuestion` is unavailable):** send the whole long message below in one go.
+**Fallback (plain text, when `AskUserQuestion` is unavailable):** send the whole long message below in one go.
 
 ```
 Next I need to peek behind the scenes of the page, to find where the data is actually hiding.
@@ -154,7 +154,7 @@ Don't worry about understanding what's inside the file — I'll handle that. Jus
 
 ---
 
-## Question 5 — Login
+## Question 5: Login
 
 **Preferred: `AskUserQuestion`**:
 
@@ -184,7 +184,7 @@ Not sure if a login is needed? Try this: open the URL in a **private / incognito
 
 ---
 
-## Question 6 — Output format
+## Question 6: Output format
 
 **Preferred: `AskUserQuestion`**:
 
@@ -218,14 +218,14 @@ If you don't have a preference, **CSV is the safest default**.
 
 ---
 
-When all six are answered, summarize what you learned back to the user in 3–4 plain-language lines before starting any code, so they can confirm or correct. Avoid the jargon the user just managed to dodge — keep the summary in the same plain register the questions used.
+When all six are answered, summarize what you learned back to the user in 3-4 plain-language lines before starting any code, so they can confirm or correct. Avoid the jargon the user just managed to dodge, and keep the summary in the same plain register the questions used.
 
 ---
 
-## Final delivery — bronze only, do not offer silver/gold
+## Final delivery: bronze only, do not offer silver/gold
 
-For this user level, deliver **the raw extracted data** (bronze) in the format they picked at Q6 and **stop**. Do not ask whether they want the data cleaned, typed, deduplicated, or analyzed. Do not propose a "silver" layer, normalization, or aggregations. Do not mention the words "bronze", "silver", "gold", or "medallion" — they're jargon at this level.
+For this user level, deliver **the raw extracted data** (bronze) in the format they picked at Q6 and **stop**. Do not ask whether they want the data cleaned, typed, deduplicated, or analyzed. Do not propose a "silver" layer, normalization, or aggregations. Do not mention the words "bronze", "silver", "gold", or "medallion". They are jargon at this level.
 
 If the user later asks for clean-up, typing, or analysis on their own initiative, then proceed and explain plainly what you're doing. Never proactively expand scope beyond what they asked for.
 
-See `../reference/medallion-architecture.md` for the contract details (Claude-facing — not user-facing at this level).
+See `../reference/medallion-architecture.md` for the contract details (Claude-facing, not user-facing at this level).

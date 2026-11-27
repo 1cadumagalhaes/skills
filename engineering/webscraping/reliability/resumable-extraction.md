@@ -1,4 +1,4 @@
-# Resumable Extraction — Never Lose Data
+# Resumable Extraction: Never Lose Data
 
 ## Core principle
 
@@ -46,7 +46,7 @@ class Checkpoint:
 
 ## Incremental JSON lines writer
 
-Use `.jsonl` (JSON Lines) for incremental writes — one JSON object per line, append-safe:
+Use `.jsonl` (JSON Lines) for incremental writes, one JSON object per line and append-safe:
 
 ```python
 class IncrementalWriter:
@@ -232,9 +232,9 @@ def compile_jsonl(jsonl_path: Path, output_path: Path, metadata: dict) -> Path:
 
 ## Rules
 
-- Always write `.jsonl` during extraction — compile to `.json` only when complete
-- Always save checkpoint **after** each successful write — never before
-- Checkpoint + data file are the source of truth — the extractor is stateless
+- Always write `.jsonl` during extraction, and compile to `.json` only when complete
+- Always save checkpoint **after** each successful write, never before
+- Checkpoint + data file are the source of truth; the extractor is stateless
 - On 403/IP ban: stop immediately, save checkpoint, report to user
 - On 429: respect `Retry-After` header, then resume
 - Never delete a checkpoint until the user explicitly confirms the data is good

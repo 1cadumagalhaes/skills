@@ -1,4 +1,4 @@
-# Proxy Networks — Setup, Geo-targeting, Rotation
+# Proxy Networks: Setup, Geo-targeting, Rotation
 
 ## When you need proxies
 
@@ -11,10 +11,10 @@
 
 | Type | How it works | Detection risk | Speed | Cost | Best for |
 |------|-------------|---------------|-------|------|----------|
-| **Datacenter** | Hosted server IPs | High — IP ranges known to sites | Fast | $2–5/GB | Low-security sites, bulk downloads |
-| **Residential** | Real consumer ISP IPs | Low — looks like a real user | Medium | $7–15/GB | High-security sites |
-| **ISP (static residential)** | Fixed residential IP | Low | Fast | $2–5/IP/mo | Sessions needing stable IP |
-| **Mobile (4G/5G)** | Carrier IPs | Very low | Varies | $15–25/GB | Maximum stealth |
+| **Datacenter** | Hosted server IPs | High: IP ranges known to sites | Fast | $2-5/GB | Low-security sites, bulk downloads |
+| **Residential** | Real consumer ISP IPs | Low: looks like a real user | Medium | $7-15/GB | High-security sites |
+| **ISP (static residential)** | Fixed residential IP | Low | Fast | $2-5/IP/mo | Sessions needing stable IP |
+| **Mobile (4G/5G)** | Carrier IPs | Very low | Varies | $15-25/GB | Maximum stealth |
 | **Rotating (per-request)** | New IP each request | Depends on type | Medium | Per GB | Bulk extraction |
 | **Session sticky** | Same IP for N minutes | Depends on type | Medium | Per GB | Cookie-based flows |
 
@@ -23,12 +23,12 @@
 | Provider | Type | Price | Geo | Notes |
 |----------|------|-------|-----|-------|
 | **Webshare** | Datacenter rotating | $2/GB or $15/mo (2GB) | Limited | Good starting point, easy setup |
-| **Bright Data** | Residential / mobile | $8–15/GB | 195 countries, city-level | Best coverage, complex dashboard |
-| **Oxylabs** | Residential | $8–15/GB | 195 countries | Reliable, good support |
+| **Bright Data** | Residential / mobile | $8-15/GB | 195 countries, city-level | Best coverage, complex dashboard |
+| **Oxylabs** | Residential | $8-15/GB | 195 countries | Reliable, good support |
 | **IPRoyal** | Residential | $7/GB | 190 countries | Mid-tier, good uptime |
 | **PacketStream** | Residential | $1/GB | Limited | Budget, lower quality |
 | **Smartproxy** | Residential | $7/GB | 195 countries | Good price/quality ratio |
-| **ScrapingBee** | Managed (browser) | $0.0025/req | Yes | No proxy config — just an API |
+| **ScrapingBee** | Managed (browser) | $0.0025/req | Yes | No proxy config, just an API |
 | **ZenRows** | Managed (browser) | $0.004/req | Yes | Cloudflare-heavy sites |
 
 **For most use cases:** Start with Webshare datacenter. If blocked → upgrade to IPRoyal residential. If geo needed → Bright Data or Oxylabs.
@@ -208,8 +208,8 @@ Example: 10,000 pages × 50KB = 500MB = 0.5GB
 
 | Signal | Means |
 |--------|-------|
-| 429 after N requests | Rate limit — try backoff first, then proxy rotation |
+| 429 after N requests | Rate limit. Try backoff first, then proxy rotation. |
 | 403 from first request | IP block (likely datacenter range) → residential proxy |
 | 200 but wrong data (different country) | Geo-restriction → geo-targeted proxy |
 | Connection timeout | Firewall blocking your IP range → proxy |
-| `curl_cffi` still 403 | Not a TLS issue — IP block → proxy |
+| `curl_cffi` still 403 | Not a TLS issue; the IP is blocked, so use a proxy. |

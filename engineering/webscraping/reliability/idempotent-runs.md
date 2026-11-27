@@ -9,7 +9,7 @@ Pattern for production scrapers: the **first** run is full-history, every **subs
 
 ## The pattern
 
-On startup, the crawler loads the set of record IDs already present in the destination. It passes that set to the extractor. The extractor skips records whose ID is in the set — before any expensive fetch.
+On startup, the crawler loads the set of record IDs already present in the destination. It passes that set to the extractor. The extractor skips records whose ID is in the set before any expensive fetch.
 
 ```python
 # At flow start
@@ -48,7 +48,7 @@ def crawl(
 
 1. **Before detail fetch** (most common, biggest savings)
 2. **Before pagination** (when list is sorted newest-first and you've seen the latest known ID, you can stop)
-3. **Before upsert** (last-resort dedup — DB upsert will be a no-op, but you wasted the fetch)
+3. **Before upsert** (last-resort dedup; DB upsert will be a no-op, but you wasted the fetch)
 
 Most savings come from #1. A typical N+1 crawler costs 1 list request per page + N detail requests per page. Skipping known records skips all the detail requests.
 
@@ -78,15 +78,15 @@ def get_known_record_ids(coll, *, source: str) -> frozenset[str]:
     return frozenset(doc["record_id"] for doc in coll.find({"source": source}, {"record_id": 1}))
 ```
 
-The crawler shouldn't know about the storage — it just receives a `frozenset[str]`.
+The crawler shouldn't know about the storage. It just receives a `frozenset[str]`.
 
 ## Trade-offs
 
 **First run cost:** Higher than necessary. The first run fetches everything because `known_record_ids` is empty. Subsequent runs are cheap.
 
-**Memory:** A frozenset of 100k 30-char strings is ~6 MB. For 10M records, ~600 MB — at that scale, switch to a Bloom filter or a "since timestamp" query instead.
+**Memory:** A frozenset of 100k 30-char strings is ~6 MB. For 10M records, ~600 MB. At that scale, switch to a Bloom filter or a "since timestamp" query instead.
 
-**Re-fetching when records change:** This pattern assumes a record's contents don't change after first ingestion. If they do (e.g. a listing's price or status gets updated later), you need an additional update path — typically a periodic "refresh window" that re-fetches the last N days of records regardless of `known_record_ids`.
+**Re-fetching when records change:** This pattern assumes a record's contents don't change after first ingestion. If they do (e.g. a listing's price or status gets updated later), you need an additional update path, typically a periodic "refresh window" that re-fetches the last N days of records regardless of `known_record_ids`.
 
 ## The "refresh window" addition
 
@@ -142,5 +142,5 @@ Drop `seen` unless you have evidence of intra-run duplicates.
 
 ## Related
 
-- `resumable-extraction.md` — checkpoint pattern for mid-run resume
-- `concurrency-curl-cffi.md` — when skipping known records lets you parallelize the remainder
+- `resumable-extraction.md`: checkpoint pattern for mid-run resume
+- `concurrency-curl-cffi.md`: when skipping known records lets you parallelize the remainder

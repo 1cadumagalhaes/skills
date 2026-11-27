@@ -1,6 +1,6 @@
 # Live Extraction Monitor
 
-A real-time browser dashboard that updates as records are extracted. No external dependencies — uses Python's stdlib HTTP server + browser fetch polling.
+A real-time browser dashboard that updates as records are extracted. No external dependencies. It uses Python's stdlib HTTP server + browser fetch polling.
 
 ## Architecture
 
@@ -28,8 +28,8 @@ monitor.finish()
 
 ## Files
 
-- `src/live_monitor.py` — Python class + HTTP server
-- `docs/live_monitor.html` — browser dashboard (same style as dashboard.html)
+- `src/live_monitor.py`: Python class + HTTP server
+- `docs/live_monitor.html`: browser dashboard (same style as dashboard.html)
 
 ## Python implementation
 

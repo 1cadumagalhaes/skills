@@ -1,16 +1,16 @@
 # Sticky proxy sessions (universal concept)
 
-A "sticky session" pins all your requests through a residential proxy to a **single exit IP** for the duration of the session. Without one, the proxy rotates IPs per request — which breaks any target that ties session cookies, CSRF tokens, or auth state to the client IP.
+A "sticky session" pins all your requests through a residential proxy to a **single exit IP** for the duration of the session. Without one, the proxy rotates IPs per request, which breaks any target that ties session cookies, CSRF tokens, or auth state to the client IP.
 
 ## When you need a sticky session
 
-- Target uses session cookies (most legacy apps — ASP.NET, ColdFusion, JSP)
+- Target uses session cookies (most legacy apps, such as ASP.NET, ColdFusion, or JSP)
 - Target uses CSRF / VIEWSTATE / `_token` style anti-forgery
 - Target uses Cloudflare cookie cf_clearance (tied to IP)
 - Target geo-blocks: a rotating proxy whose IPs occasionally land outside the allowed region will fail intermittently
 - Any time changing IP mid-session produces HTTP 421, 403, or 200+Error
 
-If your target is a simple JSON API with no cookies, you usually don't need sticky — rotating IPs is fine.
+If your target is a simple JSON API with no cookies, you usually don't need sticky, and rotating IPs is fine.
 
 ## How providers implement it
 
@@ -28,7 +28,7 @@ For the Zyte playbook in full, see `proxy-zyte.md`.
 
 ## Session TTL
 
-Sticky sessions have a TTL — usually 10-30 minutes of inactivity, sometimes 1-2 hours total. After expiry the session ID returns an error (per provider — see decoder in `proxy-zyte.md`).
+Sticky sessions have a TTL, usually 10-30 minutes of inactivity and sometimes 1-2 hours total. After expiry the session ID returns an error (per provider; see the decoder in `proxy-zyte.md`).
 
 For long-running crawls (hours), refresh the session opportunistically:
 - After every page batch
@@ -39,13 +39,13 @@ For long-running crawls (hours), refresh the session opportunistically:
 
 - **One global session** for stateful flows (search → paginate → detail). All requests must share the same exit IP.
 - **One session per worker** if you parallelize multiple independent search flows. They can each have their own session.
-- **Avoid**: one session per request. That defeats the point — you're back to rotating IPs.
+- **Avoid**: one session per request. That defeats the point. You're back to rotating IPs.
 
 Concurrent fetches **within** a single session (e.g. parallel detail fetches in a paginated crawl) are fine; they share the same session ID and exit IP. See `../reliability/concurrency-curl-cffi.md`.
 
 ## Cost considerations
 
-Sticky sessions don't cost extra at most providers, but they reduce your effective rotation. If a target rate-limits by IP at 100 req/min, a single sticky session can never exceed that — even with 50 concurrent threads.
+Sticky sessions don't cost extra at most providers, but they reduce your effective rotation. If a target rate-limits by IP at 100 req/min, a single sticky session can never exceed that, even with 50 concurrent threads.
 
 Solutions:
 - Use multiple parallel sticky sessions (each its own session ID)
@@ -53,7 +53,7 @@ Solutions:
 
 ## Related
 
-- `proxy-zyte.md` — full Zyte sticky session playbook
-- `proxy-providers.md` — cross-provider cheatsheet
-- `../reliability/concurrency-curl-cffi.md` — sharing a session across threads
-- `../anti-bot/error-decoders.md` — what each provider's "session expired" error looks like
+- `proxy-zyte.md`: full Zyte sticky session playbook
+- `proxy-providers.md`: cross-provider cheatsheet
+- `../reliability/concurrency-curl-cffi.md`: sharing a session across threads
+- `../anti-bot/error-decoders.md`: what each provider's "session expired" error looks like

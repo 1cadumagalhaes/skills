@@ -9,7 +9,7 @@ Some targets only serve content to specific countries. Your home IP gets timeout
 | Browser works from country X, all clients timeout from country Y | ✅ Very likely |
 | `curl --max-time 10 https://target.com` stalls indefinitely (no TCP connect) | ✅ Likely (could also be hard IP-ban) |
 | HTTP 451 Unavailable For Legal Reasons | ✅ Confirmed |
-| HTTP 421 Misdirected Request through a non-target proxy | ✅ Likely — TLS routing rejects non-domestic |
+| HTTP 421 Misdirected Request through a non-target proxy | ✅ Likely. TLS routing rejects non-domestic |
 | Response body says "this content is not available in your region" | ✅ Confirmed |
 | 503 from your proxy with `x-crawlera-error: internal_server_error` | ❓ Your proxy can't allocate exit IP in target region |
 
@@ -64,6 +64,6 @@ Residential proxies in less common geos (some African or Pacific countries) cost
 
 ## Related
 
-- `proxy-zyte.md` — full Zyte playbook (default provider)
-- `sticky-sessions.md` — pair geo-pin with sticky for stable routing
-- `../anti-bot/error-decoders.md` — distinguishing geo-block from IP-ban from rate-limit
+- `proxy-zyte.md`: full Zyte playbook (default provider)
+- `sticky-sessions.md`: pair geo-pin with sticky for stable routing
+- `../anti-bot/error-decoders.md`: distinguishing geo-block from IP-ban from rate-limit

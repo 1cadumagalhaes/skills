@@ -1,4 +1,4 @@
-# Intake flow — Some experience
+# Intake flow: Some experience
 
 Run this flow when the user picked **"Some experience"** at Q1.
 
@@ -6,20 +6,20 @@ Run this flow when the user picked **"Some experience"** at Q1.
 
 This level has two acceptable modes, in order of preference:
 
-**Mode A — Mixed `AskUserQuestion` + text** *(preferred when the client supports it)*: send the discrete-choice questions (Q1 starting point, Q4 input type, Q5 auth, Q6 output format) as `AskUserQuestion` boxes; send the free-text ones (Q2 data needed, Q3 volume) as one short text message. Order: ask Q1 alone (the answer changes whether to run discovery first), then send Q2+Q3 as a single text message, then Q4, Q5, Q6 as separate `AskUserQuestion` boxes (or batch 2–3 of them via the multi-question form of `AskUserQuestion`).
+**Mode A: Mixed `AskUserQuestion` + text** *(preferred when the client supports it)*: send the discrete-choice questions (Q1 starting point, Q4 input type, Q5 auth, Q6 output format) as `AskUserQuestion` boxes; send the free-text ones (Q2 data needed, Q3 volume) as one short text message. Order: ask Q1 alone (the answer changes whether to run discovery first), then send Q2+Q3 as a single text message, then Q4, Q5, Q6 as separate `AskUserQuestion` boxes (or batch 2-3 of them via the multi-question form of `AskUserQuestion`).
 
-**Mode B — Single bundled text message** *(fallback when `AskUserQuestion` is unavailable)*: send all six questions as one numbered list with short context lines.
+**Mode B: Single bundled text message** *(fallback when `AskUserQuestion` is unavailable)*: send all six questions as one numbered list with short context lines.
 
 In both modes:
 - **Define niche terms inline, in one sentence each**, the first time they appear: `curl`, `HAR`, anything proxy/TLS-related, anything cookie/auth-related, "persisted query", "viewstate". Don't assume the user knows them.
 - Tone: collegial peer. Short explanations for niche terms, no explanations for day-1 HTTP vocabulary.
-- If the user responds with only partial answers, gently ask for what's missing — don't restart the intake.
+- If the user responds with only partial answers, gently ask for what's missing. Don't restart the intake.
 
 ---
 
-## Mode A — `AskUserQuestion` boxes
+## Mode A: `AskUserQuestion` boxes
 
-### Q1 — Starting point
+### Q1: Starting point
 
 ```
 question: "What kind of starting point do you have?"
@@ -35,7 +35,7 @@ options:
 
 Follow up with one text message asking for the actual URL / topic value.
 
-### Q2 + Q3 — Data + volume (one text message)
+### Q2 + Q3: Data + volume (one text message)
 
 ```
 While I think about Q1, two quick freeform questions:
@@ -44,7 +44,7 @@ While I think about Q1, two quick freeform questions:
 - **Rough volume** — record count estimate. Helps me plan pagination strategy.
 ```
 
-### Q4 — Input type
+### Q4: Input type
 
 ```
 question: "I need to see how your browser talks to the site. What can you give me?"
@@ -63,7 +63,7 @@ Follow up based on choice:
 - "Drop HAR" → "Drag the .har file into the chat when you're ready. Tip: if `Export HAR (sanitized)` strips Cookie/Authorization headers I'll need, right-click in the request list → 'Save all as HAR with content' for the raw version."
 - "Discovery first" → proceed without waiting.
 
-### Q5 — Auth
+### Q5: Auth
 
 ```
 question: "Is the page behind a login?"
@@ -77,7 +77,7 @@ options:
     description: "Open the URL in private/incognito; if the data is visible, it's public."
 ```
 
-### Q6 — Output format
+### Q6: Output format
 
 ```
 question: "Where should the extracted data go?"
@@ -95,7 +95,7 @@ options:
 
 ---
 
-## Mode B — Single bundled text message (fallback)
+## Mode B: Single bundled text message (fallback)
 
 ```
 Quick intake — answer what applies:
@@ -127,14 +127,14 @@ Quick intake — answer what applies:
 6. **Output format** — CSV / JSON / Excel / database?
 ```
 
-When the user replies, summarize back what you understood in 2–3 lines before starting code — short confirmation, not a recap of every answer.
+When the user replies, summarize back what you understood in 2-3 lines before starting code, as a short confirmation rather than a recap of every answer.
 
 If they picked **(b)** at Q1, work from `../discovery/link-graph-traversal.md` to find the data page within the site.
 If they picked **(c)**, work from `../discovery/google-deep-research.md` to surface candidate sites before continuing the rest of the intake.
 
 ---
 
-## Final delivery — bronze first, offer silver once
+## Final delivery: bronze first, offer silver once
 
 Deliver the raw extracted data (bronze) in the format they picked at Q6 and confirm it works end-to-end. **Then, in one short message**, offer silver as an option:
 
@@ -142,8 +142,8 @@ Deliver the raw extracted data (bronze) in the format they picked at Q6 and conf
 Bronze is in — [N] records extracted to [their format]. Want me to clean & type it? I can parse dates, dedupe records, drop empty rows, normalize the column names.
 ```
 
-If they say no or don't engage with it, stop — don't push. If they say yes, propose a silver schema before building it and confirm before writing code.
+If they say no or don't engage with it, stop. Don't push. If they say yes, propose a silver schema before building it and confirm before writing code.
 
-Do not propose gold (aggregations / analytics) unless they ask. The user at this level has enough vocabulary that you can use the term "bronze" naturally if you want — but don't lecture; one mention is enough.
+Do not propose gold (aggregations / analytics) unless they ask. The user at this level has enough vocabulary that you can use the term "bronze" naturally if you want, but don't lecture; one mention is enough.
 
 See `../reference/medallion-architecture.md` for the contract details.
