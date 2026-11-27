@@ -151,7 +151,7 @@ const style = { transform: `translateY(${draggedDistance}px)` };
 
 CSS variables inherit, so changing one on a parent triggers style recalculation for every child. The more content, the slower each frame. Suspect this whenever a `transform` animation degrades as content grows.
 
-**Blur.** `filter: blur()` gets expensive fast, especially in Safari. Keep animated blur under 20px; 2–5px is enough to soften a crossfade.
+**Blur.** `filter: blur()` gets expensive fast, especially in Safari. Keep animated blur under 20px; 2-5px is enough to soften a crossfade.
 
 ## `will-change`
 
