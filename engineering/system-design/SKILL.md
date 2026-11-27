@@ -93,8 +93,10 @@ If evidence is weak, label it as a hypothesis and explain how to validate it.
 
 ## Reference Guide
 
-- DSA pattern selection: [references/dsa-patterns.md](references/dsa-patterns.md)
-- Complexity and hidden costs: [references/dsa-complexity.md](references/dsa-complexity.md)
-- System design patterns: [references/system-design-patterns.md](references/system-design-patterns.md)
-- Grilling questions: [the grilling skill](~/.agents/skills/grilling/SKILL.md)
-- Report templates: [references/audit-templates.md](references/audit-templates.md)
+| Read | When |
+|---|---|
+| [references/dsa-patterns.md](references/dsa-patterns.md) | choosing a data structure or algorithm for a hot path |
+| [references/dsa-complexity.md](references/dsa-complexity.md) | stating complexity, or a cost that is not obvious from the code |
+| [references/system-design-patterns.md](references/system-design-patterns.md) | scaling, reliability, storage or consistency decisions |
+| [the grilling skill](~/.agents/skills/grilling/SKILL.md) | the plan must survive interrogation before a migration or an infra change |
+| [references/audit-templates.md](references/audit-templates.md) | writing the audit or the roadmap |

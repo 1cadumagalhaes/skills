@@ -11,7 +11,7 @@ derived_from: {repo: abdiraimov-otabek/dashboard-design-skill, commit: b813324ae
 
 Distilled from 127 shipped dashboard screens, the field's classics (Stephen Few, Edward Tufte, Cole Nussbaumer
 Knaflic, Cleveland & McGill, Nielsen Norman Group), two full teardowns, and real redesigns where every rule below
-was broken once, seen on a screenshot, and fixed. Sources: [references/sources.md](references/sources.md).
+was broken once, seen on a screenshot, and fixed. Read [references/sources.md](references/sources.md) when a claim needs a citation.
 
 A dashboard answers **one question per screen at first glance** ("is the school OK today?", "is it growing, and
 what's driving it?"), shows what needs attention, and puts the action one click away. Every element answers the
@@ -28,8 +28,8 @@ question, flags a problem, or gets out of the way.
   ("CPL 24 902 · CTR 1.8%"); every explanation lives in a tooltip. Zero sentences outside tooltips and empty states.
 - **Honest**: a number is the same everywhere it appears, estimates are labelled, a tiny base never shouts.
 
-The perception behind these words (encoding ladder, colour rules, scales, bullet graphs, accessibility):
-[references/perception.md](references/perception.md).
+Read [references/perception.md](references/perception.md) when choosing an encoding, a colour rule, a scale or a
+bullet graph, and when checking accessibility behind any of the three.
 
 ## Build or redesign
 
@@ -71,8 +71,8 @@ Look at the screen (screenshot or live), then answer in this order:
 4. Offer to fix them in one pass, screenshots before commit.
 
 Every critique finds the honesty problems first; a pretty screen with two answers to one question is not good.
-A screen that is honest but reads as a report (sentences under numbers, insight rows) fails the Wordless test;
-the worked example of that failure and its fix:
+A screen that is honest but reads as a report (sentences under numbers, insight rows) fails the Wordless test.
+When that is the finding, read the worked example of the failure and its fix in
 [references/case-study-school-dashboard.md](references/case-study-school-dashboard.md).
 
 ## Rules that apply everywhere

@@ -23,7 +23,7 @@ Pipelines fail in four recurring ways: non-idempotent loads, unbounded scans, bl
 | Modeling with dbt or writing data-quality checks | `references/dbt-and-quality.md` |
 | Ingesting with `dlt` or from an API | `references/ingestion.md` |
 
-Adjacent guides: app schemas and transactions belong in `backend`; distributed storage architecture in `~/.agents/skills/system-design/SKILL.md`; anti-bot scraping mechanics in `~/.agents/skills/webscraping/SKILL.md`.
+Adjacent guides: read `backend` for app schemas and transactions, `~/.agents/skills/system-design/SKILL.md` for distributed storage architecture, and `~/.agents/skills/webscraping/SKILL.md` for anti-bot scraping mechanics.
 
 ## Non-negotiables
 

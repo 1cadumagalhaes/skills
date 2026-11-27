@@ -369,6 +369,10 @@ CRITERION_RE = re.compile(
     r"stop if|fail if|exit code|expect|verify|assert|green|0 fail)", re.I)
 POINTER_RE = re.compile(r"(~/\.agents/skills/[a-z0-9-]+/(?:SKILL\.md|references/)|\(references/[^)]+\)|`[a-z-]+/SKILL\.md`)")
 WHEN_RE = re.compile(r"(\bwhen\b|\bbefore\b|\bafter\b|\bif\b|\bfor\b|\buse\b|read)", re.I)
+# A line that already tells the agent to act carries its condition in the verb:
+# "Run all prose through unslop", "Classify candidates using X". A bare link, or a
+# label followed by a link, states neither, so the agent has no trigger to open it.
+VERB_RE = re.compile(r"\b(run|read|open|use|classify|present|build|verify|apply|follow|check|write|cite|study|keep|route|split|send|dispatch|load)\b", re.I)
 
 def phases_of(body: str) -> list[tuple[str, str]]:
     out, cur = [], None
@@ -392,7 +396,7 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
     stepped = [x for x in ph if re.match(r"(\d|phase|step|stage|pass \d)", x[0], re.I)]
     missing = [x[0] for x in stepped if not CRITERION_RE.search(x[1])]
     ptrs = [ln for ln in body.splitlines() if POINTER_RE.search(ln) and not ln.lstrip().startswith("|")]
-    weak = [ln for ln in ptrs if not WHEN_RE.search(ln)]
+    weak = [ln for ln in ptrs if not WHEN_RE.search(ln) and not VERB_RE.search(ln)]
     if stepped or ptrs:
         audit_rows.append((s["name"], len(stepped), len(missing), len(ptrs), len(weak), missing[:2]))
 
