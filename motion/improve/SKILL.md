@@ -42,6 +42,7 @@ Map the motion surface before judging it:
 - **Frequency map**: use `../reference-frequency.md` to classify animated elements and drive severity; cite `../reference-easing.md` for shared values.
 
 Useful sweeps: grep for `transition`, `animation`, `@keyframes`, `motion.`, `animate={`, `useSpring`, `ease-in`, `transition: all`, `scale(0)`, `prefers-reduced-motion`, `transform-origin`.
+**Done when:** the recon records the stack, motion locations, conventions, personality, and frequency map.
 
 ### Phase 2 — Audit (parallel)
 
@@ -65,6 +66,7 @@ Depth follows effort level (default `standard`):
 | `quick` | High-traffic components only | 0–1 | ~5, HIGH severity only |
 | `standard` | All interactive UI | ≤4 | Full table |
 | `deep` | Whole repo incl. marketing pages | ≤8 | Full table + LOW polish items |
+**Done when:** the audit covers all eight categories at the selected effort level.
 
 ### Phase 3 — Vet, prioritize, confirm
 
@@ -80,6 +82,7 @@ Severity: **HIGH** = feel-breaking (wrong easing on UI, animation on keyboard/hi
 After the table, list 2–4 **missed opportunities** — places that don't animate but should (a jarring state change, a rare delight moment) — separately, since they're additive rather than corrective.
 
 Then **stop and wait for the user to select** which findings become plans. If running non-interactively, default to the top 3–5 by leverage.
+**Done when:** every finding in the table is verified at its cited line, and the selected findings are confirmed.
 
 ### Phase 4 — Write plans
 
@@ -88,6 +91,7 @@ One plan per selected finding, using [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md), writt
 Write for the weakest executor: exact file paths and current-code excerpts, the exact target values (cubic-beziers, durations, spring configs — pulled from AUDIT.md, never approximated), the repo's own conventions with an exemplar, ordered steps, hard scope boundaries, and a verification section including how to *feel-check* the result (slow motion, frame-by-frame, real device for gestures).
 
 Finish by creating or updating `plans/README.md`: recommended execution order, dependencies between plans, and a status column.
+**Done when:** each selected finding has a numbered plan and `plans/README.md` lists order, dependencies, and status.
 
 ## Invocation Variants
 

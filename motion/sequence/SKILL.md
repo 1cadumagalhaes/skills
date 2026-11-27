@@ -40,6 +40,7 @@ List every element that moves in response to the event and give each one a role.
 If more than one element wants to be the lead, the design has a hierarchy problem, and motion can't solve it. Say so.
 
 Most groups shrink at this step. A side panel with eight menu items becomes one move: the panel slides, and the items are just there.
+**Done when:** every moving element is listed with a role, and static elements are identified.
 
 ## Step 2 — Pick the Relationship for Each Pair
 
@@ -58,6 +59,7 @@ Do both elements belong to the same visual object or the same moment?
 Then a fifth option that isn't a timing at all:
 
 - **Carry.** When you can't control a child's motion directly (shared layout / `layoutId` animations, for example), animate the **parent** and let the children come along. Images flying into a trash can drop *into* it because the container they belong to moves, not because each image was tuned on its own.
+**Done when:** every pair of moving elements has a chosen relationship: together, overlap, sequence, or carry.
 
 ### Together, by default
 
@@ -90,6 +92,7 @@ Each supporting animation hooks onto a specific moment of the lead: its start, i
 - **Sync to the cause, not to the trigger that came before it.** In a hover-then-click interaction, the background pulses *on the click*, together with the press, not on hover. Each secondary effect lands on the event it belongs to.
 - **Land the accents with the lead.** Motion lines or sparkles around an icon should complete as the main shape finishes its move: a short, punchy burst in the last ~20% of the timeline (`times: [0.7, 0.9]`), with the most important line starting first and the others ~40ms behind.
 - **A repeat action skips the buildup.** Once the hover state is in place, a click plays immediately, with no delay on the background and the morph starting earlier in its timeline. Keep the internal proportions the same and move the whole thing earlier.
+**Done when:** each supporting animation is tied to the lead's start, impact, or settle.
 
 ## Step 4 — Adapt Timing to What Changed
 
@@ -98,6 +101,7 @@ Fixed timing is wrong when the size of the change varies:
 - **Scale the duration by distance.** When a container resizes between views, a big jump needs the full fade. A tiny jump with the same fade looks like a flicker. Derive the duration from the delta and clamp it (`clamp(0.15s, Δheight / 500, 0.27s)`). See RECIPES.md.
 - **Scale the bounce by size.** Smaller elements need more bounce to read as alive. A large view with the same bounce takes longer to settle and looks faster or heavier than the rest. Tune the bounce per state.
 - **When there's a small, finite number of states, hardcode the values per transition.** A dozen hand-tuned transitions beat a clever formula you can't fine-tune. Reach for a formula only when there are too many states to tune by hand.
+**Done when:** timing reflects the size of each change, with explicit values for a small finite state set.
 
 ## Step 5 — Direction and Exits
 
@@ -105,6 +109,7 @@ Fixed timing is wrong when the size of the change varies:
 - **Exits read state when they start, so pass the direction through `custom`** on both `AnimatePresence` and the child. Otherwise the leaving element animates with the old direction.
 - **Exits are simultaneous, shorter and simpler.** Don't reverse-stagger items out when something closes. The user has already decided to leave, so everything goes at once.
 - **An exit matches its entry.** Something that slid in from the right leaves toward the right on close. It doesn't just fade.
+**Done when:** entry and exit directions match the user's mental model and each exit matches its entry.
 
 ## Interruption
 

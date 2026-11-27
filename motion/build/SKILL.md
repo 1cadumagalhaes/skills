@@ -49,6 +49,7 @@ Frequency gate: see `../reference-frequency.md`.
 **Keyboard-initiated actions are a disqualifier, not a judgment call.** Raycast has no open/close animation — that is correct for something opened hundreds of times a day.
 
 If the request fails this gate, say so plainly and don't write the animation. Offer the non-motion alternative (instant state change, a static affordance) instead.
+**Done when:** the frequency decision is recorded, with a non-motion alternative if the request fails.
 
 ### 2. What is the purpose?
 
@@ -64,6 +65,7 @@ Name it in one of these words before continuing:
 Can't name it? Don't build it. "It looks cool" on a frequently-seen element is a reason to stop.
 
 Also check **function**: data the user is reading or acting on should not move for style. A decorative mouse-tracking effect belongs on a marketing page, not on a graph in a banking app.
+**Done when:** the animation has a named purpose and passes the function check.
 
 ### 3. Pick the tool — cheapest that works
 
@@ -80,10 +82,12 @@ Walk down; stop at the first that fits.
 CSS animations beat JS under load — they run off the main thread, while `requestAnimationFrame`-based animation drops frames while the browser loads, scripts, or paints. Use CSS for predetermined motion, JS for dynamic and interruptible motion.
 
 If the task needs a *component* rather than an animation — a toast, a drawer, a command menu, a dropdown — stop and invoke `frontend-choose-library`. Hand-rolling those is how you end up with a `<div>` dropdown and no focus management.
+**Done when:** the first fitting tool is selected, or a component task is handed to `frontend-choose-library`.
 
 ### 4. Pick the properties
 
 Property and transform rules: see `../reference-easing.md`. For ready-to-build `clip-path` and property examples, see [RECIPES.md](RECIPES.md).
+**Done when:** the animated properties follow `../reference-easing.md` and any matching example in `RECIPES.md`.
 
 ### 5. Easing and duration — or a spring
 
@@ -107,6 +111,7 @@ Duration budgets follow the same reference above.
 ```
 
 Keep bounce at 0.1–0.3, and avoid bounce in most UI — reserve it for drag-to-dismiss and playful interactions.
+**Done when:** the duration and easing follow `../reference-easing.md`, and any spring uses the stated bounds.
 
 ### 6. Interruption and exit
 
@@ -114,6 +119,7 @@ Keep bounce at 0.1–0.3, and avoid bounce in most UI — reserve it for drag-to
 - **Springs for gestures**, because they carry velocity through an interruption.
 - **Exit the way it entered.** A toast that slides in from the bottom leaves through the bottom. Symmetric paths are what make swipe-to-dismiss feel obvious.
 - **Asymmetric timing where the user is deciding.** Slow on the deliberate phase (a hold-to-confirm press: 2s linear), snappy on the system response (release: 200ms ease-out).
+**Done when:** interruption behavior and exit direction are specified for the animation.
 
 ### 7. Reduced motion and pointer gating
 
@@ -135,6 +141,7 @@ const closedX = reduce ? 0 : '-100%';
 ```
 
 Reduced motion means **fewer and gentler** animations, not zero — keep transitions that aid comprehension, remove movement and position changes.
+**Done when:** reduced-motion behavior and hover gating are included with the animation.
 
 ## Recipes
 

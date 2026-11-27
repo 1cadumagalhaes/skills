@@ -188,6 +188,7 @@ List every animation in scope with its driver and properties:
 | Card hover | CSS transition | `all` | hover |
 
 Expand `transition: all` and Motion shorthands into what they actually animate.
+**Done when:** every animation in scope has a recorded driver, properties, and play condition.
 
 ### Phase 2: Diagnose
 
@@ -202,6 +203,7 @@ Work down this list. It's ordered by how often each one is the cause:
 7. **Still shifting or stuttering?** Now add `will-change: transform` to the animating element.
 
 Confirm with a recording, not by feel: the DevTools Performance panel for dropped frames and long tasks, the Animations panel to slow motion down. Profile on a real mid-range phone over remote debugging. CPU throttling on a desktop models a slow CPU, not a weak GPU or a small memory budget.
+**Done when:** the suspected cause is confirmed with a DevTools recording and a real mid-range phone profile.
 
 ### Phase 3: Report
 
@@ -216,3 +218,4 @@ Verified: from code / needs a device recording
 ```
 
 Order findings by cost: layout before paint, busy-main-thread before idle. Then stop. Apply fixes when asked.
+**Done when:** each finding has the stated report fields and the findings are ordered by cost.

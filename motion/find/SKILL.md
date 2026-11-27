@@ -33,6 +33,7 @@ Every candidate must survive all four questions, in order. Record the answer —
 Frequency gate: see `../reference-frequency.md`.
 
 Keyboard-initiated actions (command palettes, shortcuts, focus jumps) are a disqualifier, not a judgment call — repeated hundreds of times a day, animation makes them feel slow, delayed, and disconnected. Raycast has no open/close animation; that is the optimal experience.
+**Done when:** the candidate's frequency tier is recorded using `../reference-frequency.md`.
 
 ### 2. Purpose — why does this animate?
 
@@ -46,6 +47,7 @@ The answer must be one of these, named explicitly:
 - **Delight** — allowed *only* at the Rare/first-time frequency tier
 
 "It looks cool" is not on this list. If you can't name the purpose in one of these words, reject the candidate.
+**Done when:** the candidate has one named purpose from the list or is rejected.
 
 ### 3. Speed — can it stay inside budget?
 
@@ -60,10 +62,12 @@ The suggestion must work within the standard budgets (UI under 300ms):
 | Marketing / explanatory | Can be longer |
 
 If the moment only "works" as a slow, showy animation, it fails the gate.
+**Done when:** the proposed duration fits the budget for its element and purpose.
 
 ### 4. Function — does motion help or hinder here?
 
 Decoration on functional, information-dense UI hinders. A decorative mouse-tracking effect is fine on a marketing page; on a functional graph in a banking app, no animation is better. Data the user is trying to *read* or *act on* should not move for style.
+**Done when:** motion's effect on the user's task is recorded, and decorative motion on functional data is rejected.
 
 ## Where to Hunt
 
