@@ -246,3 +246,11 @@ Decisão: **um braço só**, com a skill, contra a rubrica, rodando num fixture 
 temporário. `--arms` continua disponível para ablation pontual, quando o custo do isolamento se
 justifica. Fixtures em `evals/fixtures/<port>/`. O veredito de qualquer porta é `não medido` até uma
 rodada válida.
+
+### Card format: recusado, e o motivo
+
+O card format do ship-it é o contrato entre `create-tasks`, `do-task` e `chaos-engineering`. Aqui não
+existe produtor nem consumidor de card, então o documento não teria função. As duas partes que faltavam
+de verdade no nosso `delegate` entraram nele: aceite escrito como comportamento verificável com valores
+concretos, e ponto de atenção obrigatório (silêncio proibido). A terceira, `file:line` lido nesta
+sessão, também.

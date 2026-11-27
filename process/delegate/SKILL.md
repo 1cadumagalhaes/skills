@@ -37,6 +37,9 @@ For every `delegate_task` call and Pi subagent:
    `You are a subagent. Don't run memo. Read ~/.agents/worker.md first.`
 2. Pass an explicit `role` in `delegate_task` (`research`, `implementation`, `review`, `test`, or `design`).
 3. Give the child a clean scope: allowed paths, forbidden paths, shell stdout capped below 12 KB per command, and a verifiable completion command with expected output.
+4. State acceptance as behaviour, not as intent: the statements the child can check by running something, with concrete values. `two POSTs with the same key leave one row`, not `make it idempotent`.
+5. Name the risk that could bite: a migration, personal data, a wire contract, a rollback path. `Additive, no rollback needed` is a valid answer; silence is not.
+6. Cite only files you opened in this session. A path you did not read is a guess the child will trust.
 
 ## Harness mechanics
 
