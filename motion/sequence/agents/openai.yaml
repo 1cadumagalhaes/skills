@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Sequence"
+policy:
+  allow_implicit_invocation: false

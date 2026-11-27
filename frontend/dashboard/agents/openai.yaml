@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Dashboard"
+policy:
+  allow_implicit_invocation: false

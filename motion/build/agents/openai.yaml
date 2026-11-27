@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Build"
+policy:
+  allow_implicit_invocation: false

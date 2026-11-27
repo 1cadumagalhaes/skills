@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Find"
+policy:
+  allow_implicit_invocation: false

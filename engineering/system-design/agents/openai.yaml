@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Design"
+policy:
+  allow_implicit_invocation: false

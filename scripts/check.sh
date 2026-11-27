@@ -484,6 +484,24 @@ if audit:
     total_weak = sum(r[4] for r in audit_rows)
     print(f"totals: {total_miss} phase(s) without a completion criterion, {total_weak} pointer(s) without a condition")
 
+# --- 7d. Codex invocation policy -----------------------------------------
+# Codex decides implicit invocation from `agents/openai.yaml`, not from our
+# frontmatter. A manual skill without the policy line is auto-invocable there, which is
+# the one place the farm's intent and the harness disagree.
+codex_bad = []
+for s in sorted(skills.values(), key=lambda x: x["rel"]):
+    yaml_path = os.path.join(os.path.dirname(s["path"]), "agents", "openai.yaml")
+    has = os.path.exists(yaml_path)
+    disabled = False
+    if has:
+        body_yaml = open(yaml_path, encoding="utf-8").read()
+        disabled = bool(re.search(r"allow_implicit_invocation:\s*false", body_yaml))
+    if s["manual"] and not disabled:
+        codex_bad.append(f"{s['name']} (manual here, auto in Codex)")
+    elif not s["manual"] and has and disabled:
+        codex_bad.append(f"{s['name']} (auto here, manual in Codex)")
+problems += [f"codex policy: {line}" for line in codex_bad]
+
 # --- 8. mirror parity ----------------------------------------------------
 mirrors = {
     "claude": os.path.join(home, ".claude", "skills"),

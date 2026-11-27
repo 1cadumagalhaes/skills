@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Docs"
+policy:
+  allow_implicit_invocation: false

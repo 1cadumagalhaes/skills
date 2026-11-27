@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Review"
+policy:
+  allow_implicit_invocation: false
