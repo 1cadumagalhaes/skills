@@ -1,6 +1,6 @@
-# Scrapling — the all-in-one adaptive/stealth framework
+# Scrapling: the all-in-one adaptive/stealth framework
 
-Scrapling (D4Vinci, BSD-3, ~67k★, v0.4.x) is unusual: a **single library that spans the whole extraction ladder** — fast HTTP with TLS impersonation, a stealth browser that solves Cloudflare, full Playwright automation, a Scrapy-style spider, a CLI, and an MCP server — plus **adaptive selectors that survive site redesigns**. It's worth knowing well because it collapses a lot of the escalation this skill describes into one dependency with a consistent API.
+Scrapling (D4Vinci, BSD-3, ~67k★, v0.4.x) is unusual: a **single library that spans the whole extraction ladder**, with fast HTTP with TLS impersonation, a stealth browser that solves Cloudflare, full Playwright automation, a Scrapy-style spider, a CLI, and an MCP server. It also has **adaptive selectors that survive site redesigns**. It's worth knowing because it combines much of the escalation this skill describes in one dependency with a consistent API.
 
 **Install:**
 ```bash
@@ -19,8 +19,8 @@ Scrapling exposes three fetcher tiers (each with a `Session` and an `Async*Sessi
 
 | Scrapling | Ladder level | Use when |
 |---|---|---|
-| `Fetcher` / `FetcherSession` | L2–L3 (HTTP + TLS impersonation) | Plain/JSON APIs and static HTML; supports `impersonate=` and **`http3=True`** |
-| `StealthyFetcher` / `StealthySession` | L5–L6 (stealth browser) | Cloudflare/behavioral walls — **`solve_cloudflare=True`** built in (Camoufox-based) |
+| `Fetcher` / `FetcherSession` | L2-L3 (HTTP + TLS impersonation) | Plain/JSON APIs and static HTML; supports `impersonate=` and **`http3=True`** |
+| `StealthyFetcher` / `StealthySession` | L5-L6 (stealth browser) | Cloudflare/behavioral walls. **`solve_cloudflare=True`** is built in (Camoufox-based) |
 | `DynamicFetcher` / `DynamicSession` | L6 (full Playwright) | JS-heavy SPAs needing clicks/render |
 
 ```python
@@ -38,11 +38,11 @@ page = StealthyFetcher.fetch("https://cf-protected.com",
 page = DynamicFetcher.fetch("https://spa.example.com", network_idle=True, disable_resources=False)
 ```
 
-Every fetch returns a parseable `Response` — same selector API regardless of tier, so escalating from HTTP to stealth doesn't change your parsing code.
+Every fetch returns a parseable `Response` with the same selector API regardless of tier. Escalating from HTTP to stealth doesn't change your parsing code.
 
 ---
 
-## Adaptive selectors — the headline feature
+## Adaptive selectors: the headline feature
 
 The reason to reach for Scrapling over plain parsel: it can **relocate elements after the site's markup changes.** On the first run you save a structural fingerprint; on later runs it re-finds the element by similarity even if classes/positions moved.
 
@@ -58,7 +58,7 @@ first = page.css(".product-card")[0]
 rest  = first.find_similar()                            # all structurally-similar elements
 ```
 
-This is the durable answer to selector rot — pair it with the skill's bronze-first rule (persist raw HTML) and you get a scraper that both survives redesigns *and* can be replayed against old bronze.
+This addresses selector rot. Pair it with the skill's bronze-first rule (persist raw HTML) to build a scraper that survives redesigns *and* can be replayed against old bronze.
 
 ---
 
@@ -72,7 +72,7 @@ page.find_by_text("Login", tag="button")      # text search
 # Navigation: element.parent, .next_sibling, .below_elements(), .find_similar()
 ```
 
-Performance: on par with Parsel/Scrapy and roughly **~800× faster than BeautifulSoup+lxml** on large trees — so there's no speed penalty for the extra features.
+Performance: on par with Parsel/Scrapy and roughly **~800× faster than BeautifulSoup+lxml** on large trees. The extra features add no speed penalty.
 
 ---
 
@@ -104,7 +104,7 @@ result = MySpider(crawldir="./crawl_data").start()   # Ctrl+C to pause; rerun sa
 result.items.to_jsonl("out.jsonl")
 ```
 
-- `crawldir=` gives **graceful pause/resume** — aligns with `reliability/resumable-extraction.md`.
+- `crawldir=` gives **graceful pause/resume**, as described in `reliability/resumable-extraction.md`.
 - `spider.stream()` yields items in real time.
 - Built-in per-domain throttling, `robots_txt_obey`, and dev-mode disk caching.
 
@@ -113,12 +113,12 @@ result.items.to_jsonl("out.jsonl")
 ## Networking niceties
 
 - **`ProxyRotator(strategy="cyclic")`** or custom rotation; per-request proxy override on any session.
-- **Ad/tracker blocking** (~3,500 known domains) and arbitrary domain blocking in browser fetchers — cuts bandwidth and noise.
+- **Ad/tracker blocking** (~3,500 known domains) and arbitrary domain blocking in browser fetchers cut bandwidth and noise.
 - **DNS-over-HTTPS** option (routes DNS through Cloudflare DoH) to prevent DNS leaks when using proxies.
 
 ---
 
-## CLI — zero-code extraction & curl conversion
+## CLI: zero-code extraction & curl conversion
 
 ```bash
 scrapling shell        # IPython shell with Scrapling loaded; converts a pasted curl → Scrapling request
@@ -128,12 +128,12 @@ scrapling extract stealthy-fetch 'https://cf-demo.com' out.html --css-selector '
 ```
 Output by extension: `.txt` (text), `.md` (markdown), `.html` (raw). The `scrapling shell` curl→request conversion is a fast path for the DevTools "Copy as cURL" workflow in `discovery/`.
 
-## MCP server — Scrapling as an AI tool
+## MCP server: Scrapling as an AI tool
 
 ```bash
 pip install "scrapling[ai]"
 ```
-Exposes Scrapling to LLM clients (Claude, Cursor, …) as an MCP server that **pre-extracts targeted content before it reaches the model** — the page is reduced to the relevant slice first, cutting tokens and cost. This is the cleanest way to wire scraping into an agent without dumping whole pages into context. See `reference/ai-extraction.md` for the broader AI-extraction picture.
+Exposes Scrapling to LLM clients (Claude, Cursor, …) as an MCP server that **pre-extracts targeted content before it reaches the model**. The page is reduced to the relevant slice first, cutting tokens and cost. This is a direct way to wire scraping into an agent without dumping whole pages into context. See `reference/ai-extraction.md` for the broader AI-extraction picture.
 
 ---
 
@@ -144,18 +144,18 @@ Exposes Scrapling to LLM clients (Claude, Cursor, …) as an MCP server that **p
 
 ## Gotchas
 
-- **`solve_cloudflare` is not magic** — it clears Turnstile/interstitial, not a hard WAF/IP block. If you're getting "Sorry, you've been blocked", that's IP-level (see `anti-bot/anti-bot-vendors.md`) — add a residential proxy, Scrapling won't fix it.
+- **`solve_cloudflare` is not magic**: it clears Turnstile/interstitial, not a hard WAF/IP block. If you're getting "Sorry, you've been blocked", that's IP-level (see `anti-bot/anti-bot-vendors.md`). Add a residential proxy. Scrapling won't fix it.
 - **Browsers must be installed** (`scrapling install`) for the stealth/dynamic fetchers; the base `pip install scrapling` is parser-only.
-- **Bronze-first still applies.** Adaptive selectors reduce breakage but don't replace persisting the raw response — save the HTML/JSON, then parse.
-- **HTTP/3** (`http3=True`) is a genuine edge over most Python clients (see `anti-bot/tls-http-clients.md`) — useful when a site behaves differently over h3.
-- Licensed for research/educational use — respect the target's ToS and local law, same as any scraper.
+- **Bronze-first still applies.** Adaptive selectors reduce breakage but don't replace persisting the raw response. Save the HTML/JSON, then parse.
+- **HTTP/3** (`http3=True`) is an edge over most Python clients (see `anti-bot/tls-http-clients.md`). It helps when a site behaves differently over h3.
+- Licensed for research/educational use. Respect the target's ToS and local law, as with any scraper.
 
 ---
 
 ## Related
 
-- `reference/ai-extraction.md` — Scrapling among crawl4ai / firecrawl / ScrapeGraphAI; when AI extraction fits
-- `anti-bot/modern-stealth-browsers.md` — Camoufox (what `StealthyFetcher` builds on) vs patchright vs nodriver
-- `anti-bot/anti-bot-vendors.md` — where `solve_cloudflare` helps and where it doesn't
-- `anti-bot/tls-http-clients.md` — `Fetcher`'s impersonation + HTTP/3 in context of curl_cffi/primp/rnet
-- `reliability/resumable-extraction.md` — the same pause/resume discipline `crawldir` gives you
+- `reference/ai-extraction.md`: Scrapling among crawl4ai / firecrawl / ScrapeGraphAI; when AI extraction fits
+- `anti-bot/modern-stealth-browsers.md`: Camoufox (what `StealthyFetcher` builds on) vs patchright vs nodriver
+- `anti-bot/anti-bot-vendors.md`: where `solve_cloudflare` helps and where it doesn't
+- `anti-bot/tls-http-clients.md`: `Fetcher`'s impersonation + HTTP/3 in context of curl_cffi/primp/rnet
+- `reliability/resumable-extraction.md`: the same pause/resume discipline `crawldir` gives you

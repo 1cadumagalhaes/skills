@@ -1,6 +1,6 @@
-# Recon report — final deliverable
+# Recon report: final deliverable
 
-At the end of every scrape, generate a **single self-contained HTML report** styled in a clean, neutral brand and hand it to the user alongside the bronze data file(s). This is the closing deliverable — what the user actually shows to teammates or archives for the project.
+At the end of every scrape, generate a **single self-contained HTML report** styled in a clean, neutral brand and hand it to the user alongside the bronze data file(s). This is the closing deliverable. The user can show it to teammates or archive it for the project.
 
 The report is generated **fresh per scrape, in code, not from a template file.** Use the style spec and the boilerplate skeleton below as the rendering contract; fill the sections with the run's actual content.
 
@@ -12,20 +12,20 @@ After self-critique is complete (see `self-critique.md`), and bronze has been va
 
 Eight sections, in this order:
 
-1. **Site Architecture** — what stack, what rendering model, where the data lives
-2. **Requested Data Points** — table of every field the user asked for, whether it was captured, with which method, and validation status
-3. **Discovered Endpoints** — every URL/API the scraper touched, with auth, format, pagination, and validation status
-4. **Protection Assessment** — what anti-bot / rate-limit / auth protections were observed, what bypass worked, what to expect at scale
-5. **Extraction Strategy** — the chosen approach ranked against alternatives, with cost/speed/validation columns
-6. **Bronze Output** — file paths, schema, row counts, content hashes; this section is what the user uses to verify the data exists
-7. **Recommendations** — punch list of specific follow-ups that close gaps / validate assumptions / unlock larger runs
-8. **Self-Critique** — the five categories from `self-critique.md` (Gaps / Unvalidated / Assumptions / Staleness / Recommendations)
+1. **Site Architecture**: what stack, what rendering model, where the data lives
+2. **Requested Data Points**: table of every field the user asked for, whether it was captured, with which method, and validation status
+3. **Discovered Endpoints**: every URL/API the scraper touched, with auth, format, pagination, and validation status
+4. **Protection Assessment**: what anti-bot / rate-limit / auth protections were observed, what bypass worked, what to expect at scale
+5. **Extraction Strategy**: the chosen approach ranked against alternatives, with cost/speed/validation columns
+6. **Bronze Output**: file paths, schema, row counts, content hashes; this section is what the user uses to verify the data exists
+7. **Recommendations**: punch list of specific follow-ups that close gaps / validate assumptions / unlock larger runs
+8. **Self-Critique**: the five categories from `self-critique.md` (Gaps / Unvalidated / Assumptions / Staleness / Recommendations)
 
 Do not omit sections. If a section has nothing in it, write a single line stating that explicitly ("No protections detected" / "All requested fields captured").
 
 ## Branding rules
 
-Clean, neutral, monochrome visual identity — no logo, no brand marks, no decorative color:
+Clean, neutral, monochrome visual identity: no logo, no brand marks, and no decorative color.
 
 - **Background:** pure white `#FFFFFF`
 - **Headlines:** large bold sans-serif, near-black `#0A0A0A`, tight letter-spacing
@@ -35,8 +35,8 @@ Clean, neutral, monochrome visual identity — no logo, no brand marks, no decor
   - Validated → `#1F7A1F` (forest green)
   - Partial → `#B8860B` (amber)
   - Unvalidated / Failed → `#B91C1C` (dark red)
-- **Whitespace:** generous; content max-width 880px, 48–64px section gaps
-- **Wordmark:** top-left, plain text `Recon Report` in the headline font — no logo image, no external asset.
+- **Whitespace:** generous; content max-width 880px, 48-64px section gaps
+- **Wordmark:** top-left, plain text `Recon Report` in the headline font. Do not use a logo image or external asset.
 - **Font stack:** `'Inter', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif`
 - **No bright colors anywhere in chrome.** No blue buttons, no green badges, no decorative gradients.
 
@@ -44,10 +44,10 @@ Clean, neutral, monochrome visual identity — no logo, no brand marks, no decor
 
 - **Single self-contained `.html` file.** All CSS inline in a single `<style>` block.
 - **No JavaScript.** No client logic, no charts library, no analytics.
-- **No external CSS or fonts loaded.** System font stack only — the report must render identically offline.
+- **No external CSS or fonts loaded.** Use the system font stack so the report renders identically offline.
 - **No logo image.** The header is a plain text wordmark; the report must render identically offline with zero external assets.
 - **Responsive via max-width + padding.** Use the media query in the skeleton.
-- **No sensitive data in the report.** Do not include raw cookies, `Authorization` headers, session tokens, credentials, or full HAR content. Reference them as "captured" / "stored in bronze" — never inline.
+- **No sensitive data in the report.** Do not include raw cookies, `Authorization` headers, session tokens, credentials, or full HAR content. Reference them as "captured" or "stored in bronze". Never include them inline.
 - **No data dump.** Don't paste the bronze CSV/JSON content into the report; reference its filepath and row count.
 
 ## Boilerplate skeleton
@@ -291,22 +291,22 @@ Use this exact CSS. Substitute the placeholder content (`{{ ... }}`) with the ru
 
 In tables and inline text:
 
-- `<span class="status-ok">Validated</span>` — extraction method tested end-to-end, confirmed working
-- `<span class="status-partial">Partial</span>` — method identified but not fully verified (e.g. tested page 1 only, not full pagination)
-- `<span class="status-fail">Unvalidated</span>` — theoretical / assumed, never tested
+- `<span class="status-ok">Validated</span>`: extraction method tested end-to-end and confirmed working
+- `<span class="status-partial">Partial</span>`: method identified but not fully verified (for example, tested page 1 only, not full pagination)
+- `<span class="status-fail">Unvalidated</span>`: theoretical or assumed, never tested
 
-Pair status with the **Why** in the cell next to it where space allows. Don't use the colors anywhere else — they're load-bearing for the validation story.
+Pair status with the **Why** in the cell next to it where space allows. Don't use the colors anywhere else. They indicate validation status.
 
 ## Anti-patterns
 
-- **Pasting raw payloads into the report** — bronze data goes in the bronze file, not in the HTML. The HTML references the file path; it doesn't duplicate.
-- **Including cookies / tokens / credentials** — even if "needed for reproducibility", do not embed. Reference as `[redacted]` or describe the auth shape ("session cookie via login flow") without printing values.
-- **Adding charts / graphs / JavaScript visualizations** — the report is static and printable. If a chart is genuinely useful, generate it as an inline SVG, otherwise skip.
-- **Decorative colors** — the only colors in the report are black, grays, and the three status indicators. No blue links, no green success banners, no orange callouts. Keep the report strictly monochrome.
-- **Padding self-critique with platitudes** — if there are no gaps, say "None — all requested fields captured." Don't invent risks just to fill the section.
+- **Pasting raw payloads into the report**: bronze data goes in the bronze file, not in the HTML. The HTML references the file path; it doesn't duplicate.
+- **Including cookies / tokens / credentials**: even if "needed for reproducibility", do not embed them. Reference as `[redacted]` or describe the auth shape ("session cookie via login flow") without printing values.
+- **Adding charts / graphs / JavaScript visualizations**: the report is static and printable. If a chart is genuinely useful, generate it as an inline SVG. Otherwise skip it.
+- **Decorative colors**: the only colors in the report are black, grays, and the three status indicators. No blue links, no green success banners, and no orange callouts. Keep the report strictly monochrome.
+- **Padding self-critique with platitudes**: if there are no gaps, say "None. All requested fields were captured." Don't invent risks just to fill the section.
 
 ## Related
 
-- `self-critique.md` — feeds Section 8 of the report; run the critique before generating the HTML
-- `medallion-architecture.md` — bronze paths/schemas reported in Section 6 follow the medallion contract
-- `anti-patterns.md` — the recommendations in Section 7 often point at one of these
+- `self-critique.md`: feeds Section 8 of the report; run the critique before generating the HTML
+- `medallion-architecture.md`: bronze paths/schemas reported in Section 6 follow the medallion contract
+- `anti-patterns.md`: the recommendations in Section 7 often point at one of these

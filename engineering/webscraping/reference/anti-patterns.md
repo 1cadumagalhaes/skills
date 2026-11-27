@@ -1,4 +1,4 @@
-# Anti-patterns — what NOT to do
+# Anti-patterns: what NOT to do
 
 A grab-bag of mistakes that recur in scraping work, paired with what to do instead. Skim this before declaring a scraper done.
 
@@ -18,7 +18,7 @@ User: "scrape that store's product listings"
 You:  *runs the experience-level intake first, then the matching approach flow*
 ```
 
-**Why:** 90% of "wrong-path" scraping work comes from missing a constraint that intake would have surfaced — volume, auth, output format, recurring vs one-shot. Two minutes of questions saves hours of rework. See `../approach/`.
+**Why:** 90% of "wrong-path" scraping work comes from missing a constraint that intake would have surfaced, such as volume, auth, output format, and recurring vs one-shot. Two minutes of questions saves hours of rework. See `../approach/`.
 
 ---
 
@@ -78,7 +78,7 @@ session.get(f"{DETAIL_BASE}?Id=12345")
 session.get(f"{DETAIL_BASE}?Id=12345", headers={"Referer": RESULTS_URL})
 ```
 
-**Why:** many enterprise apps (ASP.NET WebForms, Java/Struts, some PHP CMSes) refuse a detail request whose `Referer` doesn't match the listing page. Symptom is HTTP 200 with an error template — easy to miss. See `../site-patterns/aspnet-webforms.md`.
+**Why:** many enterprise apps (ASP.NET WebForms, Java/Struts, some PHP CMSes) refuse a detail request whose `Referer` doesn't match the listing page. Symptom is HTTP 200 with an error template, which is easy to miss. See `../site-patterns/aspnet-webforms.md`.
 
 ---
 
@@ -256,7 +256,7 @@ log.info(f"har_entry: {json.dumps(har_entry)}")
 log.info(f"GET {url} → {r.status_code} ({len(r.content)} bytes, sha256={sha[:12]})")
 ```
 
-**Why:** debug logs filled with response payloads explode disk usage, leak cookies/tokens, and become unreadable. Bronze tables already store the full payload — don't duplicate.
+**Why:** debug logs filled with response payloads explode disk usage, leak cookies/tokens, and become unreadable. Bronze tables already store the full payload, so don't duplicate it.
 
 ---
 
@@ -277,7 +277,7 @@ async with sem_per_host[host]:
     await fetch(url)
 ```
 
-**Why:** the goal is to extract data, not to crash a server or get IP-banned. 2–5 concurrent per host is the safe default; profile up from there only if the server clearly handles it.
+**Why:** the goal is to extract data, not to crash a server or get IP-banned. 2-5 concurrent requests per host is the safe default; profile up from there only if the server clearly handles it.
 
 ---
 
@@ -310,6 +310,6 @@ for url in urls:
 
 ## Related
 
-- `../site-patterns/` — each pattern's gotchas section lists more pattern-specific anti-patterns
-- `medallion-architecture.md` — bronze-first contract; "silent silver" is the canonical anti-pattern this skill is designed against
-- `../anti-bot/error-decoders.md` — recognizing 4xx/5xx that mean things other than what they appear to mean
+- `../site-patterns/`: each pattern's gotchas section lists more pattern-specific anti-patterns
+- `medallion-architecture.md`: bronze-first contract; "silent silver" is the canonical anti-pattern this skill is designed against
+- `../anti-bot/error-decoders.md`: recognizing 4xx/5xx that mean things other than what they appear to mean

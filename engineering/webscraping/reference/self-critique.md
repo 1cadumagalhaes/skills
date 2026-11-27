@@ -1,6 +1,6 @@
-# Self-critique — before declaring done
+# Self-critique: before declaring done
 
-A discipline to run **at the end of every scrape**, before telling the user "bronze is in" / "done" / "extraction complete". The point is to flag what you might have missed — explicitly — instead of letting the user discover it later.
+A discipline to run **at the end of every scrape**, before telling the user "bronze is in" / "done" / "extraction complete". The point is to flag explicitly what you might have missed, rather than let the user discover it later.
 
 This is not optional. Even on a trivial scrape, do the 5-minute walkthrough below.
 
@@ -8,7 +8,7 @@ This is not optional. Even on a trivial scrape, do the 5-minute walkthrough belo
 
 - After bronze has been written and validated end-to-end (sample row inspected, counts make sense)
 - Before sending the final delivery message to the user
-- Before generating the recon report (see `recon-report.md` — self-critique becomes Section 8 of the report)
+- Before generating the recon report (see `recon-report.md`; self-critique becomes Section 8 of the report)
 
 If you're in the middle of an iterative loop ("fix this selector, re-run") the self-critique only fires when you're about to declare the loop complete. No need to run it every iteration.
 
@@ -24,7 +24,7 @@ Data points the user asked for that you **did not** capture, or captured partial
 Example:
 > **Gap:** `published_date` is missing for ~12% of records. Cause: those records are in the "Archived" category, where the source omits the field entirely. To recover: cross-reference with the site's PDF annual summary (separate scrape).
 
-If there are no gaps, write "**Gaps:** none — all requested fields captured." Don't skip the section.
+If there are no gaps, write "**Gaps:** none. All requested fields captured." Don't skip the section.
 
 ### 2. Unvalidated claims
 
@@ -32,26 +32,26 @@ Anything you reported as "working" but didn't actually test end-to-end. Common o
 - Selectors found in HTML but never extracted with a parser
 - API endpoints found in HAR but never replayed with a fresh request
 - JSON paths identified but not parsed against a real response
-- Pagination "should work" because the URL pattern is consistent — but you only fetched pages 1 and 2
+- Pagination "should work" because the URL pattern is consistent, but you only fetched pages 1 and 2
 
 For each one: name it, say what level of validation was done, say what full validation would require.
 
 Example:
-> **Unvalidated:** pagination beyond page 5 not tested. Page 1 and page 2 confirmed; pages 3–5 inferred from response metadata. Full validation = walk all pages and confirm `len(results) == reported_total`.
+> **Unvalidated:** pagination beyond page 5 not tested. Page 1 and page 2 confirmed; pages 3-5 inferred from response metadata. Full validation = walk all pages and confirm `len(results) == reported_total`.
 
 ### 3. Assumptions
 
 Things you took for granted but didn't verify. The big recurring ones:
-- "Pagination follows the same pattern for all queries" — only tested one query
-- "Schema is consistent across categories" — only tested one category
-- "Field labels are stable" — same source family ([[templated-cms-schema-drift]]) frequently varies labels per tenant
-- "Public access" — only tested without login, didn't try logged-in (which might expose more / different data)
-- "Stable across time" — only ran today; pre-deploy frontends may emit different shapes
+- "Pagination follows the same pattern for all queries"; only one query was tested
+- "Schema is consistent across categories"; only one category was tested
+- "Field labels are stable"; the same source family ([[templated-cms-schema-drift]]) frequently varies labels per tenant
+- "Public access"; only tested without login, not while logged in (which might expose more / different data)
+- "Stable across time"; only ran today, and pre-deploy frontends may emit different shapes
 
 List the load-bearing assumptions. If one fails in production, what breaks?
 
 Example:
-> **Assumption:** parser tested on 5 records in the "Books" category. Other categories (Electronics, Clothing, Furniture) assumed consistent — not verified. Risk: a different category may emit different field names.
+> **Assumption:** parser tested on 5 records in the "Books" category. Other categories (Electronics, Clothing, Furniture) assumed consistent, but not verified. Risk: a different category may emit different field names.
 
 ### 4. Staleness risk
 
@@ -68,7 +68,7 @@ Example:
 
 ### 5. Recommendations
 
-**Specific** next steps that would resolve gaps / unvalidated claims / assumptions. Not "re-run everything" — pinpoint the smallest action that closes the biggest unknown.
+**Specific** next steps would resolve gaps / unvalidated claims / assumptions. Don't say "re-run everything". Pinpoint the smallest action that closes the biggest unknown.
 
 Format as a punch list:
 - One bullet per recommendation
@@ -83,15 +83,15 @@ Example:
 
 ## How to output
 
-Self-critique is a **section in the final delivery message** — not a separate artifact. For the three approach levels:
+Self-critique is a **section in the final delivery message**, not a separate artifact. For the three approach levels:
 
-**New to scraping** — Plain-language version, no jargon. Frame it as "things to double-check on your side":
+**New to scraping**: plain-language version, no jargon. Frame it as "things to double-check on your side":
 > Before you use this, a few things to know:
 > - I captured 87 records out of an expected ~90. Three were in a category I couldn't read because the source hid the date field. You might want to spot-check those by hand.
 > - I tested the parser on one product category specifically. If you run this on other categories, check a few rows to make sure the columns look right.
-> - The prices on this site vary by country. I scraped from a US connection — if you need other regions, let me know.
+> - The prices on this site vary by country. I scraped from a US connection. Tell me if you need other regions.
 
-**Some experience** — Use the 5-category structure with plain headers. Skip jargon like "load-bearing assumption":
+**Some experience**: use the 5-category structure with plain headers. Skip jargon like "load-bearing assumption":
 > ## Self-critique
 > **Gaps:** ...
 > **Unvalidated:** ...
@@ -99,7 +99,7 @@ Self-critique is a **section in the final delivery message** — not a separate 
 > **Staleness:** ...
 > **Recommendations:** ...
 
-**Experienced** — Tight technical version with full vocabulary:
+**Experienced**: tight technical version with full vocabulary:
 > ## Self-critique
 > - **Gaps:** created_at missing in 12% (Discontinued category)
 > - **Unvalidated:** pagination beyond page 5; `len(results) == total` not asserted
@@ -116,5 +116,5 @@ Self-critique is a **section in the final delivery message** — not a separate 
 
 ## Related
 
-- `medallion-architecture.md` — self-critique is part of the bronze handoff; silver/gold proposals come after
-- `anti-patterns.md` — most "gaps" map to one of the listed anti-patterns (e.g. "one-record validation" → schema drift gap)
+- `medallion-architecture.md`: self-critique is part of the bronze handoff; silver/gold proposals come after
+- `anti-patterns.md`: most "gaps" map to one of the listed anti-patterns (e.g. "one-record validation" → schema drift gap)

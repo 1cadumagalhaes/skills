@@ -1,6 +1,6 @@
 # AI / LLM-driven extraction & adaptive scraping
 
-The biggest shift since 2024: a wave of tools that either (a) turn pages into **LLM-ready markdown** for downstream models, (b) use an **LLM inside the extraction step** to pull typed data from messy HTML, or (c) **self-heal** when a site's markup changes. These don't replace the extraction ladder — you still want the cheapest path to structured data — but they change what "last resort" looks like, and they're excellent when markup is chaotic, one-off, or constantly drifting.
+The biggest shift since 2024: a wave of tools that either (a) turn pages into **LLM-ready markdown** for downstream models, (b) use an **LLM inside the extraction step** to pull typed data from messy HTML, or (c) **self-heal** when a site's markup changes. These don't replace the extraction ladder. You still want the cheapest path to structured data, but these tools change what "last resort" looks like. They're useful when markup is chaotic, one-off, or constantly drifting.
 
 **When to reach for AI extraction:**
 - Markup is inconsistent across pages or **drifts frequently** (selectors keep breaking).
@@ -8,13 +8,13 @@ The biggest shift since 2024: a wave of tools that either (a) turn pages into **
 - One-off / low-volume where engineering a precise parser costs more than an LLM pass.
 - You're feeding a **RAG / LLM pipeline** and want clean markdown, not raw HTML.
 
-**When NOT to:** high-volume, stable, structured sources (a documented API or a clean JSON endpoint). An LLM pass there just adds cost, latency, and a hallucination surface. Bronze-first still applies — **persist the raw HTML/markdown before the LLM touches it**, so extraction is re-runnable and auditable.
+**When NOT to:** high-volume, stable, structured sources (a documented API or a clean JSON endpoint). An LLM pass there just adds cost, latency, and a hallucination surface. Bronze-first still applies: **persist the raw HTML/markdown before the LLM touches it**, so extraction is re-runnable and auditable.
 
 ---
 
 ## The tools (2026)
 
-### crawl4ai — open-source, LLM-ready crawler
+### crawl4ai: open-source, LLM-ready crawler
 - **What:** self-hosted Python library. Renders (Playwright under the hood), emits clean **markdown** tuned for LLMs, supports CSS/XPath *and* LLM-based extraction strategies, chunking, and schema output. One of the fastest-growing scraping repos (~66k★).
 - **Use when:** you want full control + no per-request vendor cost, and you're OK running/scaling browsers yourself.
 ```python
@@ -29,7 +29,7 @@ async def main():
 asyncio.run(main())
 ```
 
-### firecrawl — managed API, zero infra
+### firecrawl: managed API, zero infra
 - **What:** hosted API (also self-hostable). Endpoints: **`/scrape`** (one page → markdown/JSON), **`/crawl`** (whole site), **`/extract`** (schema-driven, LLM-backed). Handles proxies, JS, and anti-bot for you.
 - **Use when:** you want reliability without running browsers/proxies; low-to-mid volume where managed credits beat owning infra. Past high volume, self-hosted crawl4ai is usually cheaper.
 ```python
@@ -38,10 +38,10 @@ app = FirecrawlApp(api_key="...")
 doc = app.scrape_url("https://example.com", params={"formats": ["markdown", "json"]})
 ```
 
-### scrapling — adaptive, stealth-first, all-in-one (Python)
+### scrapling: adaptive, stealth-first, all-in-one (Python)
 - **What (v0.4.x, ~67k★):** a single framework spanning one request → full crawl. Three fetcher tiers (`Fetcher` = HTTP+TLS impersonation, `StealthyFetcher` = Camoufox stealth with `solve_cloudflare=True`, `DynamicFetcher` = full Playwright), **adaptive selectors** that relocate elements after a redesign (`auto_save=True` → `adaptive=True`), a Scrapy-style spider with pause/resume + multi-session routing, a CLI, and a built-in **MCP server** that pre-extracts content before the LLM (fewer tokens).
-- **Use when:** you want stealth + adaptivity + parsing in one dependency, and selectors keep breaking — reach for it via `scrapling.fetchers.Fetcher`.
-- **Full playbook: `reference/scrapling.md`** — fetcher-to-ladder mapping, adaptive API, spider, CLI, MCP, gotchas.
+- **Use when:** you want stealth + adaptivity + parsing in one dependency, and selectors keep breaking. Reach for it via `scrapling.fetchers.Fetcher`.
+- **Full playbook: `reference/scrapling.md`**: fetcher-to-ladder mapping, adaptive API, spider, CLI, MCP, gotchas.
 ```python
 from scrapling.fetchers import Fetcher, StealthyFetcher
 page = Fetcher.get("https://example.com", stealthy_headers=True)
@@ -49,13 +49,13 @@ rows = page.css(".product")                     # parsel-like, but adaptive-capa
 hard = StealthyFetcher.fetch("https://cf-protected.com")   # Camoufox stealth path
 ```
 
-### ScrapeGraphAI — LLM *during* extraction
+### ScrapeGraphAI: LLM *during* extraction
 - **What:** you give a natural-language prompt + a URL (or HTML); it uses an LLM (via a graph pipeline) to return **typed, schema-validated JSON** directly. No selectors.
 - **Use when:** structure varies wildly and you'd rather describe the target ("get the product name, price, and rating") than write a parser.
 
-### browser-use / stagehand / skyvern — LLM agent drives the browser
+### browser-use / stagehand / skyvern: LLM agent drives the browser
 - **What:** an LLM plans and executes browser actions (click, type, navigate) to reach and read data. `browser-use` (Python) is the popular open one; `stagehand` (Browserbase) and `skyvern` are siblings.
-- **Use when:** the path to data needs *reasoning over the UI* (multi-step flows, unpredictable layouts). Slowest and most expensive — genuine last resort, above headful automation.
+- **Use when:** the path to data needs *reasoning over the UI* (multi-step flows, unpredictable layouts). Slowest and most expensive. Treat it as a genuine last resort, above headful automation.
 
 ---
 
@@ -68,7 +68,7 @@ hard = StealthyFetcher.fetch("https://cf-protected.com")   # Camoufox stealth pa
 | Stealth + adaptive parsing + crawl in one lib | **scrapling** |
 | Describe the data in English, get typed JSON | **ScrapeGraphAI** (or firecrawl `/extract`) |
 | Multi-step UI navigation that needs reasoning | **browser-use / stagehand / skyvern** |
-| High-volume, stable, structured source | **none of the above** — use the API / hidden endpoint (SKILL.md ladder) |
+| High-volume, stable, structured source | **none of the above**: use the API / hidden endpoint (SKILL.md ladder) |
 
 ---
 
@@ -89,7 +89,7 @@ md = markdownify(html)                         # shrink tokens; keep structure
 ```
 
 - **Cut tokens before the model:** `trafilatura`/`markdownify`/`selectolax` to strip nav/boilerplate. scrapling's MCP does this for you.
-- **Force structured output** (JSON schema / tool-call), then **validate** — never trust free-form LLM text as data.
+- **Force structured output** (JSON schema / tool-call), then **validate**. Never trust free-form LLM text as data.
 - **Cost & hallucination are real.** Log token spend; spot-check LLM extractions against the raw bronze.
 
 ---
@@ -105,7 +105,7 @@ md = markdownify(html)                         # shrink tokens; keep structure
 
 ## Related
 
-- `reference/libraries.md` — where these sit among HTTP/parse/browser libs
-- `anti-bot/modern-stealth-browsers.md` — the browser engines crawl4ai/scrapling drive
-- `reference/medallion-architecture.md` — raw HTML = bronze, LLM output = silver
-- `parsing/document-extraction.md` — non-HTML sources (PDF/XLSX) into LLM pipelines
+- `reference/libraries.md`: where these sit among HTTP/parse/browser libs
+- `anti-bot/modern-stealth-browsers.md`: the browser engines crawl4ai/scrapling drive
+- `reference/medallion-architecture.md`: raw HTML = bronze, LLM output = silver
+- `parsing/document-extraction.md`: non-HTML sources (PDF/XLSX) into LLM pipelines

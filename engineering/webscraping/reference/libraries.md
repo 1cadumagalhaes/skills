@@ -36,7 +36,7 @@ Comprehensive reference for choosing the right tool. Ordered by layer in the sta
 - **Cons:** async-only, steeper learning curve than httpx
 
 ### curl-cffi
-- **Best for:** bypassing TLS fingerprint blocks (Akamai, Cloudflare JA3/JA4) — **the default impersonation client**
+- **Best for:** bypassing TLS fingerprint blocks (Akamai, Cloudflare JA3/JA4). This is **the default impersonation client**.
 - **Pros:** drop-in replacement for requests, mimics real browser TLS/HTTP2, broadest profile list, sync + async
 - **Cons:** larger binary
   ```python
@@ -58,7 +58,7 @@ Comprehensive reference for choosing the right tool. Ordered by layer in the sta
 ### tls-client (Go, low-level)
 - **Best for:** hand-tuning the fingerprint (custom cipher/extension order) below what curl_cffi exposes.
 
-### pyppeteer (deprecated — use playwright)
+### pyppeteer (deprecated, use playwright)
 ### urllib3 (low-level, use requests/httpx on top)
 
 ## HTML parsing
@@ -112,9 +112,9 @@ Comprehensive reference for choosing the right tool. Ordered by layer in the sta
 - **Stealth:** vanilla Playwright is detectable (leaks the CDP `Runtime.enable` signal). For protected sites use the modern stealth stack below, not `playwright-stealth` (largely superseded).
 
 ### Modern stealth browsers (the 2026 stack)
-- **`patchright`** — Playwright fork that patches CDP leaks; `channel="chrome"` for real TLS. **The practical upgrade for Cloudflare** and the smallest diff from existing Playwright code.
-- **`camoufox`** — Firefox fork with C-level fingerprint spoofing + real Firefox TLS. **Best against DataDome / behavioral scorers.**
-- **`nodriver`** — `undetected-chromedriver` successor; drives Chrome over CDP directly (no webdriver flag). Lightest, but no behavioral sim — only for basic/no-WAF targets.
+- **`patchright`**: Playwright fork that patches CDP leaks; `channel="chrome"` for real TLS. **The practical upgrade for Cloudflare** and the smallest diff from existing Playwright code.
+- **`camoufox`**: Firefox fork with C-level fingerprint spoofing + real Firefox TLS. **Best against DataDome / behavioral scorers.**
+- **`nodriver`**: `undetected-chromedriver` successor; drives Chrome over CDP directly (no webdriver flag). It is the lightest option, but has no behavioral sim. Use it only for basic/no-WAF targets.
 - Full guidance + when-to-use: `anti-bot/modern-stealth-browsers.md`.
 
 ### Selenium
@@ -122,7 +122,7 @@ Comprehensive reference for choosing the right tool. Ordered by layer in the sta
 - **Cons:** slower, more boilerplate; `undetected-chromedriver` is now maintained as **`nodriver`**.
 
 ### pyppeteer (DEPRECATED)
-Use Playwright instead — same DevTools Protocol but maintained.
+Use Playwright instead. It uses the same DevTools Protocol and is maintained.
 
 ## Crawling frameworks
 
@@ -148,24 +148,24 @@ Use Playwright instead — same DevTools Protocol but maintained.
 - **Best for:** modern alternative to Scrapy with Playwright integration built-in
 - **Pros:** async-first, mixes HTTP and browser seamlessly
 
-### scrapling (adaptive, stealth-first) — ~67k★
+### scrapling (adaptive, stealth-first): ~67k★
 - **Best for:** one lib spanning HTTP → stealth browser → crawl → parse, with **adaptive selectors** that survive redesigns, `solve_cloudflare=True`, HTTP/3, a spider with pause/resume, a CLI, and an MCP server. Three fetchers (`Fetcher`=HTTP+impersonation, `StealthyFetcher`=Camoufox, `DynamicFetcher`=Playwright). **Full playbook: `reference/scrapling.md`.**
 
 ### crawl4ai / firecrawl (LLM-ready)
-- **crawl4ai** — open-source, self-hosted, page → LLM-ready markdown + LLM extraction strategies (~66k★).
-- **firecrawl** — managed API (`/scrape` `/crawl` `/extract`); handles proxies/JS/anti-bot. See `reference/ai-extraction.md`.
+- **crawl4ai**: open-source, self-hosted, page → LLM-ready markdown + LLM extraction strategies (~66k★).
+- **firecrawl**: managed API (`/scrape` `/crawl` `/extract`); handles proxies/JS/anti-bot. See `reference/ai-extraction.md`.
 
 ## Anti-bot tooling
 
 | Tool | What it does | When |
 |------|--------------|------|
-| `curl-cffi` / `primp` / `rnet` | Impersonate real browser TLS/HTTP2 fingerprints | requests blocked at network layer — **try first** |
+| `curl-cffi` / `primp` / `rnet` | Impersonate real browser TLS/HTTP2 fingerprints | requests blocked at network layer. **Try first.** |
 | `patchright` | Playwright fork; patches CDP leaks, real-Chrome TLS | Cloudflare JS challenge; upgrade from Playwright |
 | `camoufox` | Firefox fork; C-level fingerprint spoof + real FF TLS | DataDome / behavioral scorers (hardest targets) |
 | `nodriver` | CDP-direct Chrome, no webdriver flag (uc successor) | Basic/no-WAF targets, lightest footprint |
 | `CapSolver` / `2Captcha` | Solve reCAPTCHA / hCaptcha / **Turnstile** / **DataDome** / AWS-WAF | A CAPTCHA/token blocks you |
 | Zyte API / Bright Data Web Unlocker / ZenRows | Full managed unblocking (proxy+browser+CAPTCHA) | Hard targets, production budget, no infra to run |
-| `cloudscraper` / `FlareSolverr` | Old Cloudflare JS-challenge solvers | **Lagging in 2026 — don't lead with these** |
+| `cloudscraper` / `FlareSolverr` | Old Cloudflare JS-challenge solvers | **Lagging in 2026. Don't lead with these.** |
 
 ## Specialized format libs
 
@@ -175,7 +175,7 @@ Use Playwright instead — same DevTools Protocol but maintained.
 | SDMX | `sdmx1` | OECD, ECB, IMF |
 | PDF tables | `tabula-py`, `pdfplumber`, `camelot` | Best: try pdfplumber first, camelot for complex tables, tabula as fallback |
 | Scanned PDFs (OCR) | `pytesseract`, `ocrmypdf` | Install tesseract system-wide first |
-| XLSX | `openpyxl` (read_only for speed), `pandas.read_excel` | `read_only=True` streams — essential for 100MB+ files |
+| XLSX | `openpyxl` (read_only for speed), `pandas.read_excel` | `read_only=True` streams. Essential for 100MB+ files. |
 | CSV | stdlib `csv`, `pandas.read_csv` | Encoding: often `utf-8-sig` due to BOM |
 | GraphQL | `gql` or plain `requests.post` | `gql` adds schema introspection |
 | gRPC/Protobuf | `grpcio`, `protobuf` | Rare in public scraping |

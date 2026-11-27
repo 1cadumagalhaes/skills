@@ -102,7 +102,7 @@ if m:
     # Navigate the structure: data["props"]["pageProps"]["..."]
 ```
 
-## 7. Playwright — wait for SPA content
+## 7. Playwright: wait for SPA content
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -117,7 +117,7 @@ with sync_playwright() as p:
     browser.close()
 ```
 
-## 8. Playwright — intercept XHR responses
+## 8. Playwright: intercept XHR responses
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -288,11 +288,11 @@ def fetch_with_fallback(path: str):
     raise RuntimeError("All sources blocked")
 ```
 
-Key points: **map IDs across sources** (a mirror may prefix or reshape the primary's IDs — e.g. `Primary___12345`), and **validate the mirror matches** the primary (total counts, overlapping records, date ranges) before trusting it. Typical example: a review aggregator sits behind a hard WAF block, while a sister site on the same corporate network exposes the *same* reviews openly — often with the primary's ID embedded as a prefix (`Primary___12345`).
+Key points: **map IDs across sources** (a mirror may prefix or reshape the primary's IDs, such as `Primary___12345`), and **validate the mirror matches** the primary (total counts, overlapping records, date ranges) before trusting it. Typical example: a review aggregator sits behind a hard WAF block, while a sister site on the same corporate network exposes the *same* reviews openly. The sister site often embeds the primary's ID as a prefix (`Primary___12345`).
 
 ## 17. Fixture-fallback (source blocks automation entirely)
 
-Some sources block *all* automated HTTP (browser-cookie-gated portals, aggressive WAF, or ToS-driven) yet publish a file a human can download. The robust pattern: **try programmatic fetch, fall back to a pre-downloaded fixture, and allow an env override** — so the pipeline is reproducible and CI-testable without hitting the site.
+Some sources block *all* automated HTTP (browser-cookie-gated portals, aggressive WAF, or ToS-driven) yet publish a file a human can download. The robust pattern: **try programmatic fetch, fall back to a pre-downloaded fixture, and allow an env override**. This keeps the pipeline reproducible and CI-testable without hitting the site.
 
 ```python
 import os
@@ -316,4 +316,4 @@ def load_source(url: str, fixture: Path) -> bytes:
     raise RuntimeError(f"No live data and no fixture for {url}")
 ```
 
-Always **log loudly** when serving a fixture (staleness is a silent-failure risk), and record the fixture's vintage in bronze metadata. This is how several US-indicator crawlers handle sources that "block automated HTTP access" (Tax Foundation, FCC BDC) — they ship a dated snapshot and re-fetch when the block lifts.
+Always **log loudly** when serving a fixture (staleness is a silent-failure risk), and record the fixture's vintage in bronze metadata. Several US-indicator crawlers handle sources that "block automated HTTP access" (Tax Foundation, FCC BDC) by shipping a dated snapshot and re-fetching when the block lifts.
