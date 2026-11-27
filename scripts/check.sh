@@ -530,7 +530,9 @@ for label, mdir in mirrors.items():
     entries = [e for e in all_entries if os.path.islink(os.path.join(mdir, e))]
     unmanaged = sorted(set(all_entries) - set(entries))
     broken = [e for e in entries if not os.path.exists(os.path.join(mdir, e))]
-    missing = sorted(farm_skills - set(entries))
+    # A real directory of the same name satisfies the mirror: graphify installs itself
+    # into each harness, and that copy is not a link into the farm.
+    missing = sorted(farm_skills - set(entries) - set(unmanaged))
     # A mirror may carry a skill of its own that the farm does not have: graphify is
     # linked into the gemini farm from the Pi skill directory on purpose.
     extra = sorted(set(entries) - farm_skills)
