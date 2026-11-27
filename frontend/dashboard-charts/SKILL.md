@@ -2,7 +2,7 @@
 name: frontend-dashboard-charts
 description: 'How to draw a dashboard: the encoding ladder for choosing a mark, axes and gridlines, colour scales, layout, KPI tiles and tables, heatmaps and sparklines, plus a screenshot QA pass. Use after the dashboard''s metrics are defined.'
 cluster: frontend
-tier: leaf
+tier: root
 disable-model-invocation: true
 derived_from: {repo: abdiraimov-otabek/dashboard-design-skill, commit: b813324aea08dc19a82d2bd9ea73824dfdd0e844, license: MIT}
 ---

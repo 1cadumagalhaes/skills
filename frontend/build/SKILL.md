@@ -16,6 +16,7 @@ tier: root
 | Art-directing a public page | `~/.agents/skills/frontend-taste/SKILL.md` |
 | Checking browser-platform guidance | `~/.agents/skills/frontend-platform-docs/SKILL.md` |
 | Auditing existing components or structure | `~/.agents/skills/code-audit/SKILL.md` |
+| Analytics dashboard, panel or Grafana | `~/.agents/skills/frontend-dashboard/SKILL.md` |
 | Choosing a UI library | `~/.agents/skills/frontend-choose-library/SKILL.md` |
 | Improving a revenue-critical flow | `~/.agents/skills/frontend-revenue-design/SKILL.md` |
 | Stress-testing a UI with hostile input | `~/.agents/skills/frontend-stress/SKILL.md` |

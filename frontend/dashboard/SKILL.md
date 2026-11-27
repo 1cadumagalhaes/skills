@@ -2,7 +2,8 @@
 name: frontend-dashboard
 description: "Spec, build, or critique analytics dashboards and Grafana panels: audience, decision, defined metrics, honest filters, and visual encoding. Use when designing or reviewing dashboards."
 cluster: frontend
-tier: root
+tier: leaf
+disable-model-invocation: true
 ---
 
 # Dashboard

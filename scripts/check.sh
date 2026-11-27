@@ -66,6 +66,7 @@ FORBIDDEN = (
 MANUAL_ROOTS = {
     "motion-build", "pr", "retro", "research", "prototype",
     "tdd", "grilling", "wizard", "agent-docs", "unslop", "commit",
+    "frontend-dashboard-charts",
 }
 MAX_AUTO_ROOTS = 14
 MAX_INDEX = 2800
@@ -297,6 +298,13 @@ FALLBACK_RE = re.compile(r"(outside t3|non-t3|fallback|elsewhere|without t3|nati
 for s in sorted(skills.values(), key=lambda x: x["rel"]):
     if NATIVE_ANY_RE.search(s["body"]) and not FALLBACK_RE.search(s["body"]):
         lint.append(f"lint: {s['name']}: gives a T3-only path with no non-T3 fallback")
+
+# A body above 12 KB is worth a look: it is loaded in full every time the skill is
+# read, and large bodies usually hold reference material that belongs in references/.
+BODY_WARN = 12000
+for s in sorted(skills.values(), key=lambda x: x["rel"]):
+    if len(s["body"]) > BODY_WARN:
+        lint.append(f"lint: {s['name']}: body is {len(s['body'])} chars, consider moving detail to references/")
 
 # One table, one home. A skill that lists three or more harness mechanisms inline
 # has copied process/delegate's table and will drift from it.

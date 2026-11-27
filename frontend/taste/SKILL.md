@@ -148,8 +148,7 @@ The command prints a **direction sheet**. It is the art direction for this build
   has unmistakable colours of its own (its material, the paint of its street, the landscape outside
   its windows), keep the dealt proportions and take the colours from the subject instead, and say so
   in the report.
-- Reprint it any time with `node <skill>/scripts/draw.mjs --show`. In a long session, re-read it before each
-  section you build.
+- Reprint the direction with `node <skill>/scripts/draw.mjs --show` whenever you need it. It is small, and it is the decision, not this file. Re-read only the section of the step you are on. Never re-read this whole file to recall the direction.
 
 ### 4. Find the idea
 
