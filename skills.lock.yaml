@@ -1,951 +1,641 @@
-# Skills lock — fonte + pin de cada skill de terceiro-parte.
-# Localmente modificados: divergencia registrada em modified_by_user.
-# Update: scripts/update-skills.sh (diferenca contra upstream, nunca sobrescreve cega).
+# Skills lock: external mounts, parked packs, and intentional local notes.
+# `external:` = local project skills linked directly into the farm.
+# `parked:`  = preserved off-farm packs mountable via `scripts/link.sh --pack <name>`.
+# Active third-party attribution is in ATTRIBUTION.md; no vendors are tracked here.
 
-sources:
-  mattpocock/skills:
-    url: https://github.com/mattpocock/skills.git
-    code-review:
-      pin: fee7bb5fdddc
-      updated: 2026-10-28T23:44:15.025Z
-      modified_by_user: true
-    codebase-design:
-      pin: 07ba1cd60efc
-      updated: 2026-10-28T23:44:16.221Z
-      modified_by_user: true
-    domain-modeling:
-      pin: ea30ee454ba2
-      updated: 2026-10-28T23:44:13.659Z
-      modified_by_user: true
-    grilling:
-      pin: 28aceb4c9567
-      updated: 2026-10-28T23:44:12.236Z
-      modified_by_user: true
-    prototype:
-      pin: e41d92e171f0
-      updated: 2026-08-21T17:54:21.538Z
-      modified_by_user: true
-    research:
-      pin: 0a6796c5667e
-      updated: 2026-08-21T17:54:27.841Z
-      modified_by_user: true
-    tdd:
-      pin: 667dbdd00c09
-      updated: 2026-10-28T23:44:04.403Z
-      modified_by_user: true
-    wizard:
-      pin: e396d3ba97c7
-      updated: 2026-10-28T23:44:08.811Z
-      modified_by_user: true
-  heliocosta-dev/revenue-centric-design:
-    url: https://github.com/heliocosta-dev/revenue-centric-design.git
-    revenue-centric-design:
-      pin: 1942760c2242
-      updated: 2026-09-04T16:34:50.876Z
-      modified_by_user: true
-  Leonxlnx/taste-skill:
-    url: https://github.com/Leonxlnx/taste-skill.git
-    design-taste-frontend:
-      pin: 844f3cf223d2
-      updated: 2026-10-28T23:44:17.538Z
-      modified_by_user: true
-  abdiraimov-otabek/dashboard-design-skill:
-    url: https://github.com/abdiraimov-otabek/dashboard-design-skill.git
-    dashboard-design:
-      pin: b813324aea08dc19a82d2bd9ea73824dfdd0e844
-      updated: 2026-11-07T01:05:02.107Z
-      modified_by_user: true
-  sananthanarayan/skilldrop:
-    url: https://github.com/sananthanarayan/skilldrop.git
-    dashboard-spec:
-      pin: ae58fb288fef59063d6c8696777b034a88219f59
-      updated: 2026-11-07T01:05:02.107Z
-      modified_by_user: true
-  perfect7613/dsa-system-design-optimizer:
-    url: https://github.com/perfect7613/dsa-system-design-optimizer.git
-    dsa-system-design:
-      pin: 555cb1a6b8befff83400f90845184b9186aef219
-      updated: 2026-11-07T01:28:29.551Z
-      modified_by_user: true
-  gabrielgreco1/skills:
-    url: https://github.com/gabrielgreco1/skills.git
-    aula-interativa:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:39.057Z
-      modified_by_user: true
-    diretor-de-edicao:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:39.057Z
-      modified_by_user: true
-    motion-designer:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:39.057Z
-      modified_by_user: true
-    ui-humanizer:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:39.057Z
-      modified_by_user: true
-    agentbox:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:47.127Z
-      modified_by_user: true
-    webscraping-expert:
-      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
-      updated: 2026-11-07T01:40:47.127Z
-      modified_by_user: true
-  emilkowalski/skills:
-    url: https://github.com/emilkowalski/skills.git
-    emil-design-eng:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    animate:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    review-animations:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    animation-performance:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    improve-animations:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    remove-animations:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    find-animation-opportunities:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    choreograph:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    animation-vocabulary:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    break-ui:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
-    pick-ui-library:
-      pin: c8a79627b59d72d764d6ab6f2c87c09a48169833
-      updated: 2026-11-07T01:51:53.949Z
-      modified_by_user: true
+external:
+  olorin: /home/cadu/Projects/olorin/integrations/skills/olorin
+parked:
   Kappaemme-git/codex-startup-pressure-test-skill:
+    pack: marketing
     url: https://github.com/Kappaemme-git/codex-startup-pressure-test-skill.git
     startup-pressure-test:
       pin: 247b06546a4b
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-  zubair-trabzada/geo-seo-claude:
-    url: https://github.com/zubair-trabzada/geo-seo-claude.git
-    geo-audit:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-citability:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-technical:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-schema:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-crawlers:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-llmstxt:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-content:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-    geo-platform-optimizer:
-      pin: 989cae01e8eb
-      updated: 2026-11-07T02:25:19.000Z
-      modified_by_user: true
-  AgriciDaniel/claude-seo:
-    url: https://github.com/AgriciDaniel/claude-seo.git
-    seo:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-agentic:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-audit:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-backlinks:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-cluster:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-competitor-pages:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-content:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-content-brief:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-dataforseo:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-drift:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-ecommerce:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-flow:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-geo:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-google:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-hreflang:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-image-gen:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-images:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-local:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-maps:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-page:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-plan:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-programmatic:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-schema:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-sitemap:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-sxo:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
-    seo-technical:
-      pin: 6be93f45064f
-      updated: 2026-11-07T02:32:20.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:25:19+00:00
   aaron-he-zhu/aaron-marketing-skills:
+    pack: marketing
     url: https://github.com/aaron-he-zhu/aaron-marketing-skills.git
     ad-account-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     conversion-signal-qa:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     conversion-value-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     placement-exclusion-manager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     ad-creative-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     ad-test-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     bid-strategy-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     landing-experience-checker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     audience-segment-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     campaign-architect:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     product-feed-optimizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     search-term-miner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     attribution-reconciler:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     budget-pacing-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     fatigue-frequency-manager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     paid-measurement-loop:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     cold-outbound-sequencer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     email-quality-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     inbox-placement-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     send-experiment-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     dynamic-content-personalizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     email-creative-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     email-render-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     subject-line-lab:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     email-sequence-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     newsletter-monetization-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     preference-frequency-manager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     reactivation-specialist:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     deliverability-qa:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     list-growth-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     list-hygiene-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     list-segment-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     content-amplifier:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     contract-helper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     creator-content-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     outreach-manager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     landing-optimizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     performance-analyzer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     report-generator:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     roi-calculator:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     audience-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     fit-scorer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     influencer-discovery:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     trend-spotter:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     brief-generator:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     budget-optimizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     campaign-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     competitor-tracker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-asset-packager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     message-house-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     pricing-packaging-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     sales-enablement-kit:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     community-launch-runner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-day-conductor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-readiness-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     press-media-relations:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-feedback-synthesizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-retro-analyzer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     momentum-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     early-access-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-tier-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     launch-window-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     positioning-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     brand-language-codifier:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     message-system-architect:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     story-bank-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     strategic-narrative-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     message-test-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-drift-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-quality-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-resonance-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-cascade-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-enablement-kit:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     pitch-narrative-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     proof-point-packager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     audience-belief-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     category-narrative-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     narrative-baseline-mapper:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     positioning-truth-tracer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     domain-authority-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     offsite-signal-analyzer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     performance-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     rank-tracker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     competitor-analysis:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     content-gap-analysis:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     keyword-research:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     serp-analysis:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     advocacy-program-designer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     short-video-scripter:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-calendar-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-creative-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     channel-portfolio-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     participation-warmup-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     platform-norm-profiler:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     voice-dossier-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     crisis-response-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     engagement-inbox-manager:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-quality-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-selling-planner:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     dark-social-attributor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     share-of-voice-tracker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-measurement-loop:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     social-pulse-monitor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:36:49.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:36:49+00:00
     content-writer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     geo-content-optimizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     page-play-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     serp-markup-builder:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     content-quality-auditor:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     on-page-seo-checker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     site-structure-optimizer:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     technical-seo-checker:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:40:29.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:40:29+00:00
     channel-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     consent-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     creator-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     entity-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     launch-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     memory-management:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     narrative-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
     offer-claims-registry:
       pin: 3da1c6d96ad4
-      updated: 2026-11-07T02:41:01.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:41:01+00:00
+  zubair-trabzada/geo-seo-claude:
+    pack: seo
+    url: https://github.com/zubair-trabzada/geo-seo-claude.git
+    geo-audit:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-citability:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-technical:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-schema:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-crawlers:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-llmstxt:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-content:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+    geo-platform-optimizer:
+      pin: 989cae01e8eb
+      updated: 2026-11-07 02:25:19+00:00
+  AgriciDaniel/claude-seo:
+    pack: seo
+    url: https://github.com/AgriciDaniel/claude-seo.git
+    seo:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-agentic:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-audit:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-backlinks:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-cluster:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-competitor-pages:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-content:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-content-brief:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-dataforseo:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-drift:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-ecommerce:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-flow:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-geo:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-google:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-hreflang:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-image-gen:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-images:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-local:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-maps:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-page:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-plan:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-programmatic:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-schema:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-sitemap:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-sxo:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
+    seo-technical:
+      pin: 6be93f45064f
+      updated: 2026-11-07 02:32:20+00:00
   gamedev-skills/awesome-gamedev-agent-skills:
+    pack: gamedev
     url: https://github.com/gamedev-skills/awesome-gamedev-agent-skills.git
     router:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     ai-behavior-trees-utility-ai:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     audio-design:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     camera-systems:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     create-game-assets:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     dialogue-systems:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     game-ai:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     game-feel:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     game-ui-ux:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     input-systems:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     level-design:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     performance-optimization:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     physics-tuning:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     procedural-gen:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     save-systems:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     shader-programming:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     card-game:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     fps-shooter:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     platformer:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     puzzle:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     roguelike:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     rpg:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     survival-crafting:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     tower-defense:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     visual-novel:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-2d-movement:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-3d-essentials:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-animation:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-audio:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-csharp:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-export:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-gdscript:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-gdscript-headless-testing:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-multiplayer:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-nodes-scenes:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-physics:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-resources:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-shaders:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-signals-groups:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-tilemap:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     godot-ui-control:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     game-jam:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     itch-publish:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     prototype-fast:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
     steam-publish:
       pin: 19d93f97c9c1
-      updated: 2026-11-07T02:47:31.000Z
-      modified_by_user: true
+      updated: 2026-11-07 02:47:31+00:00
+  gabrielgreco1/skills:
+    pack: media-misc
+    url: https://github.com/gabrielgreco1/skills.git
+    aula-interativa:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07 01:40:39.057000+00:00
+    diretor-de-edicao:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07 01:40:39.057000+00:00
+    motion-designer:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07 01:40:39.057000+00:00
+    ui-humanizer:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07 01:40:39.057000+00:00
+    agentbox:
+      pin: a3c2be7a844ffe8b0aa39c20f82dcbe776692757
+      updated: 2026-11-07 01:40:47.127000+00:00

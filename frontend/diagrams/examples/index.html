@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section archetypes — hand-built, no libraries</title>
+<style>
+  :root {
+    --bg: #080d15;
+    --ink: #e9eff8;
+    --ink-2: #9db0c8;
+    --ink-3: #6b7f98;
+    --line: #1c2839;
+    --line-2: #2b3d55;
+    --accent: #5cadf5;
+    --fill: #080d15;              /* same as --bg: opaque faces hide the lines behind */
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .shell { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+  .sec { padding: clamp(64px, 9vw, 120px) 0; border-top: 1px solid var(--line); }
+  .sec:first-of-type { border-top: 0; }
+  .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 12px; font-weight: 550; }
+  h2 { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; letter-spacing: -.015em; margin: 0 0 10px; font-weight: 550; }
+  .lead { color: var(--ink-2); max-width: 62ch; margin: 0 0 8px; }
+  .note { font: 12px/1.5 var(--mono); color: var(--ink-3); }
+
+  /* 1. ASCII texture ------------------------------------------------ */
+  .ascii-wrap {
+    position: relative; margin-top: 32px; border: 1px solid var(--line);
+    border-radius: 4px; overflow: hidden; background: var(--bg);
+  }
+  .ascii { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; }
+
+  /* 2. Isometric scene ---------------------------------------------- */
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .mods { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 6px; }
+  .mods button {
+    width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    background: transparent; border: 1px solid var(--line); border-radius: 3px;
+    color: var(--ink-2); font: 13px/1 var(--mono); text-align: left; cursor: pointer;
+    transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  }
+  .mods button::before { content: ""; width: 7px; height: 7px; background: var(--line-2); transition: background .25s var(--ease), transform .25s var(--ease); }
+  .mods button:hover, .mods button.is-on { color: var(--ink); border-color: var(--line-2); background: #0d1521; }
+  .mods button:hover::before, .mods button.is-on::before { background: var(--accent); transform: scale(1.3); }
+  /* o container reage ao filho: com um item ativo, os outros recuam (sem JS) */
+  [data-list]:has([data-piece].is-on) [data-piece]:not(.is-on) { opacity: .5; }
+  .mods button.is-on { translate: 4px 0; }
+  .mods { transition: none; }
+  .mods button { transition: color .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease), opacity .35s var(--ease), translate .5s var(--ease); }
+
+  .iso-fig { position: relative; margin: 0; }
+  /* cenas naturalmente altas: teto de largura, senão dominam a coluna */
+  [data-iso="pilha"] { max-width: min(100%, 340px); justify-self: center; }
+  [data-iso="pilha"] .f.top { fill: color-mix(in srgb, var(--accent) 12%, var(--fill)); }
+  [data-iso="paginas"] { max-width: min(100%, 430px); justify-self: center; }
+  .iso-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .iso-svg .f { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-linejoin: round; }
+  .iso-svg .l { fill: none; stroke: var(--line-2); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+  .iso-svg .d { fill: none; stroke: #3a4d66; stroke-width: 1; }
+  .iso-svg .dash { stroke-dasharray: 3 3; }
+  .iso-svg .screen { fill: color-mix(in srgb, var(--accent) 14%, var(--fill)); }
+  .iso-svg .duct { stroke: #354862; }
+  .iso-svg .dot { fill: var(--line-2); }
+  .iso-svg .dot-a { fill: var(--accent); }
+
+  /* draw-in: every stroke is a dashed line of length 1, offset 1, revealed on demand */
+  .js .iso-fig.is-mounted .iso-svg :is(.f, .l, .d):not(.dash) {
+    stroke-dasharray: 1 1; stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.1s var(--ease) var(--d, 0s), stroke .4s var(--ease);
+  }
+  .js .iso-fig.is-drawn .iso-svg :is(.f, .l, .d):not(.dash) { stroke-dashoffset: 0; }
+  .js .iso-fig.is-mounted .iso-svg :is(.dot, .dash) { opacity: 0; transition: opacity .7s var(--ease) calc(var(--d, 0s) + .2s); }
+  .js .iso-fig.is-drawn .iso-svg :is(.dot, .dash) { opacity: 1; }
+  .js .iso-fig.is-mounted .iso-svg .screen { fill-opacity: 0; transition: fill-opacity .7s var(--ease) calc(var(--d, 0s) + .3s); }
+  .js .iso-fig.is-drawn .iso-svg .screen { fill-opacity: 1; }
+
+  /* the pulse: a 6% dash travelling a path normalised to length 1 */
+  .iso-svg .pulse {
+    fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round;
+    stroke-dasharray: .06 .94; opacity: 0;
+    transition: opacity .5s var(--ease);
+  }
+  .iso-fig.is-ready .pulse { opacity: 1; animation: pulse var(--pv, 3.2s) linear infinite var(--pd, 0s); }
+  .iso-fig:not(.is-visible) .pulse { animation-play-state: paused; }
+  @keyframes pulse { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+  /* addressing: one piece lit, the rest recede */
+  .iso-svg [data-module] { transition: opacity .5s var(--ease); }
+  .iso-fig.has-lit .iso-svg [data-module]:not(.is-lit) { opacity: .35; }
+  .iso-svg [data-module].is-lit.f, .iso-svg [data-module].is-lit.l { stroke: var(--accent); stroke-width: 1.5; }
+  .iso-svg [data-module].is-lit.screen { fill: color-mix(in srgb, var(--accent) 26%, var(--fill)); }
+  .iso-fig.has-lit .pulse { opacity: .25; }
+  .iso-fig.has-lit .pulse.is-lit { opacity: 1; stroke-width: 2.6; animation-duration: 1.7s; }
+
+  .iso-label {
+    position: absolute; z-index: 2; transform: translate(0, -50%);
+    padding: 2px 7px; background: var(--fill); border: 1px solid var(--line);
+    font: 11px/1.5 var(--mono); color: var(--ink-2); white-space: nowrap;
+    transition: color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .iso-label.is-lit { color: var(--ink); border-color: var(--accent); }
+
+  /* 3. Playlet ------------------------------------------------------ */
+  .playlet { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; margin-top: 28px; }
+  .playlet-tilt { perspective: 900px; }
+  .screen {
+    background: #0c131d; border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px; display: grid; gap: 10px; max-width: 400px;
+    transform-style: preserve-3d; will-change: transform;
+    transition: transform .35s var(--ease);
+    box-shadow: 0 24px 60px -30px #000;
+  }
+  .screen-top { display: flex; align-items: center; gap: 9px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .avatar { width: 26px; height: 26px; display: grid; place-items: center; background: var(--accent); color: #04101f; font: 700 13px/1 system-ui; border-radius: 2px; }
+  .screen-top b { display: block; font-size: 13px; font-weight: 550; }
+  .screen-top i { font: 11px/1 var(--mono); color: var(--ink-3); font-style: normal; }
+  .bubble { margin: 0; padding: 8px 11px; border-radius: 10px; font-size: 13px; line-height: 1.45; max-width: 88%; }
+  .bubble.in { background: #16202e; border-bottom-left-radius: 2px; justify-self: start; }
+  .bubble.out { background: color-mix(in srgb, var(--accent) 16%, #0c131d); border: 1px solid #2a4f76; border-bottom-right-radius: 2px; justify-self: end; }
+  .bubble-pair { display: grid; gap: 6px; }
+  .typing { display: flex; gap: 4px; align-items: center; width: max-content; }
+  .typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .45; animation: blink 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+  .done { margin: 4px 0 0; font: 11px/1 var(--mono); color: var(--accent); display: flex; align-items: center; gap: 6px; }
+  .done svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  .js .playlet .beat { opacity: 0; }
+  .js .playlet.is-playing .beat { animation: enter .5s var(--ease) both; }
+  .js .playlet.is-playing .b1 { animation-delay: .15s; }
+  .js .playlet.is-playing .typing { animation: says .95s var(--ease) .6s both; }
+  .js .playlet.is-playing .b2 { animation-delay: 1.5s; }
+  .js .playlet.is-playing .b3 { animation-delay: 2.25s; }
+  .js .playlet.is-playing .b4 { animation-delay: 2.85s; }
+  @keyframes enter { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes says { 0% { opacity: 0; } 12% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* 4. Signal map --------------------------------------------------- */
+  .map { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); margin-top: 28px; }
+  .map-stage { position: relative; min-height: clamp(320px, 40vw, 440px); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .map-canvas { display: block; width: 100%; height: 100%; }
+  .map-labels { position: absolute; inset: 0; }
+  .map-cloud {
+    position: absolute; transform: translate(-50%, -50%);
+    font: 10px/1 var(--mono); color: var(--ink-3); letter-spacing: .04em; white-space: nowrap;
+    transition: color .3s var(--ease);
+  }
+  .map-cloud.is-on { color: var(--accent); }
+  .map-signal {
+    position: absolute; transform: translate(-50%, -50%);
+    font: 10px/1 var(--mono); color: #dbe8fa; background: #0d1725; border: 1px solid #2c4666;
+    padding: 3px 6px; border-radius: 2px; cursor: pointer; white-space: nowrap;
+  }
+  .map-signal.is-on { border-color: var(--accent); color: #fff; background: #12243a; }
+  .map-panel { display: grid; align-content: start; gap: 8px; }
+  .map-id { font: 11px/1 var(--mono); color: var(--accent); margin: 0; }
+  .map-title { font-size: 16px; font-weight: 550; margin: 0; }
+  .map-text { font-size: 13px; color: var(--ink-2); margin: 0; }
+  [hidden] { display: none !important; }
+  .nojs { font: 12px/1.6 var(--mono); color: var(--ink-3); }
+
+
+  /* 3. Storyboard: quatro passos, a sequência importa ---------------- */
+  .steps { list-style: none; margin: 30px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+  .step { position: relative; padding: 22px 20px 28px; border-left: 1px solid var(--line); transition: background-color .3s var(--ease); }
+  .step:first-child { border-left: 0; }
+  .step::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease); }
+  .step:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .step:hover::before { transform: scaleX(1); }
+  .step__fig { margin: 0 0 16px; max-width: 170px; height: 150px; }
+  /* aqui não há rótulos: o SVG pode letterboxar dentro da caixa e o texto alinha */
+  .step__fig .iso-svg { width: 100%; height: 150px; }
+  .step__n { font: 500 11px/1 var(--mono); color: var(--ink-3); }
+  .step__t { font-size: 15px; font-weight: 550; margin: 7px 0 4px; letter-spacing: -.01em; }
+  .step__p { font-size: 12.5px; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+  /* 4. Layers: a lista acende o andar ------------------------------- */
+  .escada { list-style: none; margin: 24px 0 0; padding: 0; display: grid; }
+  .escada li {
+    display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; align-items: baseline;
+    padding: 13px 14px; border-top: 1px solid var(--line); border-radius: 3px; cursor: pointer;
+    transition: background-color .3s var(--ease), opacity .35s var(--ease);
+  }
+  .escada li:last-child { border-bottom: 1px solid var(--line); }
+  .escada li.is-on { background: var(--card); }
+  .escada:has(li.is-on) li:not(.is-on) { opacity: .5; }
+  .escada li:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .escada__n { font: 600 19px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: -.02em; }
+  .escada li.is-on .escada__n { color: var(--accent); }
+  .escada__t { font-size: 12.5px; line-height: 1.45; color: var(--ink-3); }
+  .escada__t b { display: block; font-size: 13px; font-weight: 550; color: var(--ink-2); }
+  .iso-label--side { font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .step:nth-child(3) { border-left: 0; }
+    .step:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 560px) {
+    .steps { grid-template-columns: minmax(0, 1fr); }
+    .step { border-left: 0; }
+    .step:nth-child(n + 2) { border-top: 1px solid var(--line); }
+  }
+
+  @media (max-width: 820px) {
+    .split, .playlet, .map { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .js .playlet .beat { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <!-- 1 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell">
+      <p class="eyebrow">extra · canvas texture</p>
+      <h1>A Rubik's cube as living ASCII</h1>
+      <p class="lead">The cube is drawn once in isometric projection, turned into a height field by blurring
+        it three times and multiplying back by its own alpha, lit with a fake normal, and re-drawn as glyphs
+        from a pre-baked atlas. Each sticker becomes a small dome; the three faces carry a different alpha,
+        which is what separates them in the light. Move the pointer across it: the light follows.</p>
+      <div class="ascii-wrap"><canvas class="js-ascii ascii" data-forma="cubo" aria-hidden="true"></canvas></div>
+      <p class="note">8 × 11 px cell · 24 fps · 10 glyphs × 5 tones · campo de altura de 300 × 150 · a forma vem de <code>data-forma</code> no canvas (<code>cubo</code> ou <code>infinito</code>)</p>
+    </div>
+  </section>
+
+  <!-- 2 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">1 · isometric scene</p>
+        <h2>A system drawing that draws itself</h2>
+        <p class="lead">Boxes, ducts and labels are projected from a small 3D grid to 2D, painted
+          back-to-front, and stroked in with a dashed line. Every piece carries a name, so HTML
+          controls can light it up.</p>
+        <ul class="mods" data-list="plant">
+          <li><button type="button" data-piece="support">Support</button></li>
+          <li><button type="button" data-piece="automation">Automation</button></li>
+          <li><button type="button" data-piece="dashboard">Dashboard</button></li>
+        </ul>
+      </div>
+      <figure class="iso-fig" data-iso="plant" data-u="15" data-tempo="1.6">
+        <span class="iso-label" data-label="support">atendimento</span>
+        <span class="iso-label" data-label="automation">automação</span>
+        <span class="iso-label" data-label="dashboard">painel</span>
+        <span class="iso-label" data-label="core">núcleo</span>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell">
+      <p class="eyebrow">2 · scripted screen</p>
+      <h2>A product that tells its story in six beats</h2>
+      <div class="playlet" data-playlet>
+        <div>
+          <p class="lead">A mock UI built from real DOM, animated by a single class on the wrapper:
+            every beat is one CSS keyframe with its own delay. Replay is a class remove, a forced
+            reflow, and a class add — no timeline library, no state machine.</p>
+          <p class="note">Pause to watch it again: hovering the screen replays after 3.4 s.</p>
+        </div>
+        <div class="playlet-tilt" data-tilt>
+          <div class="screen">
+            <div class="screen-top">
+              <span class="avatar">A</span>
+              <span><b>Support</b><i>online now</i></span>
+            </div>
+            <p class="bubble in beat b1">Hi! Do you deliver to Campinas?</p>
+            <div class="bubble-pair">
+              <p class="bubble out typing beat"><i></i><i></i><i></i></p>
+              <p class="bubble out beat b2">We do. Want me to hold your order and send the payment link?</p>
+            </div>
+            <p class="bubble in beat b3">Yes, please send it</p>
+            <p class="done beat b4"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5l4 4 8-9"/></svg>Order created and link sent</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell">
+      <p class="eyebrow">3 · storyboard</p>
+      <h2>Four steps, and the order is the lesson</h2>
+      <p class="lead">A process the visitor can read in one look: four cards, each with its own small
+        isometric figure that draws itself when the section arrives. The hover is two things only — a
+        faint field behind the card, and a 1 px accent rule that grows from the left.</p>
+      <ol class="steps">
+        <li class="step">
+          <figure class="iso-fig step__fig" data-iso="conversa" data-u="9" data-tempo=".9" aria-hidden="true"></figure>
+          <span class="step__n">Step 1</span>
+          <h3 class="step__t">A 30 minute call</h3>
+          <p class="step__p">About the business and where it hurts. Nothing technical.</p>
+        </li>
+        <li class="step">
+          <figure class="iso-fig step__fig" data-iso="proposta" data-u="9" data-tempo=".9" aria-hidden="true"></figure>
+          <span class="step__n">Step 2</span>
+          <h3 class="step__t">A proposal with scope and price</h3>
+          <p class="step__p">Before any contract, in writing.</p>
+        </li>
+        <li class="step">
+          <figure class="iso-fig step__fig" data-iso="entregas" data-u="9" data-tempo=".9" aria-hidden="true"></figure>
+          <span class="step__n">Step 3</span>
+          <h3 class="step__t">Short deliveries</h3>
+          <p class="step__p">Reviewed with your team, every week.</p>
+        </li>
+        <li class="step">
+          <figure class="iso-fig step__fig" data-iso="noar" data-u="9" data-tempo=".9" aria-hidden="true"></figure>
+          <span class="step__n">Step 4</span>
+          <h3 class="step__t">Live, and monitored</h3>
+          <p class="step__p">The thing keeps running after the invoice.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell split">
+      <figure class="iso-fig" data-iso="pilha" data-u="17" data-tempo="1.4" aria-hidden="true">
+        <span class="iso-label iso-label--side" data-label="n1">12.480</span>
+        <span class="iso-label iso-label--side" data-label="n2">1.284</span>
+        <span class="iso-label iso-label--side" data-label="n3">436</span>
+      </figure>
+      <div>
+        <p class="eyebrow">4 · layers</p>
+        <h2>From noise to decision</h2>
+        <p class="lead">Same engine, a different scene: three stacked discs. The list on the right is not
+          decoration — hovering or focusing a row lights the disc, dims its siblings, and the container
+          does the dimming all by itself with <code>:has()</code>.</p>
+        <ol class="escada" data-list="pilha">
+          <li data-piece="n1"><span class="escada__n">12.480</span><span class="escada__t"><b>signals read</b>Raw: everything that shows up</span></li>
+          <li data-piece="n2"><span class="escada__n">1.284</span><span class="escada__t"><b>moves that change something</b>Verified: what passed the checks</span></li>
+          <li data-piece="n3"><span class="escada__n">436</span><span class="escada__t"><b>need action today</b>Prioritized: who to reach out to first</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">5 · static isometric</p>
+        <h2>A mockup that just stands there</h2>
+        <p class="lead">Not every drawing should move. This is the same engine with no ducts and no
+          pulses: it draws itself in once when it enters the view and then stops. It is the right choice
+          when the picture is an illustration of a product, not a process.</p>
+        <p class="note">window + phone · no ducts · draw-in only</p>
+      </div>
+      <figure class="iso-fig" data-iso="paginas" data-u="14" data-tempo="1.2" aria-hidden="true"></figure>
+    </div>
+  </section>
+
+  <!-- 4 ------------------------------------------------------------------ -->
+  <section class="sec">
+    <div class="shell">
+      <p class="eyebrow">6 · spatial map</p>
+      <h2>Points that mean something when you touch them</h2>
+      <p class="lead">Canvas draws the cloud; HTML holds the text. Each cluster spins on its own axis
+        with a cheap perspective divide, the labels ride the projection, and the panel on the right is
+        a plain DOM block that a screen reader can reach.</p>
+      <div class="map" data-map>
+        <div class="map-stage">
+          <canvas class="map-canvas"></canvas>
+          <div class="map-labels"></div>
+        </div>
+        <aside class="map-panel">
+          <div data-view="intro">
+            <p class="map-id">loop.intel</p>
+            <p class="map-title">Every dot is a public signal</p>
+            <p class="map-text">The bright ones need action today. Hover or tap one to see what changed.</p>
+          </div>
+          <div data-view="0" hidden>
+            <p class="map-id">sinal.preco</p>
+            <p class="map-title">Your price moved out of range</p>
+            <p class="map-text">Your main product is 11% above the market average. Review the margin or make the differentiator clearer on the page.</p>
+          </div>
+          <div data-view="1" hidden>
+            <p class="map-id">sinal.entrada</p>
+            <p class="map-title">A competitor entered your category</p>
+            <p class="map-text">A new storefront is bidding on your main term and undercutting by 8%.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* The whole page is progressive: without this script every section still reads. */
+document.documentElement.classList.add('js');
+(function () {
+  'use strict';
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function reduce() { return rm.matches; }
+
+  /* ------------------------------------------------------------------ 1 */
+  (function ascii() {
+    var cv = document.querySelector('.js-ascii');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var FORMA = cv.getAttribute('data-forma') || 'cubo';
+    var RAMP = ' .:;=+*x#%@';
+    var PAL = [[16, 44, 96], [36, 100, 196], [74, 150, 232], [120, 188, 246], [172, 212, 252]];
+    var MW = 300, MH = 150;
+    var CW = 8, CH = 13, W = 0, H = 0, cols = 0, rows = 0, dpr = 1;
+    var sh = null, atlas = null, aCW = 0, aCH = 0;
+    var light = { x: 0, y: 0, tx: 0, ty: 0 }, last = 0, raf = 0;
+
+    function blur(src, w, h, r) {
+      var tmp = new Float32Array(w * h), out = new Float32Array(w * h), x, y, s;
+      for (y = 0; y < h; y++) {
+        s = 0;
+        for (x = -r; x <= r; x++) s += src[y * w + Math.min(w - 1, Math.max(0, x))];
+        for (x = 0; x < w; x++) {
+          tmp[y * w + x] = s / (2 * r + 1);
+          s += src[y * w + Math.min(w - 1, x + r + 1)] - src[y * w + Math.max(0, x - r)];
+        }
+      }
+      for (x = 0; x < w; x++) {
+        s = 0;
+        for (y = -r; y <= r; y++) s += tmp[Math.min(h - 1, Math.max(0, y)) * w + x];
+        for (y = 0; y < h; y++) {
+          out[y * w + x] = s / (2 * r + 1);
+          s += tmp[Math.min(h - 1, y + r + 1) * w + x] - tmp[Math.max(0, y - r) * w + x];
+        }
+      }
+      return out;
+    }
+
+    /* Draw the mark on an offscreen canvas, then read it back as a relief. */
+    /* As duas formas. A que estiver em <canvas data-forma> é usada. */
+    function desenharCubo(g) {
+      /* Cubo mágico isométrico: 3 faces de 3×3 adesivos. Cada adesivo vira um
+         pequeno domo no campo de altura; o alfa de cada face é diferente, e é
+         só a ALTURA que separa topo e laterais (face plana tem normal igual). */
+      var CI = Math.cos(Math.PI / 6), SI = 0.5;
+      var u = MH / 6.4, ox = MW / 2, oy = MH / 2;
+      function P(x, y, z) { return [ox + (x - y) * CI * u, oy + ((x + y) * SI - z) * u]; }
+      function face(fill, map) {
+        g.fillStyle = fill;
+        for (var a = 0; a < 3; a++) {
+          for (var b = 0; b < 3; b++) {
+            var q = [map(a + .11, b + .11), map(a + .89, b + .11),
+                     map(a + .89, b + .89), map(a + .11, b + .89)];
+            g.beginPath();
+            for (var k = 0; k < 4; k++) k ? g.lineTo(q[k][0], q[k][1]) : g.moveTo(q[k][0], q[k][1]);
+            g.closePath();
+            g.fill();
+          }
+        }
+      }
+      face('rgba(255,255,255,1)',   function (a, b) { return P(a, b, 3); });   // topo
+      face('rgba(255,255,255,.86)', function (a, b) { return P(3, a, b); });   // lateral direita
+      face('rgba(255,255,255,.74)', function (a, b) { return P(a, 3, b); });   // lateral esquerda
+    }
+
+    function desenharInfinito(g) {
+      /* A lemniscata da marca, em traço grosso: cada traço vira um domo. */
+      g.strokeStyle = '#fff';
+      g.lineWidth = MH * 0.20;
+      g.lineCap = 'round';
+      g.beginPath();
+      for (var i = 0; i <= 200; i++) {
+        var t = i / 200 * Math.PI * 2, k = 1 + Math.sin(t) * Math.sin(t);
+        var px = MW / 2 + MW * 0.38 * Math.cos(t) / k;
+        var py = MH / 2 + MH * 0.95 * Math.sin(t) * Math.cos(t) / k;
+        if (i) g.lineTo(px, py); else g.moveTo(px, py);
+      }
+      g.stroke();
+    }
+
+    /* Da forma ao relevo: alfa → 3 blurs → altura → normal falsa. */
+    function prepare() {
+      var c = document.createElement('canvas');
+      c.width = MW; c.height = MH;
+      var g = c.getContext('2d');
+      if (FORMA === 'infinito') desenharInfinito(g); else desenharCubo(g);
+
+      var data = g.getImageData(0, 0, MW, MH).data;
+      var a = new Float32Array(MW * MH), j;
+      for (j = 0; j < a.length; j++) a[j] = data[j * 4 + 3] / 255;
+      var b = blur(blur(blur(a, MW, MH, 2), MW, MH, 2), MW, MH, 2);
+      var hgt = new Float32Array(MW * MH);
+      for (j = 0; j < hgt.length; j++) hgt[j] = b[j] * a[j];
+      var nx = new Float32Array(MW * MH), ny = new Float32Array(MW * MH), nz = new Float32Array(MW * MH);
+      for (var y = 1; y < MH - 1; y++) {
+        for (var x = 1; x < MW - 1; x++) {
+          var q = y * MW + x;
+          var gx = (hgt[q + 1] - hgt[q - 1]) * 80, gy = (hgt[q + MW] - hgt[q - MW]) * 80;
+          var len = Math.sqrt(gx * gx + gy * gy + 1);
+          nx[q] = -gx / len; ny[q] = -gy / len; nz[q] = 1 / len;
+        }
+      }
+      return { a: a, h: hgt, nx: nx, ny: ny, nz: nz };
+    }
+
+    /* Every glyph in every tone, drawn once into one bitmap. */
+    function bake() {
+      aCW = Math.ceil(CW * dpr); aCH = Math.ceil(CH * dpr);
+      var c = document.createElement('canvas');
+      c.width = aCW * RAMP.length; c.height = aCH * PAL.length;
+      var g = c.getContext('2d');
+      g.font = '500 ' + Math.round(aCH * 0.92) + 'px ui-monospace, Menlo, monospace';
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      for (var t = 0; t < PAL.length; t++) {
+        var pos = t / (PAL.length - 1) * (PAL.length - 1), lo = Math.floor(pos), hi = Math.min(lo + 1, PAL.length - 1), f = pos - lo;
+        var col = [0, 1, 2].map(function (k) { return Math.round(PAL[lo][k] * (1 - f) + PAL[hi][k] * f); });
+        g.fillStyle = 'rgb(' + col.join(',') + ')';
+        for (var r = 1; r < RAMP.length; r++) g.fillText(RAMP.charAt(r), (r + .5) * aCW, (t + .5) * aCH);
+      }
+      atlas = c;
+    }
+
+    function measure() {
+      var r = cv.getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      CW = W < 640 ? 6 : 8; CH = W < 640 ? 9 : 11;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      cols = Math.ceil(W / CW); rows = Math.ceil(H / CH);
+      bake();
+    }
+
+    function paint(now, still) {
+      var t = now / 1000;
+      if (!still) {
+        light.x += (light.tx - light.x) * .08;
+        light.y += (light.ty - light.y) * .08;
+      }
+      var lx = light.x * .7, ly = -light.y * .7, lz = .85;
+      var L = Math.sqrt(lx * lx + ly * ly + lz * lz);
+      var band = still ? -9 : (t * .22) % 1.6 - .3;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      for (var ry = 0; ry < rows; ry++) {
+        for (var cx = 0; cx < cols; cx++) {
+          var u = (cx + .5) / cols, v = (ry + .5) / rows;
+          var i = Math.min(MH - 1, Math.floor(v * MH)) * MW + Math.min(MW - 1, Math.floor(u * MW));
+          if (sh.a[i] < .16) continue;
+          /* the relief: how the surface faces the light, plus how high it stands */
+          /* face plana tem normal constante: quem separa topo e laterais é a ALTURA */
+          var nd = sh.nx[i] * (lx / L) + sh.ny[i] * (ly / L) + sh.nz[i] * (lz / L);
+          var lum = sh.h[i] * .85 + (nd - .6) * .30;
+          lum += Math.max(0, 1 - Math.abs(u - band) * 7) * .30;
+          var rr = Math.min(RAMP.length - 1, Math.max(0, Math.round(lum * (RAMP.length - 1))));
+          var tt = Math.min(PAL.length - 1, Math.max(0, Math.round(lum * (PAL.length - 1))));
+          ctx.drawImage(atlas, rr * aCW, tt * aCH, aCW, aCH, cx * CW, ry * CH, CW, CH);
+        }
+      }
+    }
+
+    function loop(now) {
+      raf = requestAnimationFrame(loop);
+      if (now - last < 42) return;   /* ~24 fps: the shuffle reads as texture, not blur */
+      last = now;
+      paint(now, false);
+    }
+
+    sh = prepare();
+    measure();
+    paint(performance.now(), true);      /* first frame now, so nothing is ever blank */
+    if (!reduce()) raf = requestAnimationFrame(loop);
+
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(function () { measure(); if (reduce()) paint(0, true); });
+      ro.observe(cv);
+    }
+    cv.addEventListener('pointermove', function (e) {
+      var r = cv.getBoundingClientRect();
+      light.tx = ((e.clientX - r.left) / r.width - .5) * 2;
+      light.ty = ((e.clientY - r.top) / r.height - .5) * 2;
+    });
+    cv.addEventListener('pointerleave', function () { light.tx = 0; light.ty = 0; });
+    rm.addEventListener('change', function () {
+      cancelAnimationFrame(raf);
+      if (reduce()) { light.tx = light.ty = 0; paint(0, true); } else raf = requestAnimationFrame(loop);
+    });
+  })();
+
+  /* ------------------------------------------------------------------ 2 */
+  (function iso() {
+    var C = Math.cos(Math.PI / 6), S = .5, NS = 'http://www.w3.org/2000/svg';
+    function mk(tag, attrs) {
+      var e = document.createElementNS(NS, tag);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      return e;
+    }
+
+    /* ---------------- o motor ---------------- */
+    function build(fig) {
+      var u = parseFloat(fig.getAttribute('data-u')) || 15;
+      var parts = [], anchors = {}, bb = [1e9, 1e9, -1e9, -1e9];
+
+      function grow(x, y) {
+        if (x < bb[0]) bb[0] = x; if (x > bb[2]) bb[2] = x;
+        if (y < bb[1]) bb[1] = y; if (y > bb[3]) bb[3] = y;
+      }
+      function P(x, y, z) {
+        var sx = (x - y) * C * u, sy = ((x + y) * S - z) * u;
+        grow(sx, sy);
+        return [sx, sy];
+      }
+      function put(node, depth, module) {
+        if (module) node.setAttribute('data-module', module);
+        parts.push({ d: depth, n: node });
+        return node;
+      }
+      function pts(list) {
+        return list.map(function (q) { var s = P(q[0], q[1], q[2]); return s[0].toFixed(2) + ',' + s[1].toFixed(2); }).join(' ');
+      }
+      function poly(list, cls, depth, module) {
+        return put(mk('polygon', { points: pts(list), class: cls }), depth, module);
+      }
+      function line3(list, cls, depth, module) {
+        return put(mk('polyline', { points: pts(list), class: cls }), depth, module);
+      }
+
+      /* caixa: só as três faces visíveis; ordem de pintura por x+y */
+      function box(x, y, z, w, d, h, o) {
+        o = o || {};
+        var depth = x + y, m = o.module || '', cls = o.cls || '';
+        poly([[x + w, y, z], [x + w, y + d, z], [x + w, y + d, z + h], [x + w, y, z + h]], 'f right ' + cls, depth, m);
+        poly([[x, y + d, z], [x + w, y + d, z], [x + w, y + d, z + h], [x, y + d, z + h]], 'f front ' + cls, depth, m);
+        poly([[x, y, z + h], [x + w, y, z + h], [x + w, y + d, z + h], [x, y + d, z + h]], 'f top ' + cls, depth, m);
+        if (o.top) o.top(function (a, b) { return P(x + a, y + b, z + h); }, w, d);
+        if (o.front) o.front(function (a, b) { return P(x + a, y + d, z + b); }, w, h);
+        if (o.right) o.right(function (a, b) { return P(x + w, y + a, z + b); }, d, h);
+        if (o.anchor) anchors[o.anchor] = [x + w / 2, y + d / 2, z + h + .9];
+        return depth;
+      }
+      function plate(x, y, z, w, d, o) {
+        o = o || {}; o.cls = (o.cls || '') + ' plate';
+        return box(x, y, z, w, d, .16, o);
+      }
+      function detail(map, a0, b0, a1, b1, cls) {
+        var p0 = map(a0, b0), p1 = map(a1, b1);
+        return put(mk('polyline', {
+          points: p0[0].toFixed(2) + ',' + p0[1].toFixed(2) + ' ' + p1[0].toFixed(2) + ',' + p1[1].toFixed(2),
+          class: cls
+        }), 1e8);
+      }
+      function tela(map, a0, b0, a1, b1) {
+        var q = [map(a0, b0), map(a1, b0), map(a1, b1), map(a0, b1)];
+        return put(mk('polygon', {
+          points: q.map(function (p) { return p[0].toFixed(2) + ',' + p[1].toFixed(2); }).join(' '),
+          class: 'f screen'
+        }), 1e7);
+      }
+      function ponto(s, r, cls, module) {
+        return put(mk('circle', { cx: s[0].toFixed(2), cy: s[1].toFixed(2), r: r, class: 'dot ' + (cls || '') }), 1e7, module);
+      }
+      function ring(cx, cy, z, r, cls) {
+        var c0 = P(cx, cy, z), rx = r * Math.SQRT2 * C * u, ry = r * Math.SQRT2 * S * u;
+        grow(c0[0] - rx, c0[1] - ry); grow(c0[0] + rx, c0[1] + ry);
+        return put(mk('ellipse', {
+          cx: c0[0].toFixed(2), cy: c0[1].toFixed(2), rx: rx.toFixed(2), ry: ry.toFixed(2),
+          class: 'l ' + (cls || '')
+        }), 1e6);
+      }
+      function cilindro(cx, cy, z, r, h, o) {
+        o = o || {};
+        var rx = r * Math.SQRT2 * C * u, ry = r * Math.SQRT2 * S * u;
+        var b = P(cx, cy, z), t = P(cx, cy, z + h);
+        grow(b[0] - rx, b[1] + ry); grow(t[0] + rx, t[1] - ry);
+        var f = function (n) { return n.toFixed(2); };
+        put(mk('path', {
+          d: 'M' + f(b[0] - rx) + ' ' + f(t[1]) + 'L' + f(b[0] - rx) + ' ' + f(b[1]) +
+             'A' + f(rx) + ' ' + f(ry) + ' 0 0 0 ' + f(b[0] + rx) + ' ' + f(b[1]) +
+             'L' + f(b[0] + rx) + ' ' + f(t[1]) +
+             'A' + f(rx) + ' ' + f(ry) + ' 0 0 1 ' + f(b[0] - rx) + ' ' + f(t[1]) + 'Z',
+          class: 'f side'
+        }), cx + cy, o.module);
+        put(mk('ellipse', { cx: f(t[0]), cy: f(t[1]), rx: f(rx), ry: f(ry), class: 'f top' }), cx + cy, o.module);
+        if (o.anchor) anchors[o.anchor] = [cx + r + 1.9, cy - r - 1.9, z + h / 2];
+      }
+      function duct(list, o) {
+        o = o || {};
+        var depth = Math.min.apply(null, list.map(function (q) { return q[0] + q[1]; }));
+        line3(list, 'l duct', depth - .01);
+        var pl = mk('polyline', { points: pts(list), class: 'pulse' });
+        pl.style.setProperty('--pd', (o.delay || 0) + 's');
+        pl.style.setProperty('--pv', (o.dur || 3.2) + 's');
+        put(pl, 1e9, o.module);
+      }
+
+      /* ---------------- as cenas: dados, não código ---------------- */
+      var SCENES = {
+        /* a planta: um núcleo e três frentes ligadas por dutos */
+        plant: function (c) {
+          c.box(0, 0, 0, 2.4, 2.4, 1.1, {
+            anchor: 'core', module: 'core',
+            top: function (m, w, d) { c.detail(m, .45, .45, w - .45, d - .45, 'd'); c.detail(m, .45, d - .45, w - .45, .45, 'd'); }
+          });
+          c.duct([[-1.2, 1.2, .55], [-3.2, 2.6, .55], [-4.4, 3.2, .9]], { module: 'support', dur: 3.4 });
+          c.duct([[2.4, 0, .55], [4.4, -1.4, .55], [5.2, -2.2, .7]], { module: 'automation', dur: 3.1, delay: .4 });
+          c.duct([[1.2, 2.4, .55], [1.6, 4.4, .55], [1.2, 5.2, .9]], { module: 'dashboard', dur: 3.7, delay: .9 });
+          c.box(-6.4, 1.6, 0, 3.2, 2.6, 2.1, {
+            anchor: 'support', module: 'support',
+            top: function (m, w, d) { c.detail(m, .7, d / 2, w - .7, d / 2, 'd'); },
+            front: function (m, w, h) { c.detail(m, .35, h - .55, w - .35, h - .55, 'd'); c.detail(m, .35, h - .95, w - .35, h - .95, 'd'); }
+          });
+          c.box(2.6, -4.6, 0, 3.4, 2.4, 1.3, {
+            anchor: 'automation', module: 'automation',
+            top: function (m, w, d) { for (var i = 1; i < 4; i++) c.detail(m, i * w / 4, .4, i * w / 4, d - .4, 'd'); }
+          });
+          c.box(-.4, 4.4, 0, 3, 2.2, 1.8, {
+            anchor: 'dashboard', module: 'dashboard',
+            front: function (m, w, h) { c.tela(m, .35, .35, w - .35, h - .35); }
+          });
+        },
+
+        /* storyboard 1: duas partes conversando */
+        conversa: function (c) {
+          c.box(0, 0, 0, 2.4, 2.4, 1.5, {
+            module: 'a',
+            front: function (m, w, h) { c.tela(m, .3, h - 1.05, w - .3, h - .3); }
+          });
+          c.box(4.6, .6, 0, 2, 2, .9, {
+            module: 'b',
+            top: function (m, w, d) { c.detail(m, .5, .5, w - .5, d - .5, 'd'); }
+          });
+          c.duct([[2.4, 1.2, 1.15], [3.2, 1.2, 1.15], [4.6, 1.6, .8]], { module: 'b', dur: 2.6 });
+        },
+
+        /* storyboard 2: uma proposta, três páginas */
+        proposta: function (c) {
+          c.plate(0, 0, 0, 4.4, 3.2, { module: 'p', cls: 'soft' });
+          c.plate(.35, .25, .5, 4.4, 3.2, {
+            module: 'p',
+            top: function (m, w, d) { c.detail(m, .5, .7, w - 1.4, .7, 'd'); c.detail(m, .5, 1.3, w - .6, 1.3, 'd'); }
+          });
+          c.plate(.7, .5, 1, 4.4, 3.2, {
+            module: 'p',
+            top: function (m, w, d) { c.detail(m, .5, .7, w - 2, .7, 'd'); c.detail(m, .5, 1.3, w - .6, 1.3, 'd'); }
+          });
+        },
+
+        /* storyboard 3: entregas curtas, em blocos */
+        entregas: function (c) {
+          [[0, 0, 1.1], [3.4, .6, 1.7], [6.6, 0, 2.5]].forEach(function (p, i) {
+            c.box(p[0], p[1], 0, 2, 2, p[2], {
+              module: 'e' + i,
+              top: function (m, w, d) { c.ponto(m(w / 2, d / 2), 1.9, 'dot-a', 'e' + i); }
+            });
+          });
+        },
+
+        /* storyboard 4: vai ao ar */
+        noar: function (c) {
+          c.box(0, 0, 0, 3.2, 3.2, .8, {
+            module: 'n',
+            top: function (m, w, d) { c.detail(m, .6, .6, w - .6, d - .6, 'd dash'); }
+          });
+          c.ring(1.6, 1.6, 2.6, 1.8, 'dash');
+          c.line3([[1.6, 1.6, .8], [1.6, 1.6, 2.6]], 'l dash', 1e8, 'n');
+          c.ponto(c.P(1.6, 1.6, 2.6), 3, 'dot-a', 'n');
+        },
+
+        /* camadas: três andares, do ruído à decisão */
+        pilha: function (c) {
+          c.cilindro(0, 0, 0, 2.4, .45, { module: 'n1', anchor: 'n1' });
+          c.cilindro(0, 0, 1.5, 1.7, .45, { module: 'n2', anchor: 'n2' });
+          c.cilindro(0, 0, 3, .95, .45, { module: 'n3', anchor: 'n3' });
+        },
+
+        /* estático: uma vitrine (janela + celular), sem animação */
+        paginas: function (c) {
+          c.box(0, 0, 0, 5, 3.8, 3.4, {
+            module: 'w',
+            front: function (m, w, h) { c.tela(m, .28, .28, w - .28, h - .28); },
+            top: function (m, w, d) { c.detail(m, .3, .3, .3, d - .3, 'd'); }
+          });
+          c.box(6, .8, 0, 1.7, 2.6, 2.8, {
+            module: 'm',
+            front: function (m, w, h) { c.tela(m, .2, .35, w - .2, h - .5); }
+          });
+        }
+      };
+
+      var c = {
+        u: u, box: box, plate: plate, duct: duct, detail: detail, tela: tela,
+        ponto: ponto, ring: ring, cilindro: cilindro, line3: line3, poly: poly, P: P
+      };
+      var nome = fig.getAttribute('data-iso');
+      (SCENES[nome] || SCENES.plant)(c);
+
+      /* ---------------- montagem ---------------- */
+      var pad = 9;
+      var w = bb[2] - bb[0] + pad * 2, h = bb[3] - bb[1] + pad * 2;
+      var svg = mk('svg', {
+        viewBox: (bb[0] - pad).toFixed(1) + ' ' + (bb[1] - pad).toFixed(1) + ' ' + w.toFixed(1) + ' ' + h.toFixed(1),
+        class: 'iso-svg', 'aria-hidden': 'true', focusable: 'false'
+      });
+      var g = mk('g', {});
+      parts.sort(function (a, b) { return a.d - b.d; }).forEach(function (p) { g.appendChild(p.n); });
+      svg.appendChild(g);
+      fig.insertBefore(svg, fig.firstChild);
+
+      var draws = svg.querySelectorAll('polygon, polyline, path, ellipse, circle');
+      var time = parseFloat(fig.getAttribute('data-tempo')) || 1.4;
+      Array.prototype.forEach.call(draws, function (el, i) {
+        el.setAttribute('pathLength', '1');
+        el.style.setProperty('--d', (i / draws.length * time).toFixed(3) + 's');
+      });
+
+      /* rótulos: depois do layout (offsetWidth real) e de novo a cada resize */
+      function posicionar() {
+        var fw = fig.clientWidth;
+        if (!fw) return;
+        Array.prototype.forEach.call(fig.querySelectorAll('[data-label]'), function (el) {
+          var a = anchors[el.getAttribute('data-label')];
+          if (!a) return;
+          var s = P(a[0], a[1], a[2]);
+          var lw = el.offsetWidth || 0;
+          var px = (s[0] - (bb[0] - pad)) / w * fw;
+          el.style.left = Math.max(4, Math.min(fw - lw - 4, px)).toFixed(1) + 'px';
+          el.style.top = ((s[1] - (bb[1] - pad)) / h * 100).toFixed(2) + '%';
+        });
+      }
+      requestAnimationFrame(posicionar);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(posicionar);
+      if ('ResizeObserver' in window) new ResizeObserver(posicionar).observe(fig);
+
+      fig.classList.add('is-mounted');
+      return {
+        draw: function () {
+          fig.classList.add('is-drawn');
+          window.setTimeout(function () { fig.classList.add('is-ready'); }, time * 1000 + 400);
+        },
+        lit: function (name) {
+          Array.prototype.forEach.call(fig.querySelectorAll('[data-module]'), function (el) {
+            el.classList.toggle('is-lit', !!name && el.getAttribute('data-module') === name);
+          });
+          Array.prototype.forEach.call(fig.querySelectorAll('[data-label]'), function (el) {
+            el.classList.toggle('is-lit', !!name && el.getAttribute('data-label') === name);
+          });
+          fig.classList.toggle('has-lit', !!name);
+        }
+      };
+    }
+
+    /* ---------------- instância: montar, desenhar ao entrar ---------------- */
+    var figs = [].slice.call(document.querySelectorAll('[data-iso]')).map(function (fig) {
+      return { fig: fig, api: build(fig) };
+    });
+    function apiOf(fig) {
+      for (var i = 0; i < figs.length; i++) if (figs[i].fig === fig) return figs[i].api;
+      return null;
+    }
+
+    if (reduce()) figs.forEach(function (f) { f.fig.classList.add('is-drawn', 'is-ready', 'is-visible'); });
+
+    if ('IntersectionObserver' in window) {
+      var vistos = [];
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var hit = e.target;
+          hit.classList.toggle('is-visible', e.isIntersecting);
+          if (e.isIntersecting && vistos.indexOf(hit) < 0) {
+            vistos.push(hit);
+            var api = apiOf(hit);
+            if (api) api.draw();
+          }
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: .15 });
+      figs.forEach(function (f) { io.observe(f.fig); });
+    } else {
+      figs.forEach(function (f) { f.api.draw(); });
+    }
+
+    window.LoopIso = { light: function (fig, name) { var api = apiOf(fig); if (api) api.lit(name); } };
+
+    /* ---------------- o motor não conhece a lista: data-list liga os dois ---------------- */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-list]'), function (list) {
+      var fig = document.querySelector('[data-iso="' + list.getAttribute('data-list') + '"]');
+      if (!fig) return;
+      var pecas = [].slice.call(list.querySelectorAll('[data-piece]'));
+      var fixo = null;
+      function mostrar(name) {
+        window.LoopIso.light(fig, name);
+        pecas.forEach(function (p) {
+          var on = p.getAttribute('data-piece') === name;
+          p.classList.toggle('is-on', on);
+          if (on) p.setAttribute('aria-current', 'true'); else p.removeAttribute('aria-current');
+        });
+      }
+      pecas.forEach(function (p, i) {
+        var name = p.getAttribute('data-piece');
+        p.tabIndex = 0;
+        p.addEventListener('pointerenter', function () { mostrar(name); });
+        p.addEventListener('focus', function () { mostrar(name); });
+        p.addEventListener('pointerleave', function () { mostrar(fixo); });
+        p.addEventListener('blur', function () { mostrar(fixo); });
+        p.addEventListener('click', function () { fixo = fixo === name ? null : name; mostrar(fixo); });
+        p.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fixo = fixo === name ? null : name; mostrar(fixo); }
+          if (e.key === 'ArrowDown' && pecas[i + 1]) { e.preventDefault(); pecas[i + 1].focus(); }
+          if (e.key === 'ArrowUp' && pecas[i - 1]) { e.preventDefault(); pecas[i - 1].focus(); }
+        });
+      });
+    });
+  })();
+
+  /* ------------------------------------------------------------------ 3 */
+  (function playlet() {
+    [].slice.call(document.querySelectorAll('[data-playlet]')).forEach(function (box) {
+      function replay() {
+        box.classList.remove('is-playing');
+        void box.offsetWidth;           /* force a reflow so the class re-triggers */
+        box.classList.add('is-playing');
+      }
+      if (reduce()) { box.classList.add('is-playing'); return; }
+
+      var last = 0;
+      function touch() { last = performance.now(); replay(); }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && performance.now() - last > 500) touch();
+          });
+        }, { threshold: .35 });
+        io.observe(box);
+      } else { touch(); }
+
+      var tilt = box.querySelector('[data-tilt]');
+      var screen = box.querySelector('.screen');
+      if (!tilt || !screen) return;
+      screen.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || reduce()) return;
+        var r = screen.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - .5;
+        var y = (e.clientY - r.top) / r.height - .5;
+        screen.style.transform = 'rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg)';
+      });
+      screen.addEventListener('pointerleave', function () { screen.style.transform = ''; });
+      screen.addEventListener('pointerenter', function () {
+        if (performance.now() - last > 3400) touch();
+      });
+    });
+  })();
+
+  /* ------------------------------------------------------------------ 4 */
+  (function map() {
+    var box = document.querySelector('[data-map]');
+    if (!box) return;
+    var canvas = box.querySelector('canvas');
+    var layer = box.querySelector('.map-labels');
+    var panel = box.querySelector('.map-panel');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+
+    var CLOUDS = [
+      { id: 'fonte.instagram', cx: .27, cy: .48, rx: .13, ry: .26, rz: .12, n: 46, tilt: .34, spin: .22, phase: 0 },
+      { id: 'fonte.marketplaces', cx: .72, cy: .42, rx: .15, ry: .20, rz: .13, n: 54, tilt: .26, spin: -.17, phase: 1.7 }
+    ];
+    var SIGNALS = [
+      { id: 'sinal.preco', cloud: 0, ang: .6, alt: -.5 },
+      { id: 'sinal.entrada', cloud: 1, ang: 2.4, alt: .45 }
+    ];
+
+    var W = 0, H = 0, dpr = 1;
+    var clouds = [], labels = [], buttons = [];
+    var view = 'intro', auto = 0, hovered = false, raf = 0, last = 0;
+
+    function rnd(seed) {   /* stable pseudo-random: the same map on every visit */
+      var s = seed;
+      return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+    }
+    var acaso = rnd(7919);
+
+    function build() {
+      clouds = CLOUDS.map(function (c, ci) {
+        var pts = [];
+        for (var i = 0; i < c.n; i++) {
+          var th = acaso() * 6.283, ph = Math.acos(2 * acaso() - 1), r = Math.pow(acaso(), .55);
+          pts.push({
+            x: Math.sin(ph) * Math.cos(th) * r,
+            y: Math.cos(ph) * r,
+            z: Math.sin(ph) * Math.sin(th) * r,
+            big: acaso() < .16
+          });
+        }
+        var edges = [];
+        pts.forEach(function (a, ia) {
+          pts.map(function (b, ib) { return { ib: ib, d: (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z) }; })
+            .sort(function (p, q) { return p.d - q.d; }).slice(1, 4)
+            .forEach(function (v) { if (v.ib > ia) edges.push([ia, v.ib]); });
+        });
+        return { c: c, pts: pts, edges: edges, ang: c.phase };
+      });
+
+      labels = CLOUDS.map(function (c) {
+        var s = document.createElement('span');
+        s.className = 'map-cloud';
+        s.setAttribute('aria-hidden', 'true');
+        s.textContent = c.id;
+        layer.appendChild(s);
+        return s;
+      });
+
+      buttons = SIGNALS.map(function (sig, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'map-signal';
+        b.textContent = sig.id;
+        b.setAttribute('aria-pressed', 'false');
+        layer.appendChild(b);
+        b.addEventListener('pointerenter', function () { pick(i); });
+        b.addEventListener('focus', function () { pick(i); });
+        b.addEventListener('click', function () { hovered = true; pick(i); });
+        return b;
+      });
+      pick(-1);
+    }
+
+    function pick(i) {
+      view = i < 0 ? 'intro' : String(i);
+      Array.prototype.forEach.call(panel.children, function (el) {
+        el.hidden = el.getAttribute('data-view') !== view;
+      });
+      buttons.forEach(function (b, j) {
+        b.classList.toggle('is-on', j === i);
+        b.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+      });
+      labels.forEach(function (l, j) {
+        l.classList.toggle('is-on', i >= 0 && SIGNALS[i].cloud === j);
+      });
+    }
+
+    function project(cloud, p) {
+      var nv = cloud.c;
+      var c = Math.cos(cloud.ang), s = Math.sin(cloud.ang);
+      var x = p.x * c + p.z * s;
+      var z = -p.x * s + p.z * c;
+      var ci = Math.cos(nv.tilt), si = Math.sin(nv.tilt);
+      var y = p.y * ci - z * si;
+      var z2 = p.y * si + z * ci;
+      var k = 700 / (700 + z2 * 260);
+      return {
+        x: nv.cx * W + x * nv.rx * W * k,
+        y: nv.cy * H + y * nv.ry * H * k,
+        k: k, z: z2
+      };
+    }
+
+    function loop(now) {
+      raf = requestAnimationFrame(loop);
+      if (now - last < 33) return;
+      last = now;
+      draw();
+    }
+
+    function draw() {
+      var dt = 33;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      clouds.forEach(function (cloud, ci) {
+        if (!hovered) cloud.ang = (cloud.ang + cloud.c.spin * dt / 1000) % 6.283;
+        var out = cloud.pts.map(function (p) { return project(cloud, p); });
+        out.sort(function (a, b) { return a.z - b.z; });
+
+        /* edges first: they are what makes a cloud read as a cloud */
+        ctx.lineWidth = 1;
+        for (var e = 0; e < cloud.edges.length; e++) {
+          var a = project(cloud, cloud.pts[cloud.edges[e][0]]);
+          var b = project(cloud, cloud.pts[cloud.edges[e][1]]);
+          var depth = (a.z + b.z) / 2;
+          ctx.strokeStyle = 'rgba(90,120,160,' + (0.10 + Math.max(0, .35 - depth * .5)).toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+        for (var i = 0; i < out.length; i++) {
+          var o = out[i];
+          var bright = Math.max(.18, Math.min(1, .55 - o.z * .5));
+          ctx.fillStyle = (SIGNALS.some(function (s) { return s.cloud === ci; }) && o.k > 1.05)
+            ? 'rgba(92,173,245,' + bright.toFixed(2) + ')'
+            : 'rgba(120,160,210,' + (bright * .75).toFixed(2) + ')';
+          var r = cloud.pts[i].big ? 2.4 : 1.5;
+          ctx.beginPath(); ctx.arc(o.x, o.y, r * o.k, 0, 6.283); ctx.fill();
+        }
+
+        labels[ci].style.left = (cloud.c.cx * 100).toFixed(2) + '%';
+        labels[ci].style.top = ((cloud.c.cy - cloud.c.ry * 1.35) * 100).toFixed(2) + '%';
+      });
+
+      SIGNALS.forEach(function (sig, i) {
+        var cloud = clouds[sig.cloud];
+        var k = 1.05;
+        var p = { x: Math.cos(sig.ang) * k, y: sig.alt, z: Math.sin(sig.ang) * k };
+        /* the signal rides the cloud, so rotate it the same way */
+        var c = Math.cos(cloud.ang), s = Math.sin(cloud.ang);
+        var x = p.x * c + p.z * s, z = -p.x * s + p.z * c;
+        var ci = Math.cos(cloud.c.tilt), si = Math.sin(cloud.c.tilt);
+        var y = p.y * ci - z * si, z2 = p.y * si + z * ci;
+        var kk = 700 / (700 + z2 * 260);
+        buttons[i].style.left = ((cloud.c.cx * W + x * cloud.c.rx * W * kk) / W * 100).toFixed(2) + '%';
+        buttons[i].style.top = ((cloud.c.cy * H + y * cloud.c.ry * H * kk) / H * 100).toFixed(2) + '%';
+        buttons[i].style.opacity = kk > .95 ? '1' : '0';
+      });
+    }
+
+    function measure() {
+      var r = box.querySelector('.map-stage').getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    }
+
+    build();
+    measure();
+
+    draw();                               /* first frame now, so nothing is ever blank */
+    if ('ResizeObserver' in window) new ResizeObserver(function () { measure(); draw(); }).observe(canvas);
+    if (!reduce()) raf = requestAnimationFrame(loop);
+
+    box.addEventListener('pointerenter', function () { hovered = true; });
+    box.addEventListener('pointerleave', function () { hovered = false; });
+
+    /* with nobody touching it, the map walks through the signals by itself */
+    auto = window.setInterval(function () {
+      if (hovered) return;
+      var i = view === 'intro' ? 0 : (parseInt(view, 10) + 1) % SIGNALS.length;
+      pick(i);
+    }, 4200);
+    window.addEventListener('pagehide', function () { clearInterval(auto); cancelAnimationFrame(raf); });
+  })();
+})();
+</script>
+</body>
+</html>

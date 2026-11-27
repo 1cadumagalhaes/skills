@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course panels — the five kinds</title>
+<style>
+  :root {
+    --bg: #080d15; --card: #0c131d; --ink: #e9eff8; --ink-2: #9db0c8; --ink-3: #6b7f98;
+    --line: #1c2839; --line-2: #2b3d55;
+    --amber: #e6a52b; --green: #4bb87a; --red: #e2564a; --accent: #5cadf5; --violet: #a78bfa;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .shell { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: 0; padding-top: 56px; }
+  .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(26px, 3.6vw, 38px); line-height: 1.12; letter-spacing: -.02em; margin: 0 0 12px; font-weight: 550; }
+  h2 { font-size: clamp(20px, 2.4vw, 26px); line-height: 1.2; letter-spacing: -.015em; margin: 0 0 8px; font-weight: 550; }
+  .lead { color: var(--ink-2); margin: 0 0 22px; max-width: 66ch; }
+  .note-hint { font: 11.5px/1.5 var(--mono); color: var(--ink-3); margin: 12px 0 0; }
+
+  .panel { border: 1px solid var(--line); border-radius: 8px; background: var(--card); padding: 18px; }
+  .panel + .panel { margin-top: 16px; }
+  .panel__head { margin: 0 0 14px; }
+  .panel__t { font-size: 15px; font-weight: 600; margin: 0 0 3px; }
+  .panel__i { font-size: 12.5px; color: var(--ink-2); margin: 0; display: flex; gap: 8px; }
+  .panel__i::before { content: "?"; flex: none; width: 15px; height: 15px; margin-top: 2px; border: 1px solid var(--line-2); border-radius: 50%; font: 600 9px/15px var(--mono); text-align: center; color: var(--ink-3); }
+
+  .btn { font: 500 12.5px/1 system-ui; padding: 9px 14px; border-radius: 6px; cursor: pointer; border: 1px solid var(--line-2); background: transparent; color: var(--ink); transition: background .2s var(--ease), border-color .2s var(--ease); }
+  .btn:hover { background: #101a26; }
+  .btn--solid { background: var(--ink); color: #08101a; border-color: var(--ink); }
+  .btn--solid:hover { background: #fff; }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  .btn[disabled]:hover { background: transparent; }
+  .controls { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .count { margin-left: auto; font: 11px/1 var(--mono); color: var(--ink-3); }
+  .foot { margin: 12px 0 0; font-size: 11.5px; color: var(--ink-3); }
+  [hidden] { display: none !important; }
+
+  /* ---- 1. walkthrough ---- */
+  .url { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+  .url label { font: 11px/1 var(--mono); color: var(--ink-3); }
+  .url input { flex: 1; min-width: 0; background: #0b1420; border: 1px solid var(--line-2); border-radius: 5px; color: var(--ink); font: 12.5px/1 var(--mono); padding: 10px 11px; }
+  .url input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .stages { display: grid; gap: 2px; }
+  .stage { display: grid; grid-template-columns: 112px minmax(0, 1fr) 56px; gap: 10px; align-items: center; padding: 9px 10px; border-radius: 4px; opacity: .45; transition: opacity .35s var(--ease), background-color .35s var(--ease); }
+  .stage.is-on { opacity: 1; background: #0b1420; }
+  .stage__l { font: 500 12px/1.25 var(--mono); }
+  .stage__l small { display: block; font: 11px/1.3 var(--mono); color: var(--ink-3); font-weight: 400; }
+  .stage__bar { height: 6px; border-radius: 99px; background: #16202e; overflow: hidden; }
+  .stage__bar i { display: block; height: 100%; width: 0; background: var(--amber); border-radius: 99px; transition: width .45s var(--ease); }
+  .stage.is-done .stage__bar i { background: var(--green); }
+  .stage__ms { font: 11px/1 var(--mono); color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+  .terminal { margin-top: 14px; background: #05090f; border: 1px solid var(--line); border-radius: 6px; padding: 11px 12px; min-height: 118px; max-height: 176px; overflow: auto; font: 11.5px/1.65 var(--mono); color: #cfe3ff; }
+  .terminal b { color: var(--accent); font-weight: 400; }
+  .terminal .ok { color: var(--green); }
+
+  /* ---- 2. pipeline ---- */
+  .scen { display: flex; gap: 8px; margin-bottom: 14px; }
+  .scen button { flex: 1; text-align: left; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); font: 500 12px/1.35 system-ui; cursor: pointer; }
+  .scen button span { display: block; font: 11px/1.35 var(--mono); color: var(--ink-3); margin-top: 2px; }
+  .scen button[aria-selected="true"] { border-color: var(--line-2); background: #101a26; color: var(--ink); }
+  .pipe { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .pip { position: relative; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: #0a1119; transition: border-color .45s var(--ease), background-color .45s var(--ease), opacity .45s var(--ease); cursor: pointer; }
+  .pip__ico { font: 13px/1 var(--mono); color: var(--ink-3); }
+  .pip__t { display: block; font-size: 11.5px; font-weight: 550; margin: 6px 0 3px; line-height: 1.25; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; font: 500 10px/1 var(--mono); padding: 3px 6px; border-radius: 99px; background: #16202e; color: var(--ink-3); }
+  .pip[data-state="run"] { border-color: var(--amber); background: color-mix(in srgb, var(--amber) 10%, #0a1119); }
+  .pip[data-state="run"] .chip { background: color-mix(in srgb, var(--amber) 22%, #0a1119); color: #ffe0a3; }
+  .pip[data-state="done"] { border-color: color-mix(in srgb, var(--green) 55%, var(--line)); }
+  .pip[data-state="done"] .chip { background: color-mix(in srgb, var(--green) 18%, #0a1119); color: #b6f0cf; }
+  .pip[data-state="fail"] { border-color: var(--red); background: color-mix(in srgb, var(--red) 10%, #0a1119); }
+  .pip[data-state="fail"] .chip { background: color-mix(in srgb, var(--red) 22%, #0a1119); color: #ffc7c1; }
+  .pipe__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin-top: 14px; align-items: start; }
+  .detalhe { padding: 12px; border-radius: 6px; background: #0b1420; border: 1px solid var(--line); }
+  .detalhe h3 { font-size: 13px; margin: 0 0 4px; }
+  .detalhe p { font-size: 12.5px; color: var(--ink-2); margin: 0; }
+  .detalhe small { display: block; font: 11px/1.4 var(--mono); color: var(--ink-3); margin-bottom: 6px; }
+  .regras { display: grid; gap: 6px; align-content: start; }
+  .regras__t { font: 11px/1 var(--mono); color: var(--ink-3); margin: 0 0 2px; }
+  .regra { display: flex; align-items: center; gap: 8px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 5px; font: 11.5px/1 var(--mono); background: #0b1420; opacity: 0; translate: 0 6px; transition: opacity .45s var(--ease), translate .45s var(--ease); }
+  .regra.on { opacity: 1; translate: 0 0; }
+  .regra code { color: #ffd9a0; background: color-mix(in srgb, var(--amber) 14%, transparent); padding: 2px 5px; border-radius: 3px; }
+  .regra code.out { color: #b6f0cf; background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .regra .ck { color: var(--green); }
+  .dash { border: 1px solid var(--line-2); border-radius: 6px; padding: 11px 12px; background: #0b1420; opacity: 0; translate: 0 6px; transition: opacity .45s var(--ease), translate .45s var(--ease); }
+  .dash.on { opacity: 1; translate: 0 0; }
+  .dash__t { font: 11px/1 var(--mono); color: var(--ink-3); margin: 0 0 5px; }
+  .dash__n { font-size: 19px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; margin: 0; }
+  .dash__n small { font: 400 11px/1 var(--mono); color: var(--ink-3); letter-spacing: 0; }
+  .barras { display: flex; align-items: flex-end; gap: 5px; height: 44px; margin-top: 10px; }
+  .barras i { flex: 1; background: #1b2a3c; border-radius: 2px 2px 0 0; height: 40%; }
+  .barras i:nth-child(1) { height: 38%; }
+  .barras i:nth-child(2) { height: 46%; }
+  .barras i:nth-child(3) { height: 72%; }
+  .barras i:nth-child(4) { height: 84%; }
+  .barras i:nth-child(5) { height: 57%; }
+  .barras i:nth-child(6) { height: 100%; }
+  .barras i.hj { background: var(--amber); }
+  .seg { display: flex; gap: 3px; margin: 14px 0 0; }
+  .seg i { height: 5px; flex: 1; border-radius: 99px; background: #16202e; transition: background-color .3s var(--ease); }
+  .seg i.done { background: var(--ink-2); }
+  .seg i.now { background: var(--amber); }
+  .seg i.fail { background: var(--red); }
+
+  /* ---- 3. representations ---- */
+  .tabs3 { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tabs3 button { flex: 1; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); font: 500 12px/1.3 system-ui; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: border-color .25s var(--ease), color .25s var(--ease), background-color .25s var(--ease); }
+  .tabs3 button[aria-selected="true"] { border-color: var(--ink); background: #101a26; color: var(--ink); }
+  .tabs3 .ico { font: 12px/1 var(--mono); color: var(--ink-3); }
+  .vista { animation: entra .2s var(--ease) both; }
+  @keyframes entra { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
+  .vista p { font-size: 12.5px; color: var(--ink-2); margin: 0 0 10px; }
+  .tabela { width: 100%; border-collapse: collapse; font: 11.5px/1.5 var(--mono); background: #0b1420; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .tabela th, .tabela td { padding: 6px 9px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+  .tabela th { color: var(--ink-3); font-weight: 500; background: #0d1724; }
+  .tabela tr:last-child td { border-bottom: 0; }
+  .tabela .num { color: var(--ink-3); width: 28px; }
+  .csv { margin: 0; padding: 11px; background: #05090f; border: 1px solid var(--line); border-radius: 6px; font: 11.5px/1.7 var(--mono); color: #cfe3ff; overflow: auto; }
+  .csv b { color: var(--amber); font-weight: 400; }
+  .fluxo { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .fluxo__quem { display: inline-flex; align-items: center; gap: 7px; font: 11.5px/1 var(--mono); color: var(--ink-2); }
+  .fluxo__quem i { display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--line-2); border-radius: 5px; }
+  .fluxo__linha { position: relative; flex: 1; height: 1px; background: var(--line-2); }
+  .fluxo__linha::after { content: ""; position: absolute; top: -2px; left: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--amber); animation: corre 2.6s linear infinite; }
+  @keyframes corre { from { left: 0; } to { left: 100%; } }
+  .fluxo__quem.quem-dado { color: var(--ink); }
+
+  /* ---- 4. robot ---- */
+  .robo { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 12px; }
+  .nav-fake { border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; background: #0b1420; position: relative; }
+  .nav-fake__topo { display: flex; align-items: center; gap: 8px; padding: 7px 9px; border-bottom: 1px solid var(--line); }
+  .nav-fake__bolas { display: flex; gap: 4px; }
+  .nav-fake__bolas i { width: 7px; height: 7px; border-radius: 50%; background: #24344a; }
+  .nav-fake__url { flex: 1; font: 10.5px/1 var(--mono); color: var(--ink-3); background: #05090f; border: 1px solid var(--line); border-radius: 3px; padding: 5px 7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 9px; }
+  .prod { border: 1px solid var(--line); border-radius: 4px; padding: 6px; background: #0d1724; transition: border-color .35s var(--ease), background-color .35s var(--ease); }
+  .prod__img { height: 30px; border-radius: 2px; background: repeating-linear-gradient(135deg, #16202e, #16202e 5px, #1b2836 5px, #1b2836 10px); margin-bottom: 5px; }
+  .prod__t { font: 10.5px/1.3 system-ui; color: var(--ink-2); display: block; }
+  .prod__p { font: 600 10.5px/1.3 var(--mono); color: var(--ink); display: block; margin-top: 2px; }
+  .prod.is-read { border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, #0d1724); }
+  .prod.is-read .prod__t, .prod.is-read .prod__p { color: #eafff3; }
+  .cursor { position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); transition: transform .47s var(--ease); pointer-events: none; opacity: 0; }
+  .cursor.on { opacity: 1; }
+  .saida { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #0b1420; align-self: start; }
+  .saida__t { display: grid; grid-template-columns: 20px minmax(0, 1fr) 74px; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); font: 500 10.5px/1 var(--mono); color: var(--ink-3); }
+  .saida__linhas { list-style: none; margin: 0; padding: 0; }
+  .saida__linhas li { display: grid; grid-template-columns: 20px minmax(0, 1fr) 74px; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--line); font: 11px/1.35 var(--mono); animation: entra .45s var(--ease) both; }
+  .saida__linhas li:last-child { border-bottom: 0; }
+  .saida__linhas span:nth-child(1) { color: var(--ink-3); }
+  .saida__linhas span:nth-child(3) { text-align: right; color: var(--ink); }
+  .saida__vazia { padding: 14px 10px; font: 11px/1.5 var(--mono); color: var(--ink-3); }
+
+  /* ---- 5. notes ---- */
+  .aula { font-size: 14px; line-height: 1.75; color: var(--ink-2); }
+  .aula mark { background: color-mix(in srgb, var(--amber) 34%, transparent); color: var(--ink); padding: 1px 2px; border-radius: 2px; }
+  .barra-notas { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
+  .notas-tabs { display: flex; gap: 4px; margin-right: auto; }
+  .notas-tabs button { padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--ink-3); font: 500 11.5px/1 var(--mono); cursor: pointer; }
+  .notas-tabs button[aria-selected="true"] { border-color: var(--line-2); color: var(--ink); background: #101a26; }
+  .cards { display: grid; gap: 8px; margin-top: 12px; }
+  .card-nota { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; background: #0b1420; animation: entra .25s var(--ease) both; }
+  .card-nota q { display: block; font-size: 12.5px; color: var(--ink); quotes: none; background: color-mix(in srgb, var(--amber) 22%, transparent); padding: 2px 4px; border-radius: 2px; margin-bottom: 8px; }
+  .card-nota input { width: 100%; background: transparent; border: 0; border-bottom: 1px dashed var(--line-2); color: var(--ink-2); font: 12px/1.6 system-ui; padding: 4px 0; }
+  .card-nota input:focus-visible { outline: 0; border-bottom-color: var(--accent); }
+  .card-nota .meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; font: 10.5px/1 var(--mono); color: var(--ink-3); }
+  .card-nota .meta button { margin-left: auto; background: transparent; border: 0; color: var(--ink-3); cursor: pointer; font: 11px/1 system-ui; }
+  .card-nota .meta button:hover { color: var(--red); }
+  .vazio { font: 12px/1.6 var(--mono); color: var(--ink-3); padding: 10px 0; }
+
+  @media (max-width: 760px) {
+    .pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pipe__body, .robo { grid-template-columns: minmax(0, 1fr); }
+    .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stage { grid-template-columns: 92px minmax(0, 1fr) 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main class="shell">
+  <noscript>
+    <p style="border:1px solid #2b3d55;border-radius:6px;padding:12px 14px;margin:20px 0 0;font:12.5px/1.6 ui-monospace,monospace;color:#9db0c8">
+      Os painéis abaixo precisam de JavaScript: sem ele, a lista de etapas e os artefatos ficam vazios —
+      o texto de cada seção tem a mesma informação, mas a demonstração só funciona com script.
+    </p>
+  </noscript>
+  <section>
+    <p class="eyebrow">painéis de curso · a família</p>
+    <h1>Os cinco painéis que ensinam</h1>
+    <p class="lead">O painel de aula não é um diagrama animado: é um processo que a pessoa <em>opera</em>.
+      Cada um destes cinco sai de um array de dados e de um punhado de classes — sem biblioteca,
+      sem timeline, e todos com estado derivado de um único índice.</p>
+    <p class="note-hint">o sexto (o stepper com relógio simulado) está em <code>stepper.html</code></p>
+  </section>
+
+  <!-- 1 ------------------------------------------------------------------ -->
+  <section>
+    <p class="eyebrow">1 · walkthrough dirigido pelo aluno</p>
+    <h2>Digite a URL e veja o pedido acontecer</h2>
+    <p class="lead">Cinco etapas acendem em ordem, cada uma com sua barra de custo, e o terminal ao lado
+      é a fonte de verdade: o que a aula diz e o que o <code>curl</code> mostra são a mesma tela.</p>
+    <div class="panel" data-walk>
+      <div class="panel__head">
+        <p class="panel__t">O caminho de uma URL até a página</p>
+        <p class="panel__i">Aperte Enter no campo (ou o botão) e acompanhe as etapas acendendo.</p>
+      </div>
+      <div class="url">
+        <label for="w-url">URL</label>
+        <input id="w-url" type="text" value="https://www.google.com/" spellcheck="false">
+        <button class="btn btn--solid" type="button" data-go>Buscar</button>
+      </div>
+      <div class="stages" data-stages></div>
+      <div class="terminal" data-term aria-live="polite"></div>
+      <div class="controls">
+        <button class="btn" type="button" data-reset>Reiniciar</button>
+        <span class="count" data-wcount>0 de 5 etapas</span>
+      </div>
+      <p class="foot">Os tempos são ilustrativos. O que vale é a ordem e o custo relativo de cada etapa.</p>
+    </div>
+  </section>
+
+  <!-- 2 ------------------------------------------------------------------ -->
+  <section>
+    <p class="eyebrow">2 · pipeline com cenários</p>
+    <h2>O mesmo caminho, no dia em que quebra</h2>
+    <p class="lead">Cinco etapas com estado visível (esperando, rodando, pronto, falhou), o detalhe da etapa,
+      as transformações atômicas do dado, e uma barra segmentada. A última etapa desenha o produto —
+      o painel que a pessoa vai usar.</p>
+    <div class="panel" data-pipe>
+      <div class="panel__head">
+        <p class="panel__t">O caminho de uma venda, do app ao painel do gerente</p>
+        <p class="panel__i">Aperte Continuar, ou clique em qualquer etapa para abrir o que acontece nela.</p>
+      </div>
+      <div class="scen" role="tablist" aria-label="Cenário">
+        <button type="button" role="tab" aria-selected="true" data-cen="normal">Um dia normal<span>a venda vai do app ao painel</span></button>
+        <button type="button" role="tab" aria-selected="false" data-cen="falha">Um dia em que quebra<span>a ingestão falha de madrugada</span></button>
+      </div>
+      <div class="pipe" data-pipe-cards></div>
+      <div class="pipe__body">
+        <div class="detalhe">
+          <small data-det-n>Etapa 1</small>
+          <h3 data-det-t>—</h3>
+          <p data-det-p>—</p>
+        </div>
+        <div data-lado>
+          <p class="regras__t" data-lado-t>Três regras de limpeza, uma de cada vez</p>
+          <div class="regras" data-regras></div>
+          <div class="dash" data-dash>
+            <p class="dash__t">Painel de vendas · atualizado às 6h00</p>
+            <p class="dash__n">R$ 812.400 <small>em 2.344 vendas ontem</small></p>
+            <div class="barras"><i></i><i></i><i></i><i></i><i></i><i class="hj"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="seg" data-seg></div>
+      <div class="controls">
+        <button class="btn btn--solid" type="button" data-cont>Continuar</button>
+        <button class="btn" type="button" data-back>Voltar</button>
+        <span class="count" data-pcount>1 de 5</span>
+      </div>
+      <p class="foot">Os valores são de exemplo. A falha é um cenário jogável, não uma mensagem de erro.</p>
+    </div>
+  </section>
+
+  <!-- 3 ------------------------------------------------------------------ -->
+  <section>
+    <p class="eyebrow">3 · um artefato, N representações</p>
+    <h2>O mesmo catálogo, guardado de três jeitos</h2>
+    <p class="lead">Controle segmentado no topo, o artefato desenhado no idioma dele (grade, arquivo, tabela) e a
+      linha de quem mexe no dado. A troca é <strong>corte + entrada de 200 ms</strong> — nunca crossfade de texto.</p>
+    <div class="panel" data-rep>
+      <div class="panel__head">
+        <p class="panel__t">O mesmo catálogo, guardado de três jeitos</p>
+        <p class="panel__i">Clique em cada um e repare no que muda: quem lê, quem grava e o que pode entrar.</p>
+      </div>
+      <div class="tabs3" role="tablist" aria-label="Representação">
+        <button type="button" role="tab" aria-selected="true" data-rep-tab="csv"><span class="ico">,</span>Arquivo CSV</button>
+        <button type="button" role="tab" aria-selected="false" data-rep-tab="planilha"><span class="ico">▦</span>Planilha</button>
+        <button type="button" role="tab" aria-selected="false" data-rep-tab="banco"><span class="ico">▤</span>Banco de dados</button>
+      </div>
+      <div data-vistas></div>
+      <div class="fluxo">
+        <span class="fluxo__quem"><i>☺</i>Pessoa</span>
+        <span class="fluxo__linha"></span>
+        <span class="fluxo__quem quem-dado" data-fluxo-destino><i>▦</i>precos.xlsx · o arquivo</span>
+      </div>
+      <p class="foot" data-rep-foot>Uma pessoa abre a planilha e edita as células na mão.</p>
+    </div>
+  </section>
+
+  <!-- 4 ------------------------------------------------------------------ -->
+  <section>
+    <p class="eyebrow">4 · demo de processo</p>
+    <h2>O robô copiando a página, card a card</h2>
+    <p class="lead">Browser falso, cursor roteirizado, e a tabela de saída crescendo uma linha por item.
+      O ritmo é o do processo, não o da interface: um card por segundo, o destaque chegando
+      <em>antes</em> da linha.</p>
+    <div class="panel" data-robo>
+      <div class="panel__head">
+        <p class="panel__t">Veja o robô copiar a página</p>
+        <p class="panel__i">Aperte o botão e acompanhe o robô passando de card em card na loja.</p>
+      </div>
+      <div class="controls" style="margin:0 0 12px;padding:0;border:0">
+        <button class="btn btn--solid" type="button" data-copiar>Copiar</button>
+        <span class="count" data-rcount>0 de 6 cards</span>
+      </div>
+      <div class="robo">
+        <div class="nav-fake">
+          <div class="nav-fake__topo">
+            <span class="nav-fake__bolas"><i></i><i></i><i></i></span>
+            <span class="nav-fake__url">marketplace.example/s?k=console+gx5</span>
+          </div>
+          <div class="grade" data-grade></div>
+          <span class="cursor" data-cursor aria-hidden="true"></span>
+        </div>
+        <div class="saida">
+          <div class="saida__t"><span></span><span>título</span><span>preço</span></div>
+          <ul class="saida__linhas" data-saida></ul>
+          <p class="saida__vazia" data-vazia>nada copiado ainda</p>
+        </div>
+      </div>
+      <p class="foot">Exemplo de aula: o cursor e o tempo são roteirizados — o que se aprende é a ordem.</p>
+    </div>
+  </section>
+
+  <!-- 5 ------------------------------------------------------------------ -->
+  <section>
+    <p class="eyebrow">5 · a casca de estudo</p>
+    <h2>Grifar, anotar e achar de novo</h2>
+    <p class="lead">Não é um painel de aula, é a camada em volta: selecionar um trecho vira um grifo, o grifo
+      vira um card com nota e data, e o card sempre tem o caminho de volta para a aula.</p>
+    <div class="panel" data-notas>
+      <div class="panel__head">
+        <p class="panel__t">Proxies: o que muda no seu scraper</p>
+        <p class="panel__i">Selecione um trecho do texto abaixo com o mouse para grifar.</p>
+      </div>
+      <div class="aula" data-aula>
+        <p>Um proxy é um servidor que faz o request no lugar do seu programa. Para o site, quem está
+          pedindo é o proxy, não você — e é por isso que ele serve tanto para distribuir carga quanto
+          para esconder de onde vem o tráfego.</p>
+        <p>Existem três tipos que importam na prática: de datacenter, residencial e móvel. O de
+          datacenter é barato e rápido, e o site reconhece o bloco inteiro em segundos. O residencial
+          empresta o IP de uma conexão doméstica real. E o móvel é o mais caro de todos, porque o
+          endereço pertence a uma operadora e muda de dono o tempo todo.</p>
+      </div>
+      <div class="barra-notas">
+        <div class="notas-tabs" role="tablist" aria-label="Filtro">
+          <button type="button" role="tab" aria-selected="true" data-filtro="tudo">Tudo</button>
+          <button type="button" role="tab" aria-selected="false" data-filtro="grifo">Grifos</button>
+          <button type="button" role="tab" aria-selected="false" data-filtro="nota">Notas</button>
+        </div>
+        <button class="btn" type="button" data-exportar>Exportar</button>
+      </div>
+      <div class="cards" data-cards></div>
+      <p class="vazio" data-vazio>nenhum grifo ainda — selecione um trecho acima</p>
+      <p class="foot">Cada item guarda a lição de origem: um grifo que você não acha de novo não é um recurso.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+document.documentElement.classList.add('js');
+(function () {
+  'use strict';
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function reduce() { return rm.matches; }
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+
+  /* ================================================================== 1 */
+  (function walk() {
+    var box = document.querySelector('[data-walk]');
+    if (!box) return;
+    var STAGES = [
+      { id: 'dns', t: 'DNS', s: 'o nome vira um endereço IP', ms: 14,
+        log: ['<b>* Host {host}:443 was resolved.</b>', '* IPv4: 76.76.21.21'] },
+      { id: 'tcp', t: 'TCP', s: 'abre a conexão com o servidor', ms: 21,
+        log: ['* Trying 76.76.21.21:443...', '* Connected to {host} (76.76.21.21) port 443'] },
+      { id: 'tls', t: 'TLS', s: 'combina a criptografia', ms: 49,
+        log: ['* TLSv1.3 (OUT), Client hello (1):', '* TLSv1.3 (IN), Server hello (2):', '* Server certificate: CN={host}'] },
+      { id: 'req', t: 'Request HTTP', s: 'manda o pedido', ms: 12,
+        log: ['> GET / HTTP/2', '> accept: text/html'] },
+      { id: 'res', t: 'Resposta HTTP', s: 'espera e recebe a resposta', ms: 18,
+        log: ['< HTTP/2 200', '< content-type: text/html; charset=utf-8', '<content-length: 8421', '<span class="ok">body: 8421 bytes</span>'] }
+    ];
+    var total = STAGES.reduce(function (s, x) { return s + x.ms; }, 0);
+    var host = box.querySelector('[data-stages]');
+    var term = box.querySelector('[data-term]');
+    var count = box.querySelector('[data-wcount]');
+    var input = box.querySelector('#w-url');
+    var btn = box.querySelector('[data-go]');
+    var reset = box.querySelector('[data-reset]');
+    var timer = 0, atual = -1, dominio = 'www.google.com';
+
+    STAGES.forEach(function (s) {
+      var row = el('div', 'stage');
+      row.setAttribute('data-stage', s.id);
+      row.innerHTML = '<span class="stage__l">' + s.t + '<small>' + s.s + '</small></span>' +
+        '<span class="stage__bar"><i></i></span>' +
+        '<span class="stage__ms">' + s.ms + ' ms</span>';
+      host.appendChild(row);
+    });
+    var rows = [].slice.call(host.children);
+
+    function limpar() {
+      clearTimeout(timer);
+      atual = -1;
+      rows.forEach(function (r) { r.classList.remove('is-on', 'is-done'); r.querySelector('i').style.width = '0'; });
+      term.innerHTML = '';
+      count.textContent = '0 de ' + STAGES.length + ' etapas';
+      btn.disabled = false;
+    }
+
+    function passo() {
+      if (atual >= 0) {
+        rows[atual].classList.add('is-done');
+        rows[atual].querySelector('i').style.width = (STAGES[atual].ms / total * 100).toFixed(1) + '%';
+      }
+      atual++;
+      if (atual >= STAGES.length) {
+        btn.disabled = false;
+        count.textContent = STAGES.length + ' de ' + STAGES.length + ' etapas · ' + total + ' ms';
+        return;
+      }
+      var s = STAGES[atual];
+      rows[atual].classList.add('is-on');
+      count.textContent = (atual + 1) + ' de ' + STAGES.length + ' etapas';
+      s.log.forEach(function (line) {
+        term.insertAdjacentHTML('beforeend', line.replace(/\{host\}/g, dominio) + '<br>');
+      });
+      term.scrollTop = term.scrollHeight;
+      timer = setTimeout(passo, reduce() ? 30 : 380);
+    }
+
+    function comecar() {
+      limpar();
+      btn.disabled = true;
+      dominio = (input.value || 'www.google.com').replace(/^https?:\/\//, '').split('/')[0].split('?')[0];
+      TERMINAL0(dominio);
+      passo();
+    }
+    function TERMINAL0(host) {
+      term.insertAdjacentHTML('beforeend', '<b>$ curl -v https://' + host + '/</b><br>');
+    }
+
+    btn.addEventListener('click', comecar);
+    reset.addEventListener('click', limpar);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); comecar(); }
+    });
+    limpar();
+  })();
+
+  /* ================================================================== 2 */
+  (function pipe() {
+    var box = document.querySelector('[data-pipe]');
+    if (!box) return;
+    var ETAPAS = [
+      { id: 'nasce', ico: '▭', t: 'Onde o dado nasce', sub: 'o app da loja',
+        p: 'A venda é registrada no app da loja. É o único ponto em que o dado existe no formato final.' },
+      { id: 'ingestao', ico: '↓', t: 'Ingestão', sub: 'traz e guarda cru',
+        p: 'O dado chega cru, sem tipo e sem checagem. Guardar antes de limpar é o que permite reprocessar.' },
+      { id: 'transf', ico: '⌄', t: 'Transformação', sub: 'limpa e tipa',
+        p: 'Aqui o dado é limpo. Sem isso, somar preços dá erro (são texto) e a mesma pessoa é contada duas vezes.' },
+      { id: 'armazena', ico: '▤', t: 'Armazenamento', sub: 'guarda o resultado',
+        p: 'O resultado limpo fica disponível para consulta. É a etapa que custa dinheiro todo mês.' },
+      { id: 'uso', ico: '▥', t: 'Uso', sub: 'o painel do gerente',
+        p: 'Às 8h o gerente abre o painel e vê quanto vendeu ontem. Para ele, parece que sempre esteve ali.' }
+    ];
+    var REGRAS = [
+      { antes: '"R$ 3.499,00"', depois: '3499.00' },
+      { antes: '"  Ana  "', depois: '"Ana"' },
+      { antes: '"12/03/2026"', depois: '"2026-03-12"' }
+    ];
+    var CEN = {
+      normal: { passos: [0, 1, 2, 3, 4], falha: -1 },
+      falha: { passos: [0, 1, 2, 3, 4], falha: 1 }
+    };
+
+    var cards = box.querySelector('[data-pipe-cards]');
+    var seg = box.querySelector('[data-seg]');
+    var detN = box.querySelector('[data-det-n]');
+    var detT = box.querySelector('[data-det-t]');
+    var detP = box.querySelector('[data-det-p]');
+    var ladoT = box.querySelector('[data-lado-t]');
+    var regrasBox = box.querySelector('[data-regras]');
+    var dash = box.querySelector('[data-dash]');
+    var cnt = box.querySelector('[data-pcount]');
+    var tabs = [].slice.call(box.querySelectorAll('[data-cen]'));
+    var cenario = 'normal', i = 0, timer = 0;
+
+    ETAPAS.forEach(function (e) {
+      var c = el('div', 'pip');
+      c.setAttribute('data-pip', e.id);
+      c.innerHTML = '<span class="pip__ico">' + e.ico + '</span><span class="pip__t">' + e.t +
+        '<small style="display:block;font-weight:400;color:var(--ink-3);font-size:10.5px;margin-top:2px">' + e.sub + '</small></span>' +
+        '<span class="chip">esperando</span>';
+      c.addEventListener('click', function () { parar(); ir(ETAPAS.indexOf(e)); });
+      cards.appendChild(c);
+    });
+    ETAPAS.forEach(function () { seg.appendChild(el('i')); });
+
+    function parar() { clearTimeout(timer); }
+
+    function ir(n) {
+      i = Math.max(0, Math.min(ETAPAS.length - 1, n));
+      render();
+    }
+
+    function render() {
+      var c = CEN[cenario];
+      [].forEach.call(cards.children, function (card, k) {
+        var state = 'idle';
+        if (c.falha === k) state = (k <= i) ? 'fail' : 'idle';
+        else if (k === i) state = 'run';
+        else if (k < i) state = 'done';
+        card.setAttribute('data-state', state);
+        var chip = card.querySelector('.chip');
+        chip.textContent = state === 'run' ? 'rodando' : state === 'done' ? 'pronto' : state === 'fail' ? 'falhou' : 'esperando';
+      });
+      [].forEach.call(seg.children, function (s, k) {
+        s.className = k < i ? (c.falha === k ? 'fail' : 'done') : k === i ? 'now' : '';
+      });
+      var e = ETAPAS[i];
+      detN.textContent = 'Etapa ' + (i + 1) + ' de ' + ETAPAS.length;
+      detT.textContent = e.t;
+      detP.textContent = cenario === 'falha' && c.falha === i
+        ? 'A ingestão parou de madrugada. Nada consome a fila, nada falha na tela: o painel continua mostrando ontem.'
+        : e.p;
+
+      var etapaTransf = i >= 2;
+      ladoT.hidden = !etapaTransf;
+      regrasBox.hidden = !etapaTransf;
+      regrasBox.innerHTML = '';
+      if (etapaTransf) {
+        REGRAS.forEach(function (r, k) {
+          var d = el('div', 'regra');
+          d.innerHTML = '<span class="ck">✓</span> <code>' + r.antes + '</code> → <code class="out">' + r.depois + '</code>';
+          regrasBox.appendChild(d);
+          setTimeout(function () { d.classList.add('on'); }, reduce() ? 0 : 120 * k);
+        });
+      }
+      var etapaUso = i === 4;
+      dash.classList.toggle('on', etapaUso);
+      dash.hidden = !etapaUso;
+      cnt.textContent = (i + 1) + ' de ' + ETAPAS.length;
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        cenario = t.getAttribute('data-cen');
+        tabs.forEach(function (o) { o.setAttribute('aria-selected', o === t ? 'true' : 'false'); });
+        ir(0);
+      });
+    });
+    box.querySelector('[data-cont]').addEventListener('click', function () { parar(); ir(i + 1); });
+    box.querySelector('[data-back]').addEventListener('click', function () { parar(); ir(i - 1); });
+    render();
+  })();
+
+  /* ================================================================== 3 */
+  (function rep() {
+    var box = document.querySelector('[data-rep]');
+    if (!box) return;
+    var DADOS = [
+      ['Console GX5 Digital', 'Loja Azul', '4025.53', '12'],
+      ['Controle sem fio GX5', 'Loja Verde', '399.90', '40'],
+      ['Headset Gamer HX', 'Loja Laranja', '289.00', '7']
+    ];
+    var VISTAS = {
+      csv: {
+        destino: '<i>,</i>precos.csv · o arquivo',
+        foot: 'Um arquivo é lido inteiro por um programa. Ninguém valida o que entra: a vírgula a mais na quarta linha quebra tudo.',
+        html: '<div class="vista"><p>Texto puro, separado por vírgula. Cabe em qualquer lugar e não reclama de nada:</p>' +
+          '<pre class="csv">produto,loja,preco,estoque\n' +
+          DADOS.map(function (d) { return d.join(','); }).join('\n') +
+          '\n<b>Console GX5,Sem estoque,,"12"</b></pre></div>'
+      },
+      planilha: {
+        destino: '<i>▦</i>precos.xlsx · o arquivo',
+        foot: 'Uma pessoa abre a planilha e edita as células na mão. Padrão por célula: número, texto, data ou nada.',
+        html: '<div class="vista"><p>Uma grade de células que uma pessoa lê e edita. Por padrão, cada célula aceita qualquer coisa.</p>' +
+          '<table class="tabela"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead><tbody>' +
+          '<tr><td class="num">1</td><th>produto</th><th>loja</th><th>preço</th><th>estoque</th></tr>' +
+          DADOS.map(function (d, k) { return '<tr><td class="num">' + (k + 2) + '</td><td>' + d[0] + '</td><td>' + d[1] + '</td><td>' + d[2] + '</td><td>' + d[3] + '</td></tr>'; }).join('') +
+          '</tbody></table></div>'
+      },
+      banco: {
+        destino: '<i>▤</i>tabela produtos · o banco',
+        foot: 'Um banco guarda os mesmos dados e ainda põe um programa na frente deles: quem lê, quem grava e o que pode entrar.',
+        html: '<div class="vista"><p>O mesmo catálogo, com tipo em cada coluna e uma regra antes de qualquer escrita:</p>' +
+          '<table class="tabela"><thead><tr><th>produto</th><th>loja</th><th>preco numeric</th><th>estoque int</th></tr></thead><tbody>' +
+          DADOS.map(function (d) { return '<tr><td>' + d[0] + '</td><td>' + d[1] + '</td><td>' + d[2] + '</td><td>' + d[3] + '</td></tr>'; }).join('') +
+          '</tbody></table></div>'
+      }
+    };
+    var alvo = box.querySelector('[data-vistas]');
+    var tabs = [].slice.call(box.querySelectorAll('[data-rep-tab]'));
+    var destino = box.querySelector('[data-fluxo-destino]');
+    var foot = box.querySelector('[data-rep-foot]');
+
+    function mostrar(id) {
+      alvo.innerHTML = VISTAS[id].html;          /* corte: o antigo sai num quadro */
+      destino.innerHTML = VISTAS[id].destino;    /* ... e o novo entra com .vista (200 ms) */
+      foot.textContent = VISTAS[id].foot;
+      tabs.forEach(function (t) {
+        t.setAttribute('aria-selected', t.getAttribute('data-rep-tab') === id ? 'true' : 'false');
+      });
+    }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { mostrar(t.getAttribute('data-rep-tab')); });
+    });
+    mostrar('csv');
+  })();
+
+  /* ================================================================== 4 */
+  (function robo() {
+    var box = document.querySelector('[data-robo]');
+    if (!box) return;
+    var ITENS = [
+      ['Controle - GX5', '402,80'],
+      ['Controle sem fio — Branco', '417,05'],
+      ['GX5 Edição Digital 825GB', '4.025,53'],
+      ['GX5 Slim Disk 1TB', '4.999,90'],
+      ['Base De Carregamento', '169,00'],
+      ['Console GX5 Digital', '4.226,55']
+    ];
+    var grade = box.querySelector('[data-grade]');
+    var saida = box.querySelector('[data-saida]');
+    var vazia = box.querySelector('[data-vazia]');
+    var cursor = box.querySelector('[data-cursor]');
+    var btn = box.querySelector('[data-copiar]');
+    var cnt = box.querySelector('[data-rcount]');
+    var palco = box.querySelector('.nav-fake');
+    var timer = 0, rodando = false;
+
+    ITENS.forEach(function (it) {
+      var c = el('div', 'prod');
+      c.innerHTML = '<div class="prod__img"></div><span class="prod__t">' + it[0] + '</span><span class="prod__p">R$ ' + it[1] + '</span>';
+      grade.appendChild(c);
+    });
+
+    function parar() {
+      clearTimeout(timer);
+      rodando = false;
+      btn.disabled = false;
+      btn.textContent = 'Copiar';
+    }
+    function reset() {
+      parar();
+      saida.innerHTML = '';
+      vazia.hidden = false;
+      cursor.classList.remove('on');
+      cnt.textContent = '0 de ' + ITENS.length + ' cards';
+      [].forEach.call(grade.children, function (c) { c.classList.remove('is-read'); });
+    }
+
+    function passo(i) {
+      if (i >= ITENS.length) {
+        parar();
+        cnt.textContent = ITENS.length + ' de ' + ITENS.length + ' cards copiados';
+        return;
+      }
+      var card = grade.children[i];
+      var pr = palco.getBoundingClientRect(), cr = card.getBoundingClientRect();
+      cursor.classList.add('on');
+      cursor.style.transform = 'translate(' + (cr.left - pr.left + cr.width / 2 - 6) + 'px,' +
+        (cr.top - pr.top + cr.height / 2 - 6) + 'px)';
+      cnt.textContent = (i + 1) + ' de ' + ITENS.length + ' cards';
+      setTimeout(function () {
+        card.classList.add('is-read');
+        var li = el('li');
+        li.innerHTML = '<span>' + (i + 1) + '</span><span>' + ITENS[i][0] + '</span><span>R$ ' + ITENS[i][1] + '</span>';
+        saida.appendChild(li);
+        vazia.hidden = true;
+      }, reduce() ? 10 : 380);
+      timer = setTimeout(function () { passo(i + 1); }, reduce() ? 30 : 1000);
+    }
+
+    btn.addEventListener('click', function () {
+      if (rodando) { parar(); return; }
+      reset();
+      rodando = true;
+      btn.disabled = true;
+      btn.textContent = 'Copiando…';
+      passo(0);
+    });
+    reset();
+  })();
+
+  /* ================================================================== 5 */
+  (function notas() {
+    var box = document.querySelector('[data-notas]');
+    if (!box) return;
+    var aula = box.querySelector('[data-aula]');
+    var cards = box.querySelector('[data-cards]');
+    var vazio = box.querySelector('[data-vazio]');
+    var tabs = [].slice.call(box.querySelectorAll('[data-filtro]'));
+    var itens = [];
+    var filtro = 'tudo';
+
+    function render() {
+      cards.innerHTML = '';
+      var visiveis = itens.filter(function (it) {
+        return filtro === 'tudo' || (filtro === 'grifo' ? true : !!it.nota);
+      });
+      vazio.hidden = visiveis.length > 0;
+      visiveis.forEach(function (it, k) {
+        var c = el('div', 'card-nota');
+        c.innerHTML = '<q>' + it.texto + '</q>' +
+          '<input type="text" placeholder="Adicionar nota" value="' + (it.nota || '') + '" aria-label="Nota do grifo">' +
+          '<div class="meta"><span>grifo · hoje</span><span>·</span><span>Proxies · E08</span>' +
+          '<button type="button" data-del="' + k + '" title="Remover">✕</button></div>';
+        var input = c.querySelector('input');
+        input.addEventListener('input', function () { it.nota = input.value; });
+        c.querySelector('[data-del]').addEventListener('click', function () {
+          itens.splice(itens.indexOf(it), 1);
+          render();
+        });
+        cards.appendChild(c);
+      });
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        filtro = t.getAttribute('data-filtro');
+        tabs.forEach(function (o) { o.setAttribute('aria-selected', o === t ? 'true' : 'false'); });
+        render();
+      });
+    });
+
+    /* seleção real: envolve o trecho num <mark> e cria o card */
+    aula.addEventListener('mouseup', function () {
+      var sel = window.getSelection();
+      if (!sel || sel.isCollapsed) return;
+      var texto = sel.toString().trim();
+      if (texto.length < 8) return;
+      var range = sel.getRangeAt(0);
+      if (!aula.contains(range.commonAncestorContainer)) return;
+      try {
+        var mark = document.createElement('mark');
+        range.surroundContents(mark);
+      } catch (e) {
+        sel.removeAllRanges();
+        return;          /* seleção atravessou elementos: ignora, não quebra */
+      }
+      sel.removeAllRanges();
+      itens.unshift({ texto: texto, nota: '' });
+      render();
+    });
+
+    box.querySelector('[data-exportar]').addEventListener('click', function () {
+      var txt = itens.map(function (it) {
+        return '> ' + it.texto + (it.nota ? '\n  nota: ' + it.nota : '');
+      }).join('\n\n');
+      if (navigator.clipboard) navigator.clipboard.writeText(txt || 'nada para exportar');
+    });
+
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

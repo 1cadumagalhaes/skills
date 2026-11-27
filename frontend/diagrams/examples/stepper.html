@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course panel — stepper with a simulated clock</title>
+<style>
+  :root {
+    --bg: #080d15; --card: #0c131d; --ink: #e9eff8; --ink-2: #9db0c8; --ink-3: #6b7f98;
+    --line: #1c2839; --line-2: #2b3d55;
+    --amber: #e6a52b; --green: #4bb87a; --red: #e2564a; --accent: #5cadf5;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .shell { max-width: 960px; margin: 0 auto; padding: 56px 24px 96px; }
+  .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(24px, 3.4vw, 34px); line-height: 1.15; letter-spacing: -.02em; margin: 0 0 10px; font-weight: 550; }
+  .lead { color: var(--ink-2); margin: 0 0 28px; max-width: 62ch; }
+
+  /* ---------- panel ---------- */
+  .panel { border: 1px solid var(--line); border-radius: 8px; background: var(--card); padding: 20px 20px 16px; }
+  .panel-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+  .panel-instr { font-size: 13px; color: var(--ink-2); margin: 0 0 16px; display: flex; gap: 8px; align-items: flex-start; }
+  .panel-instr::before { content: "?"; flex: none; width: 15px; height: 15px; margin-top: 2px; border: 1px solid var(--line-2); border-radius: 50%; font: 600 9px/15px var(--mono); text-align: center; color: var(--ink-3); }
+
+  .scenarios { display: flex; gap: 8px; margin-bottom: 14px; }
+  .scenarios button {
+    flex: 1; text-align: left; padding: 9px 12px; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--ink-2);
+    font: 500 12px/1.35 system-ui; transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+  }
+  .scenarios button span { display: block; font: 11px/1.35 var(--mono); color: var(--ink-3); margin-top: 2px; }
+  .scenarios button[aria-selected="true"] { border-color: var(--line-2); background: #101a26; color: var(--ink); }
+  .scenarios button[aria-selected="true"] span { color: var(--ink-2); }
+
+  .stage-wrap { overflow-x: auto; }
+  .stage { position: relative; min-width: 620px; aspect-ratio: 860 / 340; }
+  .wires { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .wire { fill: none; stroke: var(--line-2); stroke-width: 1.5; stroke-linecap: round; transition: stroke .25s var(--ease), stroke-width .25s var(--ease); }
+  .wire.is-on { stroke: var(--ink); stroke-width: 2.2; }
+  .wire.is-fail { stroke: var(--red); }
+  .packet { fill: var(--amber); opacity: 0; transition: opacity .25s var(--ease); }
+  .packet.is-on { opacity: 1; }
+
+  .node {
+    position: absolute; transform: translate(-50%, -50%);
+    display: grid; gap: 1px; min-width: 118px; padding: 9px 12px; cursor: pointer;
+    background: var(--card); border: 1.5px solid var(--line-2); border-radius: 8px;
+    color: var(--ink); font: 500 13px/1.3 system-ui; text-align: left;
+    /* estado: lento (medido ~500 ms numa referência real) */
+    transition: border-color .5s var(--ease), background .5s var(--ease), opacity .4s var(--ease), color .5s var(--ease);
+  }
+  .node small { font: 11px/1.3 var(--mono); color: var(--ink-3); }
+  .node .ico { position: absolute; top: 7px; right: 8px; font: 12px/1 var(--mono); color: var(--ink-3); }
+  .node .idx { position: absolute; top: -8px; right: -8px; width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--card); font: 600 9px/14px var(--mono); text-align: center; color: var(--ink-3); }
+  .node[data-state="active"] { border-color: var(--amber); background: color-mix(in srgb, var(--amber) 12%, var(--card)); }
+  .node[data-state="done"] { border-color: color-mix(in srgb, var(--green) 55%, var(--line-2)); }
+  .node[data-state="done"] .ico { color: var(--green); }
+  .node[data-state="fail"] { border-color: var(--red); background: color-mix(in srgb, var(--red) 10%, var(--card)); }
+  .node[data-state="idle"] { opacity: .55; }
+  .node:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font: 11px/1.6 var(--mono); color: var(--ink-3); margin: 14px 0 0; }
+  .legend i { display: inline-block; width: 9px; height: 9px; border: 1.5px solid currentColor; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .legend .k-a { color: var(--amber); } .legend .k-d { color: var(--green); } .legend .k-i { color: var(--line-2); } .legend .k-f { color: var(--red); }
+
+  .note { margin: 14px 0 0; padding: 11px 13px; border-radius: 6px; background: #0b1420; border: 1px solid var(--line); color: var(--ink-2); font-size: 13.5px; }
+  .note b { color: var(--ink); font-weight: 600; }
+
+  .clock { display: flex; align-items: center; gap: 12px; margin: 14px 0 0; font: 11px/1 var(--mono); color: var(--ink-3); }
+  .bar { flex: 1; height: 8px; border-radius: 99px; background: #16202e; overflow: hidden; }
+  /* dado: rápido (medido ~230 ms) — a barra é o número, não o estado */
+  .bar i { display: block; height: 100%; background: var(--amber); border-radius: 99px; transform-origin: left; transform: scaleX(0); transition: transform .23s var(--ease), background .3s var(--ease); }
+  .clock b { font: 600 13px/1 var(--mono); color: var(--ink); min-width: 62px; text-align: right; }
+
+  .controls { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .btn { font: 500 12.5px/1 system-ui; padding: 9px 14px; border-radius: 6px; cursor: pointer; border: 1px solid var(--line-2); background: transparent; color: var(--ink); transition: background .2s var(--ease), border-color .2s var(--ease); }
+  .btn:hover { background: #101a26; }
+  .btn--solid { background: var(--ink); color: #08101a; border-color: var(--ink); }
+  .btn--solid:hover { background: #fff; }
+  .btn[disabled] { opacity: .4; cursor: default; }
+  .btn[disabled]:hover { background: transparent; }
+  .pager { display: flex; gap: 5px; margin: 0 auto; }
+  .pager button { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line-2); background: transparent; color: var(--ink-3); font: 500 11px/1 var(--mono); cursor: pointer; transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease); }
+  .pager button.is-done { background: #16202e; color: var(--ink-2); }
+  .pager button[aria-current="step"] { background: var(--ink); color: #08101a; border-color: var(--ink); }
+  .count { font: 11px/1 var(--mono); color: var(--ink-3); }
+  .footnote { margin: 12px 0 0; font-size: 11.5px; color: var(--ink-3); }
+
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="shell">
+  <p class="eyebrow">archetype 5 · course panel</p>
+  <h1>Um pedido, do clique à resposta</h1>
+  <p class="lead">Um painel de aula não é um diagrama animado: é um processo que a pessoa
+    <em>opera</em>. Tudo na tela sai de um único índice — o passo atual — então reiniciar,
+    pular para o passo 5 e clicar numa peça são a mesma operação.</p>
+
+  <section class="panel" data-stepper aria-label="Caminho de um pedido">
+    <h2 class="panel-title" data-title>O caminho de um pedido</h2>
+    <p class="panel-instr" data-instr>Aperte Próximo passo, ou clique em qualquer peça para saber o que ela é.</p>
+
+    <div class="scenarios" role="tablist" aria-label="Cenário">
+      <button type="button" role="tab" aria-selected="true" data-scenario="normal">Um dia normal<span>o pedido chega ao banco</span></button>
+      <button type="button" role="tab" aria-selected="false" data-scenario="falha">Um dia em que quebra<span>o worker cai no meio</span></button>
+    </div>
+
+    <div class="stage-wrap">
+      <div class="stage" data-stage>
+        <svg class="wires" viewBox="0 0 860 340" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+
+    <p class="legend">
+      <span class="k-a"><i></i>trabalhando neste passo</span>
+      <span class="k-d"><i></i>já fez parte</span>
+      <span class="k-i"><i></i>ainda não</span>
+    </p>
+
+    <p class="note" data-note aria-live="polite">—</p>
+
+    <div class="clock">
+      <span>Tempo desde o clique</span>
+      <div class="bar"><i data-bar></i></div>
+      <b data-ms>0 ms</b>
+    </div>
+
+    <footer class="controls">
+      <button class="btn btn--solid" type="button" data-play>Pausar</button>
+      <button class="btn" type="button" data-next>Próximo passo</button>
+      <button class="btn" type="button" data-restart>Reiniciar</button>
+      <div class="pager" data-pager role="group" aria-label="Passos"></div>
+      <span class="count" data-count>passo 1 de 6</span>
+    </footer>
+
+    <p class="footnote">Os tempos são ilustrativos, para uma máquina só. O que vale é a ordem dos
+      passos e o tamanho de cada um perto dos outros.</p>
+  </section>
+</main>
+
+<script>
+document.documentElement.classList.add('js');
+(function () {
+  'use strict';
+
+  /* ---------------- data: the whole panel lives here ---------------- */
+
+  var NODES = {
+    navegador: { label: 'Navegador', sub: 'a aba aberta',      ico: '▭', x: 88,  y: 170, nota: 'Só o navegador fala com o mundo. Ele abre uma conexão com a API e espera.' },
+    api:       { label: 'API',       sub: 'recebe e valida',   ico: '{ }', x: 296, y: 170, nota: 'Valida o formato e devolve rápido. Tudo que demora vai para a fila, não para a resposta.' },
+    fila:      { label: 'Fila',      sub: 'guarda o trabalho', ico: '≡', x: 520, y: 68,  nota: 'Aceita sem discutir e não perde o recado se o consumidor morrer. É o que permite escalar.' },
+    worker:    { label: 'Worker',    sub: 'processa',          ico: '⚙', x: 520, y: 272, nota: 'Processo separado: pode reiniciar, atrasar ou rodar dez ao mesmo tempo sem tocar na API.' },
+    banco:     { label: 'Banco',     sub: 'guarda o resultado', ico: '▤', x: 748, y: 170, nota: 'A escrita com confirmação é a etapa caríssima. Todo o resto existe para ela acontecer uma vez.' }
+  };
+
+  var HOPS = {
+    n_api: { from: 'navegador', to: 'api' },
+    a_f:   { from: 'api', to: 'fila' },
+    f_w:   { from: 'fila', to: 'worker' },
+    w_b:   { from: 'worker', to: 'banco' },
+    volta: { from: 'api', to: 'navegador', dip: 58 }
+  };
+
+  var CENARIOS = {
+    normal: [
+      { t: 'Passo 1: o navegador manda o pedido', at: ['navegador'], hop: 'n_api', ms: 0,
+        nota: 'O navegador abre uma conexão com a API e envia o pedido. A partir daqui ele só espera.' },
+      { t: 'Passo 2: a API valida e enfileira', at: ['api'], hop: 'a_f', ms: 8,
+        nota: 'Validar é barato, processar não. A API confere o formato e <b>põe o trabalho na fila</b> — não faz o trabalho.' },
+      { t: 'Passo 3: o worker pega o trabalho', at: ['worker'], hop: 'f_w', ms: 22,
+        nota: 'A fila existe para o worker poder demorar sem prender a API. Quem consome é outro processo, em outra máquina.' },
+      { t: 'Passo 4: o worker grava no banco', at: ['worker', 'banco'], hop: 'w_b', ms: 35,
+        nota: 'A etapa caríssima: escrita em disco <b>com confirmação</b>. É por isso que ela acontece fora do caminho da resposta.' },
+      { t: 'Passo 5: a API devolve a resposta', at: ['api'], hop: 'volta', ms: 6,
+        nota: 'A API responde que o trabalho foi <b>aceito</b>, não que terminou. Quem espera é o navegador; a pessoa já pode seguir.' },
+      { t: 'Passo 6: o navegador pinta o resultado', at: ['navegador'], hop: null, ms: 4,
+        nota: 'Do clique à tela: menos de um décimo de segundo — porque nada aqui esperou o banco.' }
+    ],
+    falha: [
+      { t: 'Passo 1: o navegador manda o pedido', at: ['navegador'], hop: 'n_api', ms: 0,
+        nota: 'Igual ao dia normal. O problema não começa aqui.' },
+      { t: 'Passo 2: a API enfileira', at: ['api'], hop: 'a_f', ms: 8,
+        nota: 'A fila aceita tudo, sempre, e é exatamente isso que a torna perigosa: nada reclama.' },
+      { t: 'Passo 3: o worker cai no meio', at: ['worker'], hop: 'f_w', ms: 26, fail: true,
+        nota: 'O processo morre antes de confirmar. A mensagem <b>volta para a fila</b> — e vai ser tentada de novo.' },
+      { t: 'Passo 4: a fila cresce', at: ['fila'], hop: 'f_w', ms: 900,
+        nota: 'Nada consome, nada falha na tela. O atraso cresce em silêncio enquanto o painel continua verde.' },
+      { t: 'Passo 5: o alerta dispara', at: ['fila', 'worker'], hop: null, ms: 1800,
+        nota: 'O que salva o dia não é o worker voltar: é <b>alguém ser avisado</b> antes de o cliente perceber.' }
+    ]
+  };
+
+  /* ---------------- elements ---------------- */
+
+  var box = document.querySelector('[data-stepper]');
+  if (!box) return;
+  var stage = box.querySelector('[data-stage]');
+  var wires = box.querySelector('.wires');
+  var elTitle = box.querySelector('[data-title]');
+  var elNote = box.querySelector('[data-note]');
+  var elBar = box.querySelector('[data-bar]');
+  var elMs = box.querySelector('[data-ms]');
+  var elCount = box.querySelector('[data-count]');
+  var elPager = box.querySelector('[data-pager]');
+  var btnPlay = box.querySelector('[data-play]');
+  var btnNext = box.querySelector('[data-next]');
+  var btnRestart = box.querySelector('[data-restart]');
+  var tabs = [].slice.call(box.querySelectorAll('[data-scenario]'));
+
+  var W = 860, H = 340;
+  var cenario = 'normal';
+  var passos = CENARIOS.normal;
+  var i = 0, sozinho = false, relogio = 0, nodeNota = null;
+  var reduz = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------------- build the stage from the data ---------------- */
+
+  var SVGN = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs) {
+    var e = document.createElementNS(SVGN, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  var wiresEl = {}, packets = {}, nodesEl = {};
+
+  Object.keys(HOPS).forEach(function (id) {
+    var h = HOPS[id], a = NODES[h.from], b = NODES[h.to], d;
+    if (h.dip) {
+      d = 'M' + a.x + ' ' + (a.y + 18) + ' Q' + ((a.x + b.x) / 2) + ' ' + (a.y + h.dip) + ' ' + b.x + ' ' + (b.y + 18);
+    } else {
+      d = 'M' + a.x + ' ' + a.y + ' L' + b.x + ' ' + b.y;
+    }
+    var line = mk('path', { d: d, class: 'wire', 'marker-end': 'url(#arrow)' });
+    line.setAttribute('data-hop', id);
+    wires.appendChild(line);
+    wiresEl[id] = line;
+    var dot = mk('circle', { r: 4.5, class: 'packet' });
+    wires.appendChild(dot);
+    packets[id] = dot;
+  });
+
+  /* Arrowheads cannot inherit the line's stroke (Chrome has no context-stroke),
+     so there is one marker per state and the render swaps marker-end. */
+  var defs = mk('defs', {});
+  [['arrow', '#2b3d55'], ['arrow-on', '#e9eff8'], ['arrow-fail', '#e2564a']].forEach(function (m) {
+    var marker = mk('marker', { id: m[0], viewBox: '0 0 10 10', refX: '9', refY: '5',
+      markerWidth: '5', markerHeight: '5', orient: 'auto-start-reverse' });
+    marker.appendChild(mk('path', { d: 'M0 1 L9 5 L0 9', fill: 'none', stroke: m[1], 'stroke-width': '1.6' }));
+    defs.appendChild(marker);
+  });
+  wires.insertBefore(defs, wires.firstChild);
+
+  var n = 0;
+  Object.keys(NODES).forEach(function (id) {
+    var nd = NODES[id];
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'node';
+    b.setAttribute('data-node', id);
+    b.style.left = (nd.x / W * 100) + '%';
+    b.style.top = (nd.y / H * 100) + '%';
+    b.innerHTML = '<span class="ico">' + nd.ico + '</span>' +
+                  '<span class="idx">' + (++n) + '</span>' +
+                  nd.label + '<small>' + nd.sub + '</small>';
+    b.addEventListener('click', function () { nodeNota = nodeNota === id ? null : id; render(); });
+    stage.appendChild(b);
+    nodesEl[id] = b;
+  });
+
+  /* ---------------- render: everything is a function of `i` ---------------- */
+
+  function total() {
+    return passos.reduce(function (s, p) { return s + p.ms; }, 0) || 1;
+  }
+  function acumulado(k) {
+    var s = 0;
+    for (var j = 0; j <= k; j++) s += passos[j].ms;
+    return s;
+  }
+  function estado(id, k) {
+    var atual = passos[k];
+    /* uma falha não se conserta ao avançar: fica vermelha até reiniciar */
+    for (var j = 0; j <= k; j++) if (passos[j].fail && passos[j].at.indexOf(id) > -1) return 'fail';
+    if (atual.at.indexOf(id) > -1) return 'active';
+    for (j = 0; j < k; j++) if (passos[j].at.indexOf(id) > -1) return 'done';
+    return 'idle';
+  }
+
+  function render() {
+    var p = passos[i];
+
+    elTitle.textContent = p.t;
+    elNote.innerHTML = nodeNota ? '<b>' + NODES[nodeNota].label + '</b> — ' + NODES[nodeNota].nota : p.nota;
+
+    Object.keys(nodesEl).forEach(function (id) {
+      nodesEl[id].setAttribute('data-state', estado(id, i));
+    });
+
+    Object.keys(wiresEl).forEach(function (id) {
+      var on = p.hop === id;
+      wiresEl[id].classList.toggle('is-on', on);
+      wiresEl[id].classList.toggle('is-fail', on && !!p.fail);
+      wiresEl[id].setAttribute('marker-end', 'url(#' + (on ? (p.fail ? 'arrow-fail' : 'arrow-on') : 'arrow') + ')');
+      packets[id].classList.toggle('is-on', on);
+      if (on) {
+        var pt = wiresEl[id].getPointAtLength(wiresEl[id].getTotalLength() / 2);
+        packets[id].setAttribute('cx', pt.x);
+        packets[id].setAttribute('cy', pt.y);
+      }
+    });
+
+    var acc = acumulado(i);
+    elMs.textContent = acc + ' ms';
+    elBar.style.transform = 'scaleX(' + (acc / total()).toFixed(4) + ')';
+    elBar.style.background = p.fail ? 'var(--red)' : '';
+    elCount.textContent = 'passo ' + (i + 1) + ' de ' + passos.length;
+
+    [].forEach.call(elPager.children, function (b, k) {
+      b.classList.toggle('is-done', k < i);
+      if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    btnRestart.disabled = i === 0;
+    btnNext.disabled = i === passos.length - 1;
+    btnPlay.textContent = sozinho ? 'Pausar' : 'Continuar';
+    btnPlay.setAttribute('aria-pressed', sozinho ? 'true' : 'false');
+  }
+
+  function ir(k) {
+    i = Math.max(0, Math.min(passos.length - 1, k));
+    nodeNota = null;
+    render();
+    agendar();
+  }
+
+  function agendar() {
+    clearTimeout(relogio);
+    if (!sozinho || reduz.matches) return;
+    relogio = setTimeout(function () {
+      if (i < passos.length - 1) ir(i + 1); else sozinho = false, render();
+    }, 2600);
+  }
+
+  /* ---------------- controls ---------------- */
+
+  btnPlay.addEventListener('click', function () {
+    sozinho = !sozinho;
+    if (sozinho && i === passos.length - 1) i = 0;
+    render(); agendar();
+  });
+  btnNext.addEventListener('click', function () { sozinho = false; ir(i + 1); });
+  btnRestart.addEventListener('click', function () { sozinho = false; ir(0); });
+
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); sozinho = false; ir(i + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); sozinho = false; ir(i - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); sozinho = false; ir(0); }
+  });
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      cenario = t.getAttribute('data-scenario');
+      passos = CENARIOS[cenario];
+      tabs.forEach(function (o) { o.setAttribute('aria-selected', o === t ? 'true' : 'false'); });
+      elPager.innerHTML = '';
+      passos.forEach(function (_, k) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = String(k + 1);
+        b.setAttribute('aria-label', 'Passo ' + (k + 1));
+        b.addEventListener('click', function () { sozinho = false; ir(k); });
+        elPager.appendChild(b);
+      });
+      sozinho = false;
+      ir(0);
+    });
+  });
+
+  /* ---------------- boot ---------------- */
+
+  tabs[0].click();                 /* builds the pager and renders step 1 */
+  if (!reduz.matches && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      if (reduz.matches) return;
+      es.forEach(function (e) {
+        if (e.isIntersecting && !sozinho && i === 0) { sozinho = true; render(); agendar(); }
+        else if (!e.isIntersecting) { sozinho = false; clearTimeout(relogio); render(); }
+      });
+    }, { threshold: .35 });
+    io.observe(box);
+  }
+})();
+</script>
+</body>
+</html>
