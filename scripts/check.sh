@@ -28,23 +28,25 @@ farm="${AGENTS_SKILLS_DIR:-$HOME/.agents/skills}"
 home="${HOME}"
 quiet=0
 strict=0
+audit_flag=0
 
 for arg in "$@"; do
   case "$arg" in
     --quiet) quiet=1 ;;
     --strict) strict=1 ;;
+    --audit) audit_flag=1 ;;
     -h|--help)
       sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *)
-      echo "check: unknown option: $arg (usage: check.sh [--quiet] [--strict])" >&2
+      echo "check: unknown option: $arg (usage: check.sh [--quiet] [--strict] [--audit])" >&2
       exit 2
       ;;
   esac
 done
 
-python3 - "$repo" "$farm" "$home" "$quiet" "$strict" <<'PY'
+python3 - "$repo" "$farm" "$home" "$quiet" "$strict" "$audit_flag" <<'PY'
 import glob
 import os
 import re
@@ -56,6 +58,7 @@ except ImportError:
     sys.exit("check: PyYAML is required (python3 -m pip install --user pyyaml)")
 
 repo, farm, home, quiet, strict = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4] == "1", sys.argv[5] == "1"
+audit = sys.argv[6] == "1"
 
 CLUSTERS = ("base", "engineering", "frontend", "motion", "process")
 FORBIDDEN = (
@@ -356,6 +359,52 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
         continue
     if len(set(HARNESS_RE.findall(s["body"]))) >= 3:
         lint.append(f"lint: {s['name']}: repeats the harness table; point to process/delegate")
+
+# --- 7b. agent-docs audit (only with --audit) ----------------------------
+# Every phase ends on a completion criterion, and a pointer names the condition that
+# opens it. Both are judgement calls, but their absence is visible: a phase with no
+# verifiable end, or a read instruction with no "when".
+CRITERION_RE = re.compile(
+    r"(done when|completion criterion|complete when|must show|pass bar|pass when|"
+    r"stop if|fail if|exit code|expect|verify|assert|green|0 fail)", re.I)
+POINTER_RE = re.compile(r"(~/\.agents/skills/[a-z0-9-]+/(?:SKILL\.md|references/)|\(references/[^)]+\)|`[a-z-]+/SKILL\.md`)")
+WHEN_RE = re.compile(r"(\bwhen\b|\bbefore\b|\bafter\b|\bif\b|\bfor\b|\buse\b|read)", re.I)
+
+def phases_of(body: str) -> list[tuple[str, str]]:
+    out, cur = [], None
+    for line in body.splitlines():
+        h = re.match(r"^#{2,3}\s+(.+)$", line)
+        if h:
+            if cur is not None:
+                out.append(cur)
+            cur = (h.group(1).strip(), "")
+            continue
+        if cur is not None:
+            cur = (cur[0], cur[1] + line + "\n")
+    if cur is not None:
+        out.append(cur)
+    return out
+
+audit_rows = []
+for s in sorted(skills.values(), key=lambda x: x["rel"]):
+    body = s["body"]
+    ph = phases_of(body)
+    stepped = [x for x in ph if re.match(r"(\d|phase|step|stage|pass \d)", x[0], re.I)]
+    missing = [x[0] for x in stepped if not CRITERION_RE.search(x[1])]
+    ptrs = [ln for ln in body.splitlines() if POINTER_RE.search(ln) and not ln.lstrip().startswith("|")]
+    weak = [ln for ln in ptrs if not WHEN_RE.search(ln)]
+    if stepped or ptrs:
+        audit_rows.append((s["name"], len(stepped), len(missing), len(ptrs), len(weak), missing[:2]))
+
+if audit:
+    print(f"\naudit: {len(audit_rows)} skills with phases or pointers")
+    print(f"{'skill':26}{'fases':>6}{'sem criterio':>14}{'ponteiros':>11}{'sem quando':>12}")
+    for name, n, miss, np_, weak, sample in sorted(audit_rows, key=lambda r: (-r[2], -r[4])):
+        flag = "" if (miss == 0 and weak == 0) else ("  <-- " + ", ".join(f"{s[:34]}" for s in sample))
+        print(f"{name:26}{n:6}{miss:14}{np_:11}{weak:12}{flag}")
+    total_miss = sum(r[2] for r in audit_rows)
+    total_weak = sum(r[4] for r in audit_rows)
+    print(f"totals: {total_miss} phase(s) without a completion criterion, {total_weak} pointer(s) without a condition")
 
 # --- 8. mirror parity ----------------------------------------------------
 mirrors = {
