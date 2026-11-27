@@ -5,6 +5,7 @@
 
 external:
   olorin: /home/cadu/Projects/olorin/integrations/skills/olorin
+  graphify: /home/cadu/.pi/agent/skills/graphify
 parked:
   Kappaemme-git/codex-startup-pressure-test-skill:
     pack: marketing

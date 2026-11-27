@@ -187,6 +187,10 @@ if os.path.isdir(farm):
         farm_entries[entry] = os.path.exists(entry_path)
         if os.path.islink(entry_path):
             farm_links.add(entry)
+# Real skill directories that live in the farm instead of being linked from the repo.
+farm_real = {e for e in farm_entries if os.path.isdir(os.path.join(farm, e))
+             and not os.path.islink(os.path.join(farm, e)) and e.startswith("instabox")}
+farm_skills = farm_links | farm_real
 
 known = {s["name"] for s in skills.values() if s["name"]}
 known |= {s["dir"] for s in skills.values()}
@@ -525,11 +529,10 @@ for label, mdir in mirrors.items():
     entries = [e for e in all_entries if os.path.islink(os.path.join(mdir, e))]
     unmanaged = sorted(set(all_entries) - set(entries))
     broken = [e for e in entries if not os.path.exists(os.path.join(mdir, e))]
-    missing = sorted(farm_links - set(entries))
+    missing = sorted(farm_skills - set(entries))
     # A mirror may carry a skill of its own that the farm does not have: graphify is
     # linked into the gemini farm from the Pi skill directory on purpose.
-    MIRROR_ONLY = {"gemini": {"graphify"}}
-    extra = sorted(set(entries) - farm_links - MIRROR_ONLY.get(label, set()))
+    extra = sorted(set(entries) - farm_skills)
     bits = [f"{len(entries)} link(s)"]
     if unmanaged:
         bits.append(f"{len(unmanaged)} non-link entr{'y' if len(unmanaged) == 1 else 'ies'} ({', '.join(unmanaged[:3])})")
