@@ -6,10 +6,10 @@ any stack. Per-stack code was removed from this vendored copy; keep implementati
 
 ## KPI strip and the selected tile
 
-For: the 3–7 headline numbers; clicking one picks the metric the main chart shows.
+For: the 3-7 headline numbers; clicking one picks the metric the main chart shows.
 
 - One card, tiles divided by hairlines (`border-r border-line`), not seven floating cards.
-- Tile content: label (14 px, ink-2) with a small monochrome icon square or the delta on the right · value (28–32 px
+- Tile content: label (14 px, ink-2) with a small monochrome icon square or the delta on the right · value (28-32 px
   semibold, `tracking-[-.03em]`, tabular) · the delta with a one- or two-word baseline ("▲ 13% vs last week") ·
   optional sparkline. The explanation ("3% of visitors", "$7.31 per order, after tax") is the tile's tooltip, never a
   sentence on a sub-line: a row of tiles with sub-lines reads as a paragraph.
@@ -35,7 +35,7 @@ For: the 3–7 headline numbers; clicking one picks the metric the main chart sh
 
 ## Sparkline
 
-- 24–40 px tall, 1.5 px line, faint fill, no axes. Selected tile in the metric colour, others grey.
+- 24-40 px tall, 1.5 px line, faint fill, no axes. Selected tile in the metric colour, others grey.
 - Trap: it must draw **the same window as the main chart**. If the chart trims empty leading days ("Nothing before
   26 Sep · show all"), trim the sparklines identically, or every tile becomes a flat line with a spike at the end.
 
@@ -53,10 +53,10 @@ For: the 3–7 headline numbers; clicking one picks the metric the main chart sh
 - Familiar forms (bars, lines) for supporting charts; one novel form (a heatmap, a custom matrix) only when it is
   the screen's centre, with its legend. When two charts differ (time vs category), make the difference visible:
   vertical bars over time, horizontal bars for categories.
-- One metric at a time in its colour, 1.5–2 px line, gradient fill from ~15% to 0%. No point markers until hover.
-- Y axis: 4–5 round ticks (0, 1k, 2k), labels 11–12 px muted, baseline 0. Odd ticks like 2,103 look broken
+- One metric at a time in its colour, 1.5-2 px line, gradient fill from ~15% to 0%. No point markers until hover.
+- Y axis: 4-5 round ticks (0, 1k, 2k), labels 11-12 px muted, baseline 0. Odd ticks like 2,103 look broken
   (the tick-rounding helper, once in the removed snippets file).
-- X axis: 5–7 ticks ("21 Sep"), never every day. Hourly for Today, daily up to ~120 days, monthly beyond.
+- X axis: 5-7 ticks ("21 Sep"), never every day. Hourly for Today, daily up to ~120 days, monthly beyond.
 - Previous period: grey or dashed line, no fill, behind the current series; legend "This period / Period before".
 - Incomplete current bucket: dotted tail.
 - Tooltip: date header, coloured dot + value, previous value and % change when comparing; vertical hairline.
@@ -66,14 +66,14 @@ For: the 3–7 headline numbers; clicking one picks the metric the main chart sh
   week steps across a month.
 - Revenue view: money as soft bars on a right-hand $ axis against the visitors line works well. Mark the biggest
   sale days with the source's logo over the bar, so the chart says where the money came from.
-- Bars on their own: pastel fill (~20% of the entity hue) with a solid 6–7 px rounded cap at the top; the unfinished
+- Bars on their own: pastel fill (~20% of the entity hue) with a solid 6-7 px rounded cap at the top; the unfinished
   period as a dashed outline with a faint fill, its axis label in the accent.
 - Tooltip: a dark card with the exact value large and the period in a muted line under it.
 - Trim leading empty days by default, with a "show all" link.
 
 ## Ranked breakdown list
 
-For: sources, pages, countries, devices — "what's the top of this, and by how much".
+For: sources, pages, countries, devices, answering "what's the top of this, and by how much".
 
 - Row: icon (favicon/flag, 16 px) · name (truncate) · value (tabular, right) · share % (muted, fixed width).
 - Bar: a 3 px rounded track spanning the row's bottom edge (`bg-line/70`), the share filled in the entity colour
@@ -89,7 +89,7 @@ For: sources, pages, countries, devices — "what's the top of this, and by how 
 
 ## Date range picker
 
-- Trigger: one pill showing the active range ("Last 30 days", or "6 Oct – 17 Oct 2026" for custom), chevron;
+- Trigger: one pill showing the active range ("Last 30 days", or "6 Oct to 17 Oct 2026" for custom), chevron;
   optional ‹ › arrows to step to the previous/next period.
 - Menu: presets grouped by hairlines (Today, 7 / 30 / 90 days, 12 months | Yesterday, This week, This month,
   Last month | Custom range…), check on the active row. Optional: a live "Now" row with a green dot, one-letter
@@ -101,7 +101,7 @@ For: sources, pages, countries, devices — "what's the top of this, and by how 
   - Range = soft band `bg-accent/10` between solid circular end days `bg-accent text-on-accent`; band halves
     round only at the outer edge where a week row breaks it.
   - Today: a small dot under the number. Days after today and beyond the allowed span are disabled.
-  - Footer: "6 Oct – 17 Oct 2026 · 12 days" and an accent Apply button (disabled until both ends exist).
+  - Footer: "6 Oct to 17 Oct 2026 · 12 days" and an accent Apply button (disabled until both ends exist).
   - Phones: same calendar in a bottom sheet.
 - Trap: native `<input type="date">` renders "21/09/2026 📅" and looks unfinished in every browser.
 
@@ -130,7 +130,7 @@ For: the Monitor step "what needs attention", answered by shape where the data a
 
 For: one measure across two dimensions where the grid is the point: classes × days, weekday × hour, team × week.
 
-- Rounded pill cells (8–10 px radius, 32–36 px tall, 5–8 px gap), row labels left, column headers above with
+- Rounded pill cells (8-10 px radius, 32-36 px tall, 5-8 px gap), row labels left, column headers above with
   the latest column marked (accent number plus a dot): today when today has data, otherwise the latest complete day,
   with the "as of" date in the toolbar.
 - Columns are a fixed trailing window (the last 7 days, labelled in the card header) whatever the page range; for a
@@ -164,14 +164,14 @@ perception.md).
 
 For: a total split into a few ordered parts (debt by age, tickets by priority).
 
-- One row of rounded pills whose widths are the parts' shares, 2–6 px apart, 8–10 px tall; ordered parts use one
+- One row of rounded pills whose widths are the parts' shares, 2-6 px apart, 8-10 px tall; ordered parts use one
   hue's intensities ending in the warning or danger hue.
 - Legend under it: swatch, short label, amount; the share and exact amount in each segment's tooltip.
 
 ## Tables and recent activity
 
 - Hairline row separators, muted date column, right-aligned amounts, small source chips with favicons.
-- Money rows: flag · amount (18–20 px semibold) · product/country · source chip ("likely" in muted text when the
+- Money rows: flag · amount (18-20 px semibold) · product/country · source chip ("likely" in muted text when the
   source is estimated) · relative time with a live dot for the last hour.
 - People rows: letter avatar (pastel tint of a categorical hue, initials) · name with one muted detail under it ·
   status chip · value · icon actions. On phones drop the avatar and the chip and fold their facts into the muted
@@ -192,7 +192,7 @@ The few words left on a wordless screen do real work:
 
 ## Tooltip
 
-- One tooltip system for the whole screen: dark surface, white text, 12 px, 8–10 px radius, placed above the
+- One tooltip system for the whole screen: dark surface, white text, 12 px, 8-10 px radius, placed above the
   element and kept inside the viewport.
 - Chart tooltips lead with the big exact value, then a muted label line (period, partial-period note).
 - Every icon-only control and every compact number has one; it also shows on keyboard focus, and hides on scroll,
@@ -200,7 +200,7 @@ The few words left on a wordless screen do real work:
 
 ## Realtime
 
-- "Now" = last 30 minutes; active = a hit in the last 5–10 minutes.
+- "Now" = last 30 minutes; active = a hit in the last 5-10 minutes.
 - Live count with a breathing green dot in the nav.
 - A map/globe with avatars and a live feed is delightful but optional; a ranked "likely to buy" list with reasons
   is more useful.

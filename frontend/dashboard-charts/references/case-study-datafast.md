@@ -30,7 +30,7 @@ its documentation and changelog. Summarised in our own words for the design less
 
 - Attribution relies on a long-lived first-party cookie; the cookieless mode is documented as less capable. A
   privacy-first product would pair these UI patterns with cookieless matching.
-- Two ways to detect a sale (redirect URL and payment metadata) can double-count unless one is switched off — a
+- Two ways to detect a sale (redirect URL and payment metadata) can double-count unless one is switched off. That is a
   reminder to make the default path the safe one.
 - Ranked rows use tinted bars behind the text; the slim-bar pattern in components.md reads cleaner.
 - Alerts are email-only at the time of study; chat channels (Slack, Telegram, Discord) are a common ask.

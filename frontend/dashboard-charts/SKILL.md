@@ -33,7 +33,7 @@ bullet graph, and when checking accessibility behind any of the three.
 
 ## Build or redesign
 
-1. **Name the question.** Write the screen's one question, the 3–6 numbers that answer it, the problem rules as
+1. **Name the question.** Write the screen's one question, the 3-6 numbers that answer it, the problem rules as
    numbers ("CPL above 1.2× target on 2 of the last 3 days", "attendance below 85%"), and the action for each
    problem. Seed a fixed fixture that triggers every problem and write its expected answers now, before any UI
    (qa.md → Known totals). Done when the four lists, the fixture and the expected answers exist.
@@ -63,7 +63,7 @@ bullet graph, and when checking accessibility behind any of the three.
 Look at the screen (screenshot or live), then answer in this order:
 
 1. **Verdict** in one line, plain ("Better, not good yet").
-2. **What works**: 2–4 specifics.
+2. **What works**: 2-4 specifics.
 3. **Issues ranked by harm**: honesty (numbers that disagree, misleading deltas or sparklines) → salience (does the
    eye land on what needs action, or is the problem the palest thing?) → hierarchy (what leads, what competes) →
    text (sentences that should be shape or tooltip) → component smells (qa.md smell table) → polish. Each issue names
@@ -83,7 +83,7 @@ When that is the finding, read the worked example of the failure and its fix in
 - **Context**: every headline number answers "compared to what?" with one baseline: previous period (same elapsed
   time), target, normal range or history.
 - **Numbers**: tabular figures, right-aligned in columns; as precise as the decision needs (5.2M on a card, exact in
-  the tooltip); compact on axes (1k, $4k); `<0.1%` below 0.1%; `—` for no data, never a fake $0 or 0%.
+  the tooltip); compact on axes (1k, $4k); `<0.1%` below 0.1%; an em dash for no data, never a fake $0 or 0%.
 - **Comparison**: the previous period is a grey or dashed line; an unfinished period is drawn dashed. A base under
   ~5 reads "was 1" in grey, never a red −100%. Deltas are coloured by meaning: lower-is-better metrics (cost, CPL,
   churn) flip green and red; neutral ones (spend, volume) stay grey.
@@ -102,4 +102,4 @@ Calm, crafted, wordless. Light grey page, white cards with soft borders; a toolb
 green-dot "updated" pill); KPI cards of label, small monochrome icon square, big number and a delta with a one-word
 baseline; pastel bars with a solid cap; heatmap pills; segmented share bars; letter avatars; a dark tooltip with
 one big value. One accent blue (#3e63dd) plus a money green; light and dark. A project's own design system wins over
-this; a user's stated taste wins over both — note it at the top of the work and follow it.
+this; a user's stated taste wins over both. Note it at the top of the work and follow it.

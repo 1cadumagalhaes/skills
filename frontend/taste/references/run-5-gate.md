@@ -50,7 +50,7 @@ under sixteen). Any scroll scenes are already built (step 6); around them the la
 
 1. **The signature move** named on the sheet: one, done well (a dealt scene can be it).
 2. **An entrance for the parts of every section:** the heading, then the text, then the picture,
-   staggered by 60–90ms, rising 16–32px with opacity, triggered once as the section enters. Not one
+   staggered by 60-90ms, rising 16-32px with opacity, triggered once as the section enters. Not one
    fade for the whole block, and never content that stays hidden if the script fails.
 3. **Feedback on every control:** press, hover and focus on buttons, links, cards and the live thing.
 4. **One moving picture:** a found clip as a muted loop, a slow scale or drift on a photograph, or a

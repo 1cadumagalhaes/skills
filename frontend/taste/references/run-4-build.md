@@ -71,7 +71,7 @@ not finished. Order of work:
    the width the page has set up: when its text sits in the left half, the right half holds its
    picture, its second column, its list or its figure, never nothing. Asymmetry lives inside the grid,
    never in the frame: a void is placed only when something closes it on the far side. No stretch of
-   the page taller than about half a screen holds nothing at all; sections are 120–240px apart on
+   the page taller than about half a screen holds nothing at all; sections are 120-240px apart on
    desktop. Every section the visitor came for opens with a heading that names it, and the first
    screen carries the page's title in an `h1`. These are what readers name first when a page looks
    wrong ("no clear title", "random empty space", "everything is pushed to one side"), and the

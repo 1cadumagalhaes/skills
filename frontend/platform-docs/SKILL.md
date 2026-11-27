@@ -20,7 +20,7 @@ node ~/.agents/skills/frontend-platform-docs/scripts/mwg-search.mjs search "ligh
 ```
 
 Two to five words, one capability, no framework names and no app nouns. Split
-“responsive table with dark mode” into two searches. Prefer the concrete UI
+"responsive table with dark mode" into two searches. Prefer the concrete UI
 primitive or API name if you know it (`top layer`, `anchor positioning`,
 `fetchpriority`, `content-visibility`, `passkeys`).
 
@@ -35,7 +35,7 @@ node …/mwg-search.mjs retrieve ui-behaviors/anchor-positioning-tab-underline,c
 ```
 
 Prints the guide in full. `list` shows every id by category; `list <category>`
-narrows it. Ids are `<category>/<file>` — `ui-behaviors/`, `ui-atoms/`,
+narrows it. Ids are `<category>/<file>`: `ui-behaviors/`, `ui-atoms/`,
 `ui-components/`, `css/`, `forms/`, `html/`, `accessibility/`, `security/`,
 `performance/`, `js/`, `visual-design/`, `user-experience/`, `pwa/`, `wasm/`,
 `built-in-ai/`, `webmcp/`.
@@ -59,7 +59,7 @@ narrows it. Ids are `<category>/<file>` — `ui-behaviors/`, `ui-atoms/`,
 
 Not backend, SQL, CI, Docker, Git, Python/Go, build tooling, or visual taste
 (use `frontend-rules` and `frontend-taste` for that). If the corpus has nothing
-relevant, say so and proceed — do not stretch a guide to fit.
+relevant, say so and proceed. Do not stretch a guide to fit.
 
 Vendored from https://github.com/GoogleChrome/modern-web-guidance (Apache-2.0,
 commit 4dd9683), guides unmodified. `SKILL.md` and `scripts/mwg-search.mjs` are

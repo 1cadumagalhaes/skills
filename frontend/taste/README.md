@@ -77,5 +77,5 @@ a repository under `.claude/skills/`.
 - The scores in `references/research.md` are model judgements from screenshots, not Awwwards scores.
 - The draw history lives in `~/.taste-skill/history.json` (set `TASTE_SKILL_HISTORY` to move it).
   Delete it to reset.
-- A build takes an agent roughly 30–45 minutes and a few hundred thousand tokens with the full
+- A build takes an agent roughly 30-45 minutes and a few hundred thousand tokens with the full
   look-and-fix loop; most of that is finding or drawing pictures when a project has no photographs.

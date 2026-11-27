@@ -13,7 +13,7 @@ in the warning zone. Actions: remind the teacher, call or remind the parent, ope
 
 ## Version 0: the original
 
-- Numbers that disagreed: attendance "—" on the KPI while the heatmap showed data; "1 lead" next to "no leads";
+- Numbers that disagreed: attendance showing an em dash on the KPI while the heatmap showed data; "1 lead" next to "no leads";
   a "last 9 months" chart with future months; "+22%" with no baseline.
 - A rainbow of icon tiles (seven hues meaning nothing), twelve KPI cards, a heatmap of 29 dashes out of 30 cells,
   a floating AI button over content, a header that overflowed at 1100 px.
@@ -41,7 +41,7 @@ Rebuilt after studying a dashboard designer's shipped work (sources.md → Desig
 - **Attendance heatmap**: classes × last six school days as rounded number pills. Classed tiers: healthy values
   in pale-to-medium blue, below 85% in amber, not-marked as a dashed cell with a bell that *is* the remind button.
 - **Revenue**: pastel bars with a solid cap, the unfinished month dashed, a dark tooltip with one big value.
-- **Debt**: a segmented bar by age (0–30, 31–60, 60+ days) above the debtor list, each row ending in call and
+- **Debt**: a segmented bar by age (0-30, 31-60, 60+ days) above the debtor list, each row ending in call and
   remind buttons.
 - **School year**: three numbers with weekly sparklines.
 - **Watch list and open leads**: letter-avatar lists.
@@ -49,7 +49,7 @@ Rebuilt after studying a dashboard designer's shipped work (sources.md → Desig
 ## What the screenshots caught in version 2
 
 1. **A blue wall.** The first heatmap used a plain light-to-dark ramp from 70% to 100%. Real attendance sits at
-   86–100%, so every cell was dark, and the worst class (77%) was the palest cell on the grid: inverted salience.
+   86-100%, so every cell was dark, and the worst class (77%) was the palest cell on the grid: inverted salience.
    Fix: classed tiers plus a warm tier for "below target" (perception.md).
 2. **Holes.** A ring chart beside the tall heatmap, and a one-row card beside a six-row table, left half-empty
    cards. Fix: the debt split moved into the debtor card as a segmented bar, and the short cards were paired in

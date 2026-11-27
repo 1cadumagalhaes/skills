@@ -9,15 +9,15 @@ derived_from: {repo: heliocosta-dev/revenue-centric-design, commit: 1942760c2242
 
 # Revenue-Centric Design
 
-A distilled playbook of **134 principles** from **Richard ([@richardrx](https://x.com/richardrx), "Design for startups")** —
+A distilled playbook of **134 principles** from **Richard ([@richardrx](https://x.com/richardrx), "Design for startups")**,
 a product designer specializing in conversion-rate optimization, churn reduction, and applied
 behavioral science (ex-Volkswagen, PayPal, IBM). The throughline is his coined philosophy,
-**Revenue-Centric Design (RCD)**: design decisions should serve the user _and_ the business —
+**Revenue-Centric Design (RCD)**: design decisions should serve the user _and_ the business,
 value and revenue, not one or the other.
 
 Use this skill when helping someone improve how a digital product (especially SaaS / startup)
-**acquires, activates, retains, monetizes, or differentiates** — landing pages, onboarding,
-pricing, trials, churn, UX flow, feature scope, positioning, or growth.
+**acquires, activates, retains, monetizes, or differentiates**. That covers landing pages, onboarding,
+pricing, trials, churn, UX flow, feature scope, positioning, and growth.
 
 ## Usage boundary (required)
 
@@ -32,26 +32,26 @@ gambling/betting/casino use. This is a hard constraint set by the author, not a 
 ## How to use it
 
 1. Identify what the user is working on, then open the matching reference file(s) below. Each is a
-   set of short, reusable principles in a fixed shape — **principle → apply when → the move →
+   set of short, reusable principles in a fixed shape: **principle → apply when → the move →
    evidence → source link**. Load only what's relevant (progressive disclosure).
 2. Ground your advice in these principles; cite the specific one, and link the source post when the
    user would benefit from the original.
 3. Lead with the **named mechanism** (e.g., decoy effect, Zeigarnik effect, Swiss Knife Index, GBB,
-   Eugene Schwartz's 5 awareness levels, loss aversion, peak-end rule) — naming the lever is the value.
+   Eugene Schwartz's 5 awareness levels, loss aversion, peak-end rule). Naming the lever is the value.
 4. Stay evidence-led: many principles carry a study, stat, or case. Keep the citation attached
    rather than hand-waving.
 
 ## The spine: Revenue-Centric Design in 9 principles
 
-1. **Neutrality is omission** — an interface that doesn't direct hurts conversion.
-2. **Who talks to everyone convinces no one** — no ICP → generic value → worse retention.
-3. **Value first, ask later** — proof must arrive before the user questions their choice.
-4. **Your promise is the size of your proof** — the market believes what you demonstrate, not what you claim.
-5. **Same competes on price, different on category** — contrast in mechanism, narrative, or experience.
-6. **Default is the decision you made for the user** — the initial state defines mass behavior.
-7. **Retention is built, not requested** — perceived loss retains more than promised benefit.
-8. **Expansion is born of usage** — upgrade at the moment of the limit, never by interruption.
-9. **Price is a filter** — pricing defines who enters, who stays, and who expands.
+1. **Neutrality is omission**: an interface that doesn't direct hurts conversion.
+2. **Who talks to everyone convinces no one**: no ICP → generic value → worse retention.
+3. **Value first, ask later**: proof must arrive before the user questions their choice.
+4. **Your promise is the size of your proof**: the market believes what you demonstrate, not what you claim.
+5. **Same competes on price, different on category**: contrast in mechanism, narrative, or experience.
+6. **Default is the decision you made for the user**: the initial state defines mass behavior.
+7. **Retention is built, not requested**: perceived loss retains more than promised benefit.
+8. **Expansion is born of usage**: upgrade at the moment of the limit, never by interruption.
+9. **Price is a filter**: pricing defines who enters, who stays, and who expands.
 
 ## Reference library
 

@@ -47,7 +47,7 @@ others.
 | | All 235 | One Page Love (151) | Awwwards (84) |
 | --- | --- | --- | --- |
 | Median overall | 7.2 | 7.1 | 7.5 |
-| Middle half | 6.8–7.6 | | |
+| Middle half | 6.8-7.6 | | |
 | 8.0 or higher | 25 sites (11%) | | |
 | 7.5 or higher | 90 sites (38%) | | |
 | Under 6.5 | 29 sites | | |
@@ -91,7 +91,7 @@ sites' signature layout.
 | Hero headline | All | Top | Weak |
 | --- | --- | --- | --- |
 | Words, median | 5 | 5 | 5 |
-| Words, middle half | 3–9 | 2–8 | 3–8 |
+| Words, middle half | 3-9 | 2-8 | 3-8 |
 | Characters, median | 32 | | |
 | One line at 1440 | 47% | | |
 | Two lines or fewer at 1440 | 70% | 71% | 83% |
@@ -108,13 +108,13 @@ the gallery already meets on desktop and that takes care to meet on a phone.
 | | All | Top | Weak |
 | --- | --- | --- | --- |
 | Hero size, median | 72px (5.0vw) | 6.0vw | 4.7vw |
-| Hero size, middle half | 3.0–7.6vw | 2.5–9.7vw | 2.7–6.1vw |
+| Hero size, middle half | 3.0-7.6vw | 2.5-9.7vw | 2.7-6.1vw |
 | Largest text on the page, median | 6.4vw | 8.4vw | 5.0vw |
 | Largest text, upper quarter starts at | 10.4vw | 12.5vw | 6.7vw |
 | Hero on a phone, median | 40px | | |
 | Hero tracking, median (middle half) | -0.01em (-0.03 to 0) | | |
-| Hero leading, median (middle half) | 1.0 (0.95–1.1) | | |
-| Body size, median (middle half) | 16px (14–18) | | |
+| Hero leading, median (middle half) | 1.0 (0.95-1.1) | | |
+| Body size, median (middle half) | 16px (14-18) | | |
 | Headline ÷ body, median | 4.3 | 4.7 | 4.0 |
 | Typefaces carrying 3%+ of text | one 31%, two 45%, three 22% | | |
 | Distinct font sizes, median | 8 | | |
@@ -175,7 +175,7 @@ first, and a page that cannot lean on them has to find structure in space, tone 
 - Primary buttons are neutral (black, white, grey) on 52% of sites. One site in 246 has a terracotta
   button; none has a violet one.
 - Median number of distinct section grounds: 2 on top sites, 1 on weak sites.
-- Button shape: top sites square (0–2px) 52%, fully round 23%, small radius 19%, medium (9–16px) 6%.
+- Button shape: top sites square (0-2px) 52%, fully round 23%, small radius 19%, medium (9-16px) 6%.
   Weak sites fully round 59%, medium 24%, square 18%.
 - Media corners are square on 73% of sites; where rounded, the median radius is 12px.
 - Buttons in the first viewport: none on 55% of top sites and 39% of weak ones.
@@ -190,7 +190,7 @@ first, and a page that cannot lean on them has to find structure in space, tone 
   3D render 11%, illustration 9%, video 6%, type only 3%. Median panel score is lowest for
   illustration-led (6.9) and product-interface-led (7.1) pages and highest for video and type-only
   (7.5).
-- Page length, median: 8.7 screens and 575 words (middle half 1.6–14.4 screens, 250–956 words). A
+- Page length, median: 8.7 screens and 575 words (middle half 1.6-14.4 screens, 250-956 words). A
   quarter of the sites are a single screen or two.
 - Navigation: a median of 3 links; fixed or sticky on 66%.
 - Density (panel): airy 46%, balanced 45%, dense 9%. Alignment: centred 33%, mixed 31%, left-anchored
@@ -202,7 +202,7 @@ first, and a page that cannot lean on them has to find structure in space, tone 
 **From the panel's written notes on the 114 sites scoring 7.3 or more** (hand tallies, approximate;
 `layout.md` turns these into practice):
 
-- Outer margins of 32px or less on about 45; 80px or more on about 8. A centred 700–1300px container
+- Outer margins of 32px or less on about 45; 80px or more on about 8. A centred 700-1300px container
   on about 15, several of them the pages the panel called stock.
 - Text anchored to a fixed off-centre line on about 22. Text docked in corners or at opposite ends of
   a baseline on about 25 and 15.
@@ -225,7 +225,7 @@ first, and a page that cannot lean on them has to find structure in space, tone 
   pill badge, two buttons and a screenshot about 9; stock modules after a distinctive hero about 8,
   plus about 17 in the middle band; a characterless default typeface about 13; text too small or too
   faint about 13; never saying what the thing is about 12.
-- Faults of the best sites (90 at 7.5 or more), not to be copied: text at 9–13px about 24;
+- Faults of the best sites (90 at 7.5 or more), not to be copied: text at 9-13px about 24;
   information hidden behind the concept about 20; the idea running out mid-page about 15; text over
   footage with no scrim about 12; gates, preloaders and blank first paints about 12.
 
@@ -329,8 +329,8 @@ the first study.
   a firewall page). Scores ran 6.7 to 7.9 (median 7.45); "top" means 7.5 or more (36 sites), "lowest"
   under 7.3 (16).
 - **What it changed.** Where pictures and footage go: `imagery.md` §12. What strong pages do with
-  motion, new tokens, recipes and the gimmicks to avoid: `motion.md` §2, §4–6 and §9–10. Empty space
-  and the frame: `layout.md` §4–5. New compositions in `library/heroes.json` and `sections.json` and
+  motion, new tokens, recipes and the gimmicks to avoid: `motion.md` §2, §4-6 and §9-10. Empty space
+  and the frame: `layout.md` §4-5. New compositions in `library/heroes.json` and `sections.json` and
   notes on media and motion in `library/sites.json` (`draw.mjs --site <id>`).
 - **Headline numbers.** Pictures fill a median 16% of a scrolled screen, but in whole screens: 42% of
   screens hold none and 19% are 90% picture or more. The median page carries 7 pictures (top 8,
@@ -348,7 +348,7 @@ the first study.
 ## 13. The app-screen study
 
 For dashboards and app screens (v2.1), a separate study of 23 real product screens chosen by the
-owner (17 products, 17 light and 6 dark, at 1440–1512px): each screen measured from its pixels by a
+owner (17 products, 17 light and 6 dark, at 1440-1512px): each screen measured from its pixels by a
 reader with full-resolution crops, six cross-cutting reports (shell, data and charts, tables and
 forms, visual language, taste, styles), and a synthesis into `references/app-screens.md` and
 `library/app.json` (seven styles, five shells, screen patterns). The screenshots stay private; the

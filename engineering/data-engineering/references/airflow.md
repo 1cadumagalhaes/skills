@@ -5,9 +5,9 @@ Airflow is an orchestrator, not a compute engine: its job is to decide *what run
 ## The DAG file
 
 - `[req]` **No top-level code that touches the network, the database or a file.** The scheduler re-parses DAG files continuously; an API call at import time is an outage that grows with DAG count. Everything dynamic goes inside a task or a `@task`.
-- `[conv]` One DAG file per pipeline, with `start_date` fixed in the past and never `datetime.now()` — a moving start date rewrites history on every parse.
+- `[conv]` One DAG file per pipeline, with `start_date` fixed in the past and never `datetime.now()`. A moving start date rewrites history on every parse.
 - `[conv]` `catchup=False` unless you genuinely want history re-run, and `max_active_runs` bounded.
-- `[conv]` `schedule` explicit (`"0 3 * * *"`, `timedelta`, or a dataset/asset); `None` for manually triggered DAGs — not the old `@daily` default surprises.
+- `[conv]` `schedule` explicit (`"0 3 * * *"`, `timedelta`, or a dataset/asset); `None` for manually triggered DAGs, not the old `@daily` default surprises.
 
 ## Idempotency and the logical date
 
@@ -20,7 +20,7 @@ Airflow is an orchestrator, not a compute engine: its job is to decide *what run
 
 - `[conv]` Retries are for transient faults: `retries=2–3`, `retry_delay` with exponential backoff, and `retry_exponential_backoff=True`. Retrying a deterministic data error burns the window.
 - `[conv]` Fail loudly with a message that names the source, the interval and the check that failed. A task that logs a warning and returns success is worse than a crash.
-- `[conv]` One notification per failed DAG run (`on_failure_callback` or `default_args`), never one per retry. Alert on *absence* of success too — a DAG that never runs looks identical to one that succeeds.
+- `[conv]` One notification per failed DAG run (`on_failure_callback` or `default_args`), never one per retry. Alert on *absence* of success too, because a DAG that never runs looks identical to one that succeeds.
 - `[conv]` Distinguish "pipeline broken" from "no new data". Both render as an empty table.
 
 ## Operators and waiting
@@ -32,7 +32,7 @@ Airflow is an orchestrator, not a compute engine: its job is to decide *what run
 
 ## Data passing
 
-- `[req]` XCom is for **pointers and small metadata** (a path, a row count, a job id) — not for dataframes. XCom is stored in the metadata database and is not a transport.
+- `[req]` XCom is for **pointers and small metadata** (a path, a row count, a job id), not for dataframes. XCom is stored in the metadata database and is not a transport.
 - `[conv]` Pass a GCS path or a table name between tasks; the data stays where it belongs.
 
 ## Concurrency and isolation
@@ -43,7 +43,7 @@ Airflow is an orchestrator, not a compute engine: its job is to decide *what run
 
 ## Testing
 
-- `[conv]` `airflow dags list-import-errors` and a DAG-parse test in CI — catches the top-level-code class of bug before deploy.
+- `[conv]` `airflow dags list-import-errors` and a DAG-parse test in CI. That catches the top-level-code class of bug before deploy.
 - `[conv]` `dag.test()` or a task-level test against a dev connection for the pieces with logic.
 - `[conv]` Unit-test the callables (SQL builders, parsers) as plain functions; the DAG is wiring and needs no test of its own.
 

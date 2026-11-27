@@ -90,7 +90,7 @@ These hold on every build, whatever the direction. `inspect.mjs` measures them.
 
 | Rule | Instead |
 | --- | --- |
-| **Headlines: two lines or fewer, at every width.** Every `h1`–`h6`, and the main line of the first screen whatever its tag. | Cut words. Then widen the measure. Size last. |
+| **Headlines: two lines or fewer, at every width.** Every `h1` to `h6`, and the main line of the first screen whatever its tag. | Cut words. Then widen the measure. Size last. |
 | **A clear title on the first screen**, in the page's one `h1`, and a heading on every section. | Say what this is: the name with what it does, the product with what it is for, the event with its date and place. |
 | **Equal outer margins; no section huddled on one side** with the other half of the screen empty. | Close every void with something on its far side: the section's picture, a second column, a list, a figure. |
 | **No blank stretches** taller than about half a screen. | The normal section gap. A deliberate rest is a placed picture or a field of colour, once per page. |
@@ -134,18 +134,18 @@ Short form. Numbers are from the study unless marked as house style.
 - Two or three sizes do the visible work: one very large, one small, nothing in between. Median
   headline-to-body ratio on the studied sites is 4.3; the best go far beyond (largest type: median
   8.4vw on the top sites against 5.0vw on the weak ones).
-- Display type: tracking -0.02 to -0.05em, leading 0.85–1.05. Text: 16–20px, leading 1.45–1.6,
-  45–75 characters per line.
+- Display type: tracking -0.02 to -0.05em, leading 0.85-1.05. Text: 16-20px, leading 1.45-1.6,
+  45-75 characters per line.
 - Five sizes on a page is the ceiling. One family is normal (a third of the studied sites); two is the
   limit.
 - Left-aligned by default. Centre at most one moment.
 
 **Space**
-- One grid, one pair of tight margins (16–32px), used everywhere; large things run to the edges. Text
+- One grid, one pair of tight margins (16-32px), used everywhere; large things run to the edges. Text
   blocks share two or three left edges on the whole page.
 - Asymmetry inside the grid, never in the frame: the two outer margins are equal, and an off-centre
   heading is answered by something at the far side of the grid.
-- The gap between sections is clearly larger than any gap inside one: 120–240px on desktop (the study's median is about 240).
+- The gap between sections is clearly larger than any gap inside one: 120-240px on desktop (the study's median is about 240).
 - Each section has a different composition from its neighbours; none is a card grid.
 
 **Colour**
@@ -168,7 +168,7 @@ Short form. Numbers are from the study unless marked as house style.
 
 **Components**
 - Buttons: flat, one fill colour, either square-cornered or fully round, decided once (top sites: 52%
-  square, 23% pill; the 9–16px "soft" radius is the weak-site default). Most strong heroes have no
+  square, 23% pill; the 9-16px "soft" radius is the weak-site default). Most strong heroes have no
   button at all, or one.
 - Navigation: wordmark, three to five plain links, one action. No bar chrome.
 - A control explains how to use it by its form, its label and its place. When it seems to need a

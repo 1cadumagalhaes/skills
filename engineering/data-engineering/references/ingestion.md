@@ -1,6 +1,6 @@
 # Ingestion
 
-Getting data in from APIs and the open web. The rule for all of it: **land raw first, transform after** — so a bug in parsing costs a re-run, not a re-fetch.
+Getting data in from APIs and the open web. The rule for all of it: **land raw first, transform after**. A bug in parsing then costs a re-run, not a re-fetch.
 
 ## Every source gets a cursor
 
@@ -19,14 +19,14 @@ Getting data in from APIs and the open web. The rule for all of it: **land raw f
 ## Landing
 
 - `[req]` Raw payloads are stored as received: JSON as JSON (or `STRING` in the warehouse), files as files, with `source`, `fetched_at`, `run_id`, and the request parameters. Never parse-and-discard.
-- `[conv]` Partition the raw layer by fetch date; keep it long enough to replay a rebuild (30–90 days is common).
+- `[conv]` Partition the raw layer by fetch date; keep it long enough to replay a rebuild (30-90 days is common).
 - `[conv]` Dedupe on a content hash (`sha256` of the payload) or the source's stable id when re-fetching the same window.
-- `[conv]` Typed staging is derived from raw — a view or an incremental model, never a hand-edited table.
+- `[conv]` Typed staging is derived from raw, as a view or an incremental model, never a hand-edited table.
 
 ## Schema drift
 
 - `[req]` Assume the source changes. A new field is fine; a renamed or retyped field must fail a test, not silently become `NULL`.
-- `[conv]` Cast explicitly in staging (`SAFE_CAST` in BigQuery, `::type` in Postgres) and count cast failures — a rising count is the early warning.
+- `[conv]` Cast explicitly in staging (`SAFE_CAST` in BigQuery, `::type` in Postgres) and count cast failures. A rising count is the early warning.
 - `[conv]` Schema autodetect is exploration only (see `bigquery.md`): it infers from a sample and quietly gets types wrong.
 
 ## Files and bulk sources
@@ -40,11 +40,11 @@ Getting data in from APIs and the open web. The rule for all of it: **land raw f
 - `[conv]` For anything beyond a plain HTML fetch, follow the `webscraping` skill: intake, then the cheapest ladder (HTTP → fingerprint impersonation → browser injection → headless), not a browser by default.
 - `[conv]` Prefer a documented API or a structured payload on the page (JSON-LD, `__NEXT_DATA__`, embedded JSON) over parsing rendered markup; the markup is the least stable surface.
 - `[conv]` Store the raw HTML/JSON alongside the extracted rows, keyed by URL + hash, so extraction can be re-run without re-crawling.
-- `[conv]` Extraction logic lives in a normal module with tests over saved fixtures — not inline in the DAG. Fixtures are the only way to test a parser after the site changes.
+- `[conv]` Extraction logic lives in a normal module with tests over saved fixtures, not inline in the DAG. Fixtures are the only way to test a parser after the site changes.
 
 ## Observability
 
 - `[req]` Per run: rows fetched, rows landed, cursor before/after, duration, HTTP status counts.
 - `[conv]` Alert on **no new data** as loudly as on failure. A source that returns 200 with an empty list is the quietest outage there is.
 - `[conv]` One log line per source per run with the cursor and the row count; that line is what you will grep at 2 a.m.
-- `[conv]` Keep the response status and a redacted body snippet for failures — but never log tokens, cookies or personal data.
+- `[conv]` Keep the response status and a redacted body snippet for failures, but never log tokens, cookies or personal data.

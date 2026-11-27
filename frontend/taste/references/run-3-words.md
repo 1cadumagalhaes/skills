@@ -9,7 +9,7 @@ Write the whole page as a copy deck (plain text) before markup, following `refer
 - **Every headline fits in two lines or fewer at every width.** Do the arithmetic in copy.md §2 before
   committing to a sentence: about 32 characters is safe everywhere at a confident size. The studied
   gallery heroes have a median of 5 words and 32 characters.
-- One supporting sentence, directly under the headline (32–48px below it) and shown with it, never
+- One supporting sentence, directly under the headline (32-48px below it) and shown with it, never
   docked at the foot of the first screen or held back by an animation. When the headline is a name or
   a figure of speech, this sentence says plainly what the thing is. One primary action, named for what
   it does, as a real button on the first screen.

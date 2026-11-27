@@ -168,10 +168,10 @@ the client confirms or replaces it.
 
 ## 7. Micro-typography
 
-- Curly quotes and apostrophes (“ ” ’), a real ellipsis (…), an en dash for ranges (9–5).
+- Curly quotes and apostrophes (`“ ” ’`), a real ellipsis (`…`), an en dash for ranges (`9–5`).
 - Non-breaking space between a number and its unit, and before the last short word of a headline
   when it would otherwise orphan (`&nbsp;`).
 - `font-variant-numeric: tabular-nums` where numbers line up in columns (prices, tables).
 - `text-wrap: balance` on headings, `text-wrap: pretty` on paragraphs.
-- No all-caps for anything longer than three words; if you set caps, add 0.02–0.06em tracking.
+- No all-caps for anything longer than three words; if you set caps, add 0.02-0.06em tracking.
 - No text under 13px. No centred paragraphs longer than three lines. No justified text.

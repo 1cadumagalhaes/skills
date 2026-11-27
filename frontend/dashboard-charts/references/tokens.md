@@ -51,7 +51,7 @@ declare each token once with `light-dark()` (`--color-card: light-dark(#ffffff, 
 - Two semantic hues carry meaning: `accent` (traffic, people, selection) and `money` (revenue), plus `warn` for
   "below threshold". Everything else is ink, muted or line. Another hue needs a reason (a third entity), not
   decoration.
-- Three intensities, three jobs (Few): **pale** (token at 7–20%) for non-data and de-emphasis: tracks, bar fills,
+- Three intensities, three jobs (Few): **pale** (token at 7-20%) for non-data and de-emphasis: tracks, bar fills,
   healthy heatmap tiers, avatar tints; **medium** (the token) for data marks; **bright or dark** only for what needs
   attention. A screen of medium and bright everywhere has nothing left to highlight with.
 - Heatmap tiers are token + alpha, so they adapt to both themes: `accent` at 26 / 15 / 7% over the card for the

@@ -4,7 +4,7 @@ dbt's value is not SQL templating: it is that the DAG, the tests and the documen
 
 ## Layering
 
-- `[conv]` `staging/` — one model per source table, renamed and typed, nothing joined. `intermediate/` — joins and business logic. `marts/` — entities a consumer can name (`fct_orders`, `dim_sponsors`).
+- `[conv]` `staging/`: one model per source table, renamed and typed, nothing joined. `intermediate/`: joins and business logic. `marts/`: entities a consumer can name (`fct_orders`, `dim_sponsors`).
 - `[conv]` Staging models select explicit columns and cast types; no business logic, no filters that hide data.
 - `[conv]` One model, one grain, stated in the model's description. If you cannot say the grain in one sentence, the model is two models.
 - `[conv]` Marts are what BI and the API read. Nothing outside the project reads staging.
@@ -21,18 +21,18 @@ dbt's value is not SQL templating: it is that the DAG, the tests and the documen
 
 Straight from dbt's CDC guidance:
 
-- **Incremental** keeps *current values* — cheaper, one row per entity.
-- **Snapshot** keeps *history* — SCD2 with `dbt_valid_from` / `dbt_valid_to`, one row per version.
+- **Incremental** keeps *current values*: cheaper, one row per entity.
+- **Snapshot** keeps *history*: SCD2 with `dbt_valid_from` / `dbt_valid_to`, one row per version.
 - Use both when consumers need current state and an audit trail; use snapshots only when someone will actually ask "what was true in March".
-- `[conv]` Snapshot strategy: `timestamp` when the source has a reliable `updated_at`, `check` when it does not (compares listed columns each run — costlier, and it must run every period or you lose versions).
+- `[conv]` Snapshot strategy: `timestamp` when the source has a reliable `updated_at`, `check` when it does not (compares listed columns each run, so it costs more and must run every period or you lose versions).
 
 ## Tests that earn their keep
 
 - `[req]` On every key: `unique` and `not_null`. These two catch most pipeline breakage.
 - `[conv]` `relationships` for foreign keys into marts; `accepted_values` only for genuinely closed sets (a status enum, not a country list that changes).
-- `[conv]` Singular tests for business rules that would have caught the last incident: totals reconcile, no future-dated rows, a partition is non-empty, a rate falls in 0–1.
+- `[conv]` Singular tests for business rules that would have caught the last incident: totals reconcile, no future-dated rows, a partition is non-empty, a rate falls in 0-1.
 - `[conv]` `store_failures: true` on the tests you expect to fail someday, so the offending rows are inspectable instead of just a count.
-- `[conv]` `dbt build` runs tests with models in DAG order — that is the default command, not `dbt run` followed by `dbt test` later.
+- `[conv]` `dbt build` runs tests with models in DAG order. That is the default command, not `dbt run` followed by `dbt test` later.
 
 ## Freshness as a contract
 
@@ -45,7 +45,7 @@ Straight from dbt's CDC guidance:
 - `[conv]` **Volume**: row counts within an expected band (a 90 % drop is usually an upstream change, not a good day).
 - `[conv]` **Distribution drift**: a category that disappears, a null rate that jumps, a mean that doubles.
 - `[conv]` **Referential integrity**: every fact row resolves to a dimension, or the orphans are counted and explained.
-- `[conv]` **Reconciliation**: the mart total equals the source total for the same window — the check that catches fan-out and double counting.
+- `[conv]` **Reconciliation**: the mart total equals the source total for the same window, the check that catches fan-out and double counting.
 
 ## CI and cost
 

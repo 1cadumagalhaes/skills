@@ -21,7 +21,7 @@ below are hand tallies from those notes, so read them as "about").
 ## 1. What strong pages do
 
 - **Tight margins, content to the edges.** About 45 of 114 use outer margins of 32px or less; only
-  about 8 use 80px or more. The centred 1100–1300px container is the minority among strong sites and
+  about 8 use 80px or more. The centred 1100-1300px container is the minority among strong sites and
   the usual frame of the ones the panel called stock.
 - **Text hangs from an off-centre line.** About 22 anchor text to one fixed line that is neither the
   centre nor the margin: a third across, 42%, the midpoint.
@@ -53,7 +53,7 @@ below are hand tallies from those notes, so read them as "about").
 - Do not wrap the page in a `max-width: 1200px; margin: auto` container by reflex. Let large things
   (type, images, colour fields) run the full width, and constrain only the measure of running text
   (`max-width` in `ch` on the paragraph, not on the page).
-- On very wide screens cap the layout at about 1760–1920px, or let type sized in `vw` stop growing with
+- On very wide screens cap the layout at about 1760-1920px, or let type sized in `vw` stop growing with
   a `clamp()`.
 - Directions that call for wide margins (uneven photographs, the quiet instrument) say so on the
   sheet; follow the sheet.
@@ -98,7 +98,7 @@ void with the picture, the type, a step in ground tone or a field of flat colour
 
 **Where holes come from.** In order of frequency in the study:
 
-1. A gap between sections stretched too far: bands of 250–760px of plain ground.
+1. A gap between sections stretched too far: bands of 250-760px of plain ground.
 2. Text in one half of a section and nothing in the other.
 3. Content that arrives late: a reveal not yet fired, so the visitor scrolls onto bare ground while the
    words fade in.
@@ -112,8 +112,8 @@ void with the picture, the type, a step in ground tone or a field of flat colour
 - Decide where the void is and name what closes it. If nothing does, it is a hole: move the section's
   picture into it, make the main element bigger, or take the space out.
 - Keep the void clean: no stray caption, no decorative shape, no faint watermark, no grid lines.
-- Sections sit 120–240px apart on desktop, counted from the last line of one to the first line of the
-  next (the median in the study is about 230–250px), and 72–112px on a phone. A change of ground
+- Sections sit 120-240px apart on desktop, counted from the last line of one to the first line of the
+  next (the median in the study is about 230-250px), and 72-112px on a phone. A change of ground
   colour lets the gap be a little smaller. More than about 40% of a screen of plain ground between two
   sections is a hole.
 - The gap between sections is clearly larger than any gap inside one. Related things sit close and
@@ -144,8 +144,8 @@ are from the study of 97 Sites of the Day (October 2026).
   sections the two sides match to a few pixels: 16 and 16, 20 and 21, 32 and 32, 140 and 137. No
   strong page in the study was pushed to one side.
 - The usual margin is tight: median about 28px at 1440, half the sites between about 18 and 45px, a
-  few at 80px or more. Here it is 16–32px (section 2), and never under 16px at any width, on the phone
-  included. About one award site in seven sets text 8–15px from the edge; that studio habit is
+  few at 80px or more. Here it is 16-32px (section 2), and never under 16px at any width, on the phone
+  included. About one award site in seven sets text 8-15px from the edge; that studio habit is
   excluded here.
 - The navigation sits on the same margins as the content. The commonest small fault in the study is a
   header on one inset and the page on another (40px against 20px, or 34px on the left against 10px on
@@ -184,7 +184,7 @@ are from the study of 97 Sites of the Day (October 2026).
 - Size alone does not do it: 66 of the 97 first screens carry a display-size line, but 26 of those are
   a name, a slogan or a place with nothing saying what is offered.
 - The first screen has one `h1`, at display size (32px or more on desktop; on the clear first
-  screens in the study mostly 50–150px), two lines at most, that says what this is: the name with
+  screens in the study mostly 50-150px), two lines at most, that says what this is: the name with
   what it does, the product with what it is for, the event with its date and place. If the `h1` is
   the name, the line under it, at 18px or more, says what the thing is.
 - It is there on the first paint. About a third of the studied pages still showed a loader or nothing readable 4.5
@@ -192,7 +192,7 @@ are from the study of 97 Sites of the Day (October 2026).
 
 **A heading on every section.**
 
-- 82% of the text sections on the studied sites open with a heading: median 57px (40–96px for the
+- 82% of the text sections on the studied sites open with a heading: median 57px (40-96px for the
   middle half), about three and a half times the body size, one or two lines.
 - Headings start on the outer margin or on the page's inner anchor line (in the study about a third
   each) and in the same place for every section. About a quarter of the headings in the study are
@@ -263,7 +263,7 @@ lose usability points; weak ones are often just broken.
 - Re-author line breaks; re-crop images to portrait (`object-position` per breakpoint, or a different
   crop size in the image URL); keep unevenness with alternating widths rather than making everything
   full width.
-- Margins 16–20px. Body text 16–18px. Touch targets at least 44px high.
+- Margins 16-20px. Body text 16-18px. Touch targets at least 44px high.
 - Check 390px in the inspector's screenshots for every round: sideways scroll and three-line headlines
   usually appear here first.
 
@@ -285,7 +285,7 @@ From the panel's notes on the 54 sites scoring under 6.8 (counts out of 54):
 - A phone layout that is the desktop shrunk, or broken (about 8).
 - Fixed elements sitting on content; careless details such as colliding lines (about 7 and 5).
 
-And the faults of the best sites, which are not to be copied: body text at 9–13px (about 24 of the 90
+And the faults of the best sites, which are not to be copied: body text at 9-13px (about 24 of the 90
 sites at 7.5 or more), information hidden behind the concept (about 20), the idea running out
 mid-page (about 15), text over footage with no scrim (about 12), gates and blank first paints (about
 12), floating elements colliding with content (about 11), and a first screen with no statement of what

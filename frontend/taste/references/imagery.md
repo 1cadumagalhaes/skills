@@ -198,7 +198,7 @@ real footage with `--video` (section 11).
 - **Let images touch edges.** Full-bleed, or bleeding off one side, reads as designed. An image
   floating with equal margins on all sides reads as placed by default.
 - **Overlap sparingly and on purpose:** a headline whose last line runs over the top edge of the
-  picture, a small image overlapping a large one by a fixed 40–80px. One overlap per screen at most.
+  picture, a small image overlapping a large one by a fixed 40-80px. One overlap per screen at most.
 - **Square corners** unless the direction or the one-motif shape says otherwise. If rounded, one radius
   for every image on the page.
 - **No frames:** no borders, no shadows, no device mock-ups, no browser chrome around pictures.
@@ -221,7 +221,7 @@ One treatment for the whole page:
 Not treatments: colour washes over photographs, duotone overlays, blur, grain overlays, vignettes,
 tilted "polaroid" frames with shadows.
 
-For text on a photograph, a neutral scrim covering only the text area: a solid block at 40–55% black,
+For text on a photograph, a neutral scrim covering only the text area: a solid block at 40-55% black,
 or a fade from 55% black to transparent over the lower third. Never a coloured overlay.
 
 ## 7. Showing software
@@ -277,7 +277,7 @@ found ones show the world around the client, the drawings show the client's own 
 This is a legitimate design, not a gap to disguise. Only 7 of the studied sites use no imagery at all,
 and they hold their own: a median panel score of 7.5 against 7.2 for the whole set.
 
-- Make the typography the image: one statement at 10–14vw, a list set at 5vw, numerals at display size.
+- Make the typography the image: one statement at 10-14vw, a list set at 5vw, numerals at display size.
 - Use colour at scale: a full field, an inverted section, a two-field split.
 - Use the subject's own shape as one flat motif if the direction calls for it (a circle, an arc, a
   notch), drawn in CSS, cropped by the viewport.
@@ -429,7 +429,7 @@ the links between a placement and the score as leanings, not laws.
   19% are 90% picture or more. Only 19% fall between 20% and 60%. A picture either leads its screen or
   stays out of it.
 - **About a third, with rests.** On the 67 sites that put pictures in the page, the average screen is
-  36% picture (middle half 18–69%). Top sites sit at 30% and leave 28% of their screens with no picture
+  36% picture (middle half 18-69%). Top sites sit at 30% and leave 28% of their screens with no picture
   at all: screens of type are the rests between picture screens.
 - **The first screen.** A picture covers at least half of it on 41% of the sites and nearly all of it
   on 32%. A full-bleed photograph or film is the whole first screen on 29%; footage is the main hero
@@ -448,8 +448,8 @@ the links between a placement and the score as leanings, not laws.
 
 ### How many
 
-- **Seven pictures per page** at the median (middle half 1–25). Top sites 8 (middle half 4–27), lowest
-  2 (0–4). The floor in SKILL.md step 6, four and usually six to twelve, is the strong half of the
+- **Seven pictures per page** at the median (middle half 1-25). Top sites 8 (middle half 4-27), lowest
+  2 (0-4). The floor in SKILL.md step 6, four and usually six to twelve, is the strong half of the
   study.
 - **Footage on 42% of sites:** on half of the top sites and half of the middle band, and on one of the
   16 lowest. A site with footage carries a median of three or four clips.
@@ -496,7 +496,7 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 
 - *When.* A claim and the picture that proves it. The commonest way strong pages pair words and a
   picture.
-- *Geometry.* The picture takes 42% of the width at the median (middle half 33–49%), up to two-thirds,
+- *Geometry.* The picture takes 42% of the width at the median (middle half 33-49%), up to two-thirds,
   at the full height of its section: 680×850 and 720×900 are typical. 38% of these pictures are
   portrait, mostly 4:5 or 3:4. The text starts on the 50% line (x = 720) or on the line where the
   picture ends, top-aligned or docked low, not centred in its half. Let the picture touch the viewport
@@ -511,19 +511,19 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 - *When.* One picture carries a whole screen between type screens: the place, the work, the object at
   full size. One every three or four screens at most.
 - *Geometry.* 100% wide and one to one and a half screens tall (median 900px at 1440×900, middle half
-  890–1,170px; ratios 1.4 to 1.9). For a slow parallax the picture is oversized in its frame by 4–10%
-  (32–72px a side in the study) and travels no further than that. Text is a headline and one line, or
-  nothing, docked 32–64px in from a corner over the calm part of the picture.
+  890-1,170px; ratios 1.4 to 1.9). For a slow parallax the picture is oversized in its frame by 4-10%
+  (32-72px a side in the study) and travels no further than that. Text is a headline and one line, or
+  nothing, docked 32-64px in from a corner over the calm part of the picture.
 - *Phone.* A portrait re-crop that fills the screen, with `object-position` set on the subject; the
   text moves to the bottom quarter.
-- *Fails.* 11–14px white text over a bright area; three bands with nothing between them; a band that
+- *Fails.* 11-14px white text over a bright area; three bands with nothing between them; a band that
   only decorates.
 
 **Picture held while text scrolls**
 
 - *When.* A list, steps or a long paragraph that all belong to one picture. If the picture changes for
   each item, it is the index with a preview, below.
-- *Geometry.* A 100vh sticky stage inside a section two to six screens long (runways of 1,800–5,400px
+- *Geometry.* A 100vh sticky stage inside a section two to six screens long (runways of 1,800-5,400px
   are typical in the study). The picture holds one half (685×880 is a typical portrait), two-thirds, or
   the whole screen with the text passing over it on a solid panel. Text rows about 150px apart, so two
   or three are in view at once.
@@ -536,9 +536,9 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 
 - *When.* Once per page, for the film or picture the page is about, as the move from type into
   picture.
-- *Geometry.* The frame starts centred at 35–50% of the width (549×366, 710×480 and 864×540 in the
+- *Geometry.* The frame starts centred at 35-50% of the width (549×366, 710×480 and 864×540 in the
   study) or as a 16px inset round a full screen, and grows to the full width and height over
-  720–2,700px of scroll. Any corner radius goes to 0 as it reaches the edges. A headline sits above it
+  720-2,700px of scroll. Any corner radius goes to 0 as it reaches the edges. A headline sits above it
   before it starts; nothing else on the screen moves while it grows.
 - *Phone.* Start at full width inside the 16px margins and grow to a full-bleed portrait, or skip the
   growth.
@@ -550,21 +550,21 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 - *When.* A body of work, or one place seen several ways: five to twelve pictures.
 - *Geometry.* Two columns, or rows of three on a 24-column grid. Two or three picture widths (for
   example 32%, 48% and 65% of the width, or 5, 7 and 12 columns), neighbours offset vertically by
-  120–190px, 130–450px between rows, one or two ratios, a caption under each.
-- *Phone.* One column alternating full width and about 70% width, or two columns of 120–180px tiles
+  120-190px, 130-450px between rows, one or two ratios, a caption under each.
+- *Phone.* One column alternating full width and about 70% width, or two columns of 120-180px tiles
   that keep the offsets.
-- *Fails.* Random ratios with random offsets, which read as a stock dump. Captions in 9–12px mono with
+- *Fails.* Random ratios with random offsets, which read as a stock dump. Captions in 9-12px mono with
   index numbers, the award-site habit: here the caption is one line in the text face at body size, with
   no number.
 
 **Horizontal gallery**
 
 - *When.* A set people browse in any order: products, rooms, events, a team.
-- *Geometry.* Cards 25–35% of the width (435×326 with 20px gaps at 1440: three in full and a fourth
+- *Geometry.* Cards 25-35% of the width (435×326 with 20px gaps at 1440: three in full and a fourth
   cut by the edge), or a strip at one fixed height with mixed widths (576px tall in the study), or a
-  slider whose centre slide is about 73% of the width with 170–180px of each neighbour showing. Always
-  cut by the right edge so it reads as more. A marquee of pictures moves slowly: 60–120s per loop.
-- *Phone.* One card at 75–80% of the width (290–300px of 390) with the next one showing; swipe.
+  slider whose centre slide is about 73% of the width with 170-180px of each neighbour showing. Always
+  cut by the right edge so it reads as more. A marquee of pictures moves slowly: 60-120s per loop.
+- *Phone.* One card at 75-80% of the width (290-300px of 390) with the next one showing; swipe.
 - *Fails.* Arrows and no drag or swipe; a marquee of things people need to read; a carousel holding the
   page's one important picture.
 
@@ -580,7 +580,7 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **Even grid**
 
 - *When.* An archive only (layout.md §5): a shop range, the team, a menu, the full list of work.
-- *Geometry.* Two, three or four across, equal cells, 8–16px gaps, one ratio (4:5 is the commonest),
+- *Geometry.* Two, three or four across, equal cells, 8-16px gaps, one ratio (4:5 is the commonest),
   the caption under each picture.
 - *Phone.* Two across for products, one for work and people.
 - *Fails.* Three equal cards as "features". Cards with a dark gradient at the foot so the label can sit
@@ -589,8 +589,8 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **Index with hover preview**
 
 - *When.* A list of eight or more projects or clients where the names matter as much as the pictures.
-- *Geometry.* Rows on a 45–80px pitch, names at 30–60px. One picture at a time, about a third of the
-  width at 16:9 or a portrait 300–450px tall, at a fixed place (the right half from the 50% line, or
+- *Geometry.* Rows on a 45-80px pitch, names at 30-60px. One picture at a time, about a third of the
+  width at 16:9 or a portrait 300-450px tall, at a fixed place (the right half from the 50% line, or
   the centre), swapped within 0.3s. A version that needs no mouse: the names scroll across a picture
   fixed at the centre and the picture shows whichever name is crossing it. In the study the picture
   sits on top of the names; here nothing lies on top of large type, so the names pass in front of it.
@@ -603,9 +603,9 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 - *When.* A pause in the page: a single portrait or object. Or a small picture that gives a statement
   a face.
 - *Geometry.* A single centred picture at 3:4 and 75% of the viewport height, on a ground taken from
-  the picture. Or a small picture 7–26% of the width (108–374px) beside, above or between the lines
-  of a 48–136px statement, aligned to one of its lines.
-- *Phone.* The picture above the statement at 60–100% of the width.
+  the picture. Or a small picture 7-26% of the width (108-374px) beside, above or between the lines
+  of a 48-136px statement, aligned to one of its lines.
+- *Phone.* The picture above the statement at 60-100% of the width.
 - *Fails.* Used as the default for every picture: a picture with equal margins on all sides reads as
   placed by default (section 5).
 
@@ -624,7 +624,7 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **Picture inside or behind display type**
 
 - *When.* The object is the subject: a product, a building, a person.
-- *Geometry.* A small picture window sits inside a block of 150–200px display type and later opens
+- *Geometry.* A small picture window sits inside a block of 150-200px display type and later opens
   into the next screen; or the object stands behind the type, showing between and around the letters;
   or it touches the edge of the word without covering a letter. In the study the object more often
   stands in front and covers one or two letters, or a line of type runs behind a square picture; here
@@ -636,9 +636,9 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **Cut-out object on a flat field**
 
 - *When.* Products and objects. The highest mean score in the table, on 7 of the 36 top sites.
-- *Geometry.* The object at 35–60% of the width on a flat ground taken from its own colours, standing
+- *Geometry.* The object at 35-60% of the width on a flat ground taken from its own colours, standing
   on the bottom edge or running off one side, with the type behind or beside it.
-- *Phone.* The object at 80–90% of the width under the headline.
+- *Phone.* The object at 80-90% of the width under the headline.
 - *Fails.* A render floating in a void with no ground; a drop shadow added to a cut-out (no resting
   shadows here; keep a contact shadow only if it was photographed).
 
@@ -646,7 +646,7 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 
 - *When.* Archives, ephemera, a festival of many small things. Sparingly: it is about as common on the
   lowest pages as on the top ones.
-- *Geometry.* Six to sixteen pictures of 100–300px at a few sizes around a centred heading, never over
+- *Geometry.* Six to sixteen pictures of 100-300px at a few sizes around a centred heading, never over
   it.
 - *Phone.* Re-stack as overlapping pairs in one column.
 - *Fails.* Tilted prints and stickers with offset shadows, common in the study and not a treatment
@@ -655,7 +655,7 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **Small card docked in a corner**
 
 - *When.* A standing pointer to the reel or to the next thing.
-- *Geometry.* About 216×144 to 240×140, 30–43px from the corner; one per page.
+- *Geometry.* About 216×144 to 240×140, 30-43px from the corner; one per page.
 - *Phone.* Drop it, or move it into the flow.
 - *Fails.* Content scrolling under it; a second one.
 
@@ -672,10 +672,10 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 **What the study measured.**
 
 - Footage on 38 of 91 sites (42%): 18 of the 36 top sites, 19 of the 39 in the middle, 1 of the 16
-  lowest. A site with footage carries a median of three or four clips (middle half 1–8).
+  lowest. A site with footage carries a median of three or four clips (middle half 1-8).
 - Footage covers at least half of the first screen on about a quarter of the sites, and is full-bleed
   on nearly all of them.
-- Clips are short: median 10s, middle half 5–14s; 61% run 10s or less and 88% 20s or less.
+- Clips are short: median 10s, middle half 5-14s; 61% run 10s or less and 88% 20s or less.
 - Every decorative clip is muted, loops, plays inline and has no controls. The autoplay attribute is on
   44% of clips; the rest are started by script, mostly as they come into view.
 - Only 31% of clips have a poster (13 of the 38 sites). The rest show a blank or grey box until they
@@ -683,15 +683,15 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 - Sources: 1920×1080 is the commonest, then 1280×720; tall clips at 450×800 or 540×960 for phones and
   portrait tiles. Median source width 1,080px.
 - On the page: 16:9 41%, square 19%, portrait (4:5 to 9:16) 25%, 4:3 or 3:2 12%. Corners square on 75%
-  (the rest 8px or less, or 20–32px). `object-fit: cover` on 84%, contain on 16% (product strips, letterboxed
+  (the rest 8px or less, or 20-32px). `object-fit: cover` on 84%, contain on 16% (product strips, letterboxed
   films).
 
 **Where it goes.**
 
-- **Hero background:** full-bleed, cover, often oversized by 1–25% so a drift or zoom never shows an
+- **Hero background:** full-bleed, cover, often oversized by 1-25% so a drift or zoom never shows an
   edge. Either one slow take or a montage cutting every second or two.
 - **Inline, as a picture:** in splits, tiles and cards, at about a third of the width (median 33%,
-  middle half 24–45%); a third of these clips are under a quarter of the width and fewer than one in
+  middle half 24-45%); a third of these clips are under a quarter of the width and fewer than one in
   ten is full width. Slow, near-still subjects (water, skin, light, a turning object) read as living
   photographs and sit well among stills.
 - **The frame that grows** (above), for a reel.
@@ -706,10 +706,10 @@ Each entry gives when to use it, the geometry at 1440×900, the phone version an
 
 - Of about 30 sites with a full-bleed picture or film behind text on the first screen, about 14 set the
   type straight on it and rely on the footage being graded dark where the type sits; about 10 dim it
-  (to half brightness, under a 30–40% dark layer, or with a dark fade along the bottom 180–590px);
+  (to half brightness, under a 30-40% dark layer, or with a dark fade along the bottom 180-590px);
   about 6 keep the text off the picture, above it or on a solid card.
-- What goes on footage in the study is the name or a headline at 47–136px and one short line, docked
-  bottom-left or centred. Where body text at 11–14px went on footage or a busy photograph, the panel
+- What goes on footage in the study is the name or a headline at 47-136px and one short line, docked
+  bottom-left or centred. Where body text at 11-14px went on footage or a busy photograph, the panel
   named it as a fault, on top-scored sites too.
 - Here: one headline, one line and one action on footage at most, and never body text. Check contrast
   where the type sits across the whole loop, not only on the poster; if any frame drops below 4.5:1
@@ -728,7 +728,7 @@ on the phone only, where the type covers more of the picture.
   hold 76% of the pictures. The others (five ratios in all at the median) are exceptions with a reason:
   one tall portrait in a run of landscapes, one wide band.
 - **Square corners** on 94% of pictures; 62 of the 68 sites with pictures in the page keep at least 80%
-  of them square. Where corners are rounded, it is 5px or less on two-thirds of them, or 20–32px on
+  of them square. Where corners are rounded, it is 5px or less on two-thirds of them, or 20-32px on
   card interfaces, one value per site.
 - **Cover.** `object-fit: cover` on 78%, contain on 10% (a product on a tile, a letterboxed film).
 - **Untouched.** CSS filters touch pictures on only 9 sites, mostly for hover states. A handful use
@@ -738,7 +738,7 @@ on the phone only, where the type covers more of the picture.
   (about a third of the sites), duotone or tinted photographs, blurred copies behind a picture as a
   glow, tilted prints and stickers with offset shadows.
 - **Oversize only by the distance it moves.** 22 sites move pictures with the scroll, oversizing them by
-  1–25%. Oversize by the travel and no more, on one picture per screen.
+  1-25%. Oversize by the travel and no more, on one picture per screen.
 - **Resolution.** The study serves pictures at a median 1.9 times their CSS width, but 17% are served
   smaller than they are shown and full-width pictures at a median of only 1,440px. Here: twice the CSS
   width, capped at about 2,400px (section 4).
@@ -746,7 +746,7 @@ on the phone only, where the type covers more of the picture.
 ### Text over pictures
 
 - In the study, text sits on pictures often and is checked rarely: about 28 notes record text set
-  straight on a picture with no scrim, and the faults of 16 sites include text lost over pictures: 8–14px
+  straight on a picture with no scrim, and the faults of 16 sites include text lost over pictures: 8-14px
   labels and body over photographs, and navigation in a difference blend or with no backing passing
   over them.
 - Where it works, the text is display size and sits over the calm part (sky, a dark wall, the shadow
@@ -761,29 +761,29 @@ on the phone only, where the type covers more of the picture.
 
 ### Rules for a generator
 
-1. **About a third of the page is picture.** Across the scrolled screens, pictures fill 30–40% of the
+1. **About a third of the page is picture.** Across the scrolled screens, pictures fill 30-40% of the
    area, and at least one screen in four carries no picture (top sites: 30% and 28%).
 2. **A picture leads its screen or stays small.** A leading picture takes at least 60% of its screen;
-   an accent stays under 10% of it. Avoid screen after screen of pictures at 20–40%: in the study 42% of
+   an accent stays under 10% of it. Avoid screen after screen of pictures at 20-40%: in the study 42% of
    screens are 0% and 19% are 90% or more.
 3. **Three to five placements per page,** and no two neighbouring sections with the same one. Sites
    with two or fewer average 7.31, sites with three or more about 7.5.
-4. **Six to twelve pictures, never fewer than four.** Study median 7; top sites 4–27; lowest 2.
+4. **Six to twelve pictures, never fewer than four.** Study median 7; top sites 4-27; lowest 2.
 5. **Two ratios for at least 75% of the pictures** (76% in the study), a third only for a deliberate
    exception. Defaults: 4:5 for portraits, 16:9 or 3:2 for landscapes.
 6. **Square corners on every picture** (94% in the study). If the direction rounds them, one radius of
    4px for every picture and clip.
-7. **Split pictures take 42–50% of the width, or two-thirds,** at the full height of the section and
+7. **Split pictures take 42-50% of the width, or two-thirds,** at the full height of the section and
    touching the viewport on their outer side; the text starts on the 50% line. On the phone the
    picture goes first, full width.
-8. **Full-bleed bands are 100% wide and 100–150vh tall,** one every three or four screens, oversized by
+8. **Full-bleed bands are 100% wide and 100-150vh tall,** one every three or four screens, oversized by
    10% at most for parallax, with text only in one corner at least 32px in. On the phone, re-crop to a
    full-screen portrait.
-9. **One inset frame that grows per page,** from 35–50% of the width to the full screen over
-   720–2,700px of scroll, with nothing else moving on that screen.
-10. **Horizontal galleries show three cards and a cut fourth:** cards 25–35% of the width with 16–20px
-    gaps; on the phone one card at 75–80% of the width with the next one showing.
-11. **One moving picture per screen.** Clips of 5–15s (median 10s), muted, looped, inline, with a
+9. **One inset frame that grows per page,** from 35-50% of the width to the full screen over
+   720-2,700px of scroll, with nothing else moving on that screen.
+10. **Horizontal galleries show three cards and a cut fourth:** cards 25-35% of the width with 16-20px
+    gaps; on the phone one card at 75-80% of the width with the next one showing.
+11. **One moving picture per screen.** Clips of 5-15s (median 10s), muted, looped, inline, with a
     poster, paused out of view; a hero source of 1920×1080 under 10MB, inline clips at 1280×720 or
     smaller under 5MB.
 12. **Only display text on a picture:** a headline, one line and one action at most, with contrast

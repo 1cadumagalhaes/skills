@@ -27,7 +27,7 @@ Adjacent guides: read `backend` for app schemas and transactions, `~/.agents/ski
 
 ## Non-negotiables
 
-1. **Make every task and load idempotent.** Re-running a window produces the exact same rows rather than duplicates, enabling safe backfills.
+1. **Make every task and load idempotent.** Re-running a window produces the exact same rows rather than duplicates, so backfills are safe.
 2. **Drive incremental loads with a watermark, never `OFFSET`.** Persist `updated_at` or monotonic cursor per source and advance only after the target write commits.
 3. **Control scan cost on partitioned tables.** Always enforce partition filters in BigQuery and inspect bytes scanned before running or shipping queries.
 4. **Keep raw payloads immutable.** Land raw bronze data first and transform downstream so fixes replay locally without re-fetching upstream APIs.

@@ -53,7 +53,7 @@ trend chart moves below the problem view; the tile-driven chart belongs to analy
 
 ## Density and type
 
-- Base 14 px, labels 12–13 px muted, KPI values 28–32 px, panel titles 15–16 px semibold.
+- Base 14 px, labels 12-13 px muted, KPI values 28-32 px, panel titles 15-16 px semibold.
 - Cards: `rounded-2xl border border-line bg-card shadow-card p-6`; inner rows `h-10–11`.
 - Hairlines at ~7.5% ink; muted text ≥ 4.5:1 contrast on every surface it sits on.
 

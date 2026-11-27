@@ -28,7 +28,7 @@ highest rung that fits:
 | 2 | Length | Bars, bullet graphs, share bars |
 | 3 | Colour intensity (one hue, light → dark) | Matrices only: a heatmap where position is taken by the grid |
 | 4 | Area, angle | Almost never: donuts and pies only to show one overwhelming share |
-| — | Hue | Categories, never magnitude: people do not read hues as ordered |
+| off | Hue | Categories, never magnitude: people do not read hues as ordered |
 
 Off the ladder: radial gauges and dials (angle, wasted space), treemaps on a monitoring screen (fine for slow
 exploration), and 3D. Apple's rule for 3D charts (WWDC25) is narrow: data that is truly three-dimensional, where the
@@ -46,7 +46,7 @@ their total weight still reads as the total.
 
 ### Axes and gridlines
 
-- **Fixed range** when the bounds are known (0–100% for a rate, a battery, attendance), so full and empty read at a
+- **Fixed range** when the bounds are known (0-100% for a rate, a battery, attendance), so full and empty read at a
   glance. **Dynamic range** when there is no natural maximum, so small values still show their shape.
 - Bars always start at zero. A line may start above zero when the axis says so.
 - About four gridlines at intuitive steps: round values (20, 40, 60), and for time, steps the reader counts in
@@ -147,7 +147,7 @@ two words ("▲ 2 vs Sep", "▼ 15% vs last month"), with the exact baseline in 
 - Every chart has a text alternative: an `aria-label` summary (range, extremes, latest value) and keyboard access
   to the values (arrow keys move a focus point and show its tooltip).
 - Spoken values put the context first and spell words out: "June 1, 36 pancakes", "5-A, 28 October, 20 of 26
-  present", never "Jun" or "6-1". Large series speak in intervals ("1–7 June: 240 sold"), not point by point.
+  present", never "Jun" or "6-1". Large series speak in intervals ("1-7 June: 240 sold"), not point by point.
 - The hit area of an interactive chart is its whole plot height, not the thin marks; every pointer interaction has a
   keyboard and screen-reader equivalent with a visible focus mark.
 

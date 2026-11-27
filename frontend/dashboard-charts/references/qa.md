@@ -96,7 +96,7 @@ Done when the landing order matches the question and the problem list.
 | Random y-axis ticks (2,103) | Round ticks (1k, 2k), 0 baseline |
 | Flat sparkline with a spike at the end | Trim to the chart's window |
 | Two names for one thing ("Threads" vs "Referral") | One taxonomy, labelled source |
-| A 2–3 slice donut as the main view | Ranked list with share bars |
+| A 2-3 slice donut as the main view | Ranked list with share bars |
 | Glossy glass, neon gradients, 3D icons in KPI cards, a date chip on every card | Quiet surfaces, one accent, one global range |
 | A sentence under every KPI number | Delta with a one-word baseline; the explanation in the tooltip |
 | A row of insight sentences | Flag the problem on the data, action beside it |

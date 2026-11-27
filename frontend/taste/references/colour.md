@@ -53,7 +53,7 @@ surface, it is `--surface`.
 
 Decide the shares before colouring anything and check them in the screenshot:
 
-- **Ground:** 70–90% of the page.
+- **Ground:** 70-90% of the page.
 - **Ink:** text and perhaps one inverted section (ink as ground, ground as ink).
 - **Accent:** under 5% of any screen. It marks the action and at most one other recurring thing. The
   moment it appears in five places it stops meaning "here".
@@ -110,7 +110,7 @@ dividers, cards and background decoration at once.
 - Do not wash a photograph with the brand colour. Either leave it alone, or commit to a real treatment
   for every image on the page (all greyscale, or all untouched).
 - Text over a photograph needs a calm region. If there is none, move the text off the image. A neutral
-  scrim (black or the ink colour, 30–55% opacity, flat or fading over the text area only) is the one
+  scrim (black or the ink colour, 30-55% opacity, flat or fading over the text area only) is the one
   gradient the inspector allows.
 - A flat field sampled from a photograph (its sky, its shadow) makes a section sit with that image.
 
@@ -127,7 +127,7 @@ dividers, cards and background decoration at once.
 
 The inspector fails these:
 
-- **Cream with terracotta.** A yellow-cream ground (roughly hue 22–62, light and noticeably
+- **Cream with terracotta.** A yellow-cream ground (roughly hue 22-62, light and noticeably
   saturated) with a rust, clay or burnt-orange accent is the house look of AI assistants and of the
   pages they generate. Either half alone is suspect; together they are unmistakable.
 - **Violet and indigo.** The first wave of generated pages was purple; it still reads that way.
