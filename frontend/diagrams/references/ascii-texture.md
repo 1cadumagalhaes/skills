@@ -11,7 +11,7 @@ Working code: `examples/index.html`, the `ascii()` block.
 
 1. **Rasterise the shape once** onto an offscreen canvas at a small fixed size
    (240 × 120 is plenty) and read it back with `getImageData`.
-2. **Take alpha as the shape**, 0–1.
+2. **Take alpha as the shape**, 0-1.
 3. **Blur it three times** (box blur, radius ~6). Three passes approximate a
    Gaussian well enough that the gradient is smooth.
 4. **Height = blurred × alpha.** This is the trick: the blurred copy is high in the
@@ -35,7 +35,7 @@ edges, raise the second for a fatter, glossier body.
 ## Shapes with flat faces (icons, cubes, diagrams)
 
 A stroke has a ridge everywhere, so the normal carries the light. A **flat filled
-face has a constant normal**, so the normal term is identical on all of it — the only
+face has a constant normal**, so the normal term is identical on all of it. The only
 thing that can separate one face from another is the **height**. Two consequences,
 learned by getting them wrong:
 
@@ -43,13 +43,13 @@ learned by getting them wrong:
    the luminance be driven by `height * .85 + (dot - .6) * .30`. If you weight the
    normal instead, the cube renders as one flat blob with a bright rim.
 2. **Isometric projection halves one axis** (`S = 0.5`), so a 16 px sticker becomes
-   8 px tall. A blur radius of 4 (a 9 px window) erases it — the height never reaches
-   its alpha, and the whole image comes out 2–3 ramp steps too dark. Measure the
+   8 px tall. A blur radius of 4 (a 9 px window) erases it. The height never reaches
+   its alpha, and the whole image comes out 2-3 ramp steps too dark. Measure the
    thinnest feature before choosing the blur radius: `r ≈ feature / 4`.
 
 The cell grid is the other limit: at 8 × 11 px cells a 3 × 3 face gives each sticker
 about 1.5 rows of glyphs. Below ~1.5 rows per feature, the character grid is coarser
-than the shape and no tuning helps — make the shape bigger or the cells smaller.
+than the shape and no tuning helps. Make the shape bigger or the cells smaller.
 
 ## Draw it from an atlas, not with fillText
 
@@ -74,7 +74,7 @@ That is what makes 1 500 cells at 24 fps comfortable on a laptop.
 
 | | desktop | narrow |
 |---|---|---|
-| cell | 8–9 × 13–14 px | 6 × 10 px |
+| cell | 8-9 × 13-14 px | 6 × 10 px |
 | grid | canvas / cell | canvas / cell |
 | rate | 24 fps (42 ms) | 24 fps |
 
@@ -99,7 +99,7 @@ canvas comes out squat, and no amount of tuning fixes it.
 
 ## The text variant: scramble-in
 
-The same aesthetic applied to a heading — every letter cycles through glyphs and
+The same aesthetic applied to a heading: every letter cycles through glyphs and
 settles into place, in a cascade, in under a second:
 
 ```js
@@ -108,7 +108,7 @@ if (t - painted >= 42) { /* repaint all unsettled chars with random glyphs */ }
 ```
 
 Repaint at 24 fps, not 60: at 60 the scramble is unreadable. Use it on a hero
-headline, a location that changes ("São Paulo" → "Campinas"), or a status line —
+headline, a location that changes ("São Paulo" → "Campinas"), or a status line;
 never on body copy, and never when the same text must be selectable while it runs
 (the reference site swaps `textContent`, so it is not).
 
@@ -116,12 +116,12 @@ never on body copy, and never when the same text must be selectable while it run
 
 - `getImageData` needs a same-origin image; a cross-origin mark taints the canvas and throws. Draw the mark with paths, inline it as data-URI, or serve it from your own origin.
 - Skip cells whose alpha is below ~0.16, and skip the space character entirely.
-- `Math.min(2, devicePixelRatio)` — on a 3× phone the grid is the same and the
+- `Math.min(2, devicePixelRatio)`. On a 3× phone the grid is the same and the
   extra pixels buy nothing.
 - Do not animate a CSS filter or a stack of layers over the canvas to fake glow; it
   costs more than drawing the right tones.
 - The canvas is decoration. `aria-hidden="true"`, no text alternative needed beyond
-  the section heading — but the mark's meaning must already be in the HTML.
+  the section heading, but the mark's meaning must already be in the HTML.
 
 ## When to use it
 
@@ -132,5 +132,5 @@ as an accent.
 ## Reduced motion
 
 Draw a single frame with the light at rest and no band (`paint(now, still = true)`),
-then never start the loop. The image stays — which is the point, since it costs one
+then never start the loop. The image stays, which is the point since it costs one
 frame.

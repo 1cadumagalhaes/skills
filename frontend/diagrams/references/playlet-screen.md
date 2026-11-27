@@ -1,6 +1,6 @@
 # Scripted screens
 
-A small mock UI — a chat, a dashboard, a code editor, an agent console — that
+A small mock UI, such as a chat, a dashboard, a code editor, or an agent console,
 performs a six-beat story when it comes into view: the client message arrives, the
 bot types, the bot answers, the order is created. It is the cheapest of the four
 archetypes (HTML plus CSS, no canvas, no engine) and the one that most reliably
@@ -45,7 +45,7 @@ is hidden, so the mock shows its final state.
 
 ## Timing
 
-Aim for 3–4 s total, six beats maximum. The reference chat runs 3.4 s:
+Aim for 3-4 s total, six beats maximum. The reference chat runs 3.4 s:
 
 | t | beat |
 |---|---|
@@ -56,7 +56,7 @@ Aim for 3–4 s total, six beats maximum. The reference chat runs 3.4 s:
 | 2.85 s | success line + a check mark popping (0.45 s) |
 
 A typing indicator is a 0.95 s animation whose opacity is 0 for the first 12 % and
-last 18 % — it reads as "typing then sent" instead of "three dots forever":
+last 18 %. It reads as "typing then sent" instead of "three dots forever":
 
 ```css
 @keyframes says { 0% { opacity: 0 } 12% { opacity: 1 } 82% { opacity: 1 } 100% { opacity: 0 } }
@@ -77,15 +77,15 @@ function replay() {
 
 When to replay:
 
-- on entering the viewport (`IntersectionObserver`, threshold ~0.35) — but not if it
-  played less than ~500 ms ago, or a fast scroll flickers it;
+- on entering the viewport (`IntersectionObserver`, threshold ~0.35), unless it
+  played less than ~500 ms ago or a fast scroll flickers it;
 - on hover over the screen, only after 3.4 s of stillness (the visitor has finished
   reading and is asking for it again);
 - never on every mouse move.
 
 ## The tilt
 
-A 6–8 degree tilt is enough to make the mock feel like an object. Perspective on
+A 6-8 degree tilt is enough to make the mock feel like an object. Perspective on
 the parent, transform on the screen, reset on leave:
 
 ```js
@@ -115,7 +115,7 @@ translated, read, or restyled. Good subjects:
 | agent console | a document is scanned (a sweep line) → two hits highlight → three steps check off → output |
 | integration | cards scroll in a marquee → a connector line draws between two of them |
 
-Keep 4–7 beats. The last one is the payoff and should be a *state change*, not
+Keep 4-7 beats. The last one is the payoff and should be a *state change*, not
 another sentence: a check mark, a badge, a created record.
 
 ## Gotchas
@@ -131,7 +131,7 @@ another sentence: a check mark, a badge, a created record.
   heights and widths in px, or it will reflow differently at every breakpoint.
 - Legible at 300 px wide. If the mock needs 500 px to read, it is the wrong mock
   for a two-column section; put it full-width or drop the copy column.
-- Do not put it inside `overflow: hidden` with `transform` on the same element —
+- Do not put it inside `overflow: hidden` with `transform` on the same element.
   Safari clips the tilted plane.
 
 ## Reduced motion

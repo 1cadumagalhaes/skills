@@ -355,6 +355,8 @@ def prose_only(body: str) -> str:
 
 # A defined term that collides with a banned vowel-word stays, with a reason.
 BANNED_ALLOW = {"module-design": {"leverage"}, "tdd": {"leverage"}}
+# A banned word that is a literal value of a tool's enum stays, by exact file.
+BANNED_ALLOW_PATH = {"frontend/taste/references/run-2-direction.md": {"showcase"}}
 
 hygiene_debt = []
 for s in sorted(skills.values(), key=lambda x: x["rel"]):
@@ -380,6 +382,34 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
         problems.append(f"{s['rel']}: " + ", ".join(counts))
     else:
         hygiene_debt.append(line)
+
+# --- 7c. hygiene across references ---------------------------------------
+# A reference is read by an agent too, so the same prose rules apply. Vendored corpora
+# are exempt: rewriting hundreds of inherited dashes in Apache-2.0 material that its own
+# notice calls unmodified changes someone else's text without authority.
+VENDORED = ("frontend/revenue-design/", "frontend/platform-docs/guides/", "frontend/platform-docs/NOTICE.md")
+ref_debt = []
+for path in sorted(glob.glob(os.path.join(repo, "*", "*", "references", "**", "*.md"), recursive=True)
+                   + glob.glob(os.path.join(repo, "*", "*", "reference", "**", "*.md"), recursive=True)):
+    rel_path = os.path.relpath(path, repo)
+    if any(rel_path.startswith(v) for v in VENDORED):
+        continue
+    owner = rel_path.split("/")[1]
+    prose = prose_only(open(path, encoding="utf-8", errors="replace").read())
+    counts = []
+    for label, pat in HYGIENE:
+        if owner == "unslop" and label in (
+            "banned word", "not just X but Y", "chatbot phrase", "serves as", "bold restates its line"
+        ):
+            continue
+        hits = pat.findall(prose)
+        if label == "banned word":
+            allowed = BANNED_ALLOW.get(owner, set()) | BANNED_ALLOW_PATH.get(rel_path, set())
+            hits = [h for h in hits if h.lower() not in allowed]
+        if hits:
+            counts.append(f"{len(hits)} {label}")
+    if counts:
+        ref_debt.append(f"{rel_path} ({', '.join(counts)})")
 
 # One table, one home. A skill that lists three or more harness mechanisms inline
 # has copied process/delegate's table and will drift from it.
@@ -502,6 +532,8 @@ if not quiet:
     print(f"lint     {len(lint)} warning(s)")
     if hygiene_debt:
         print(f"hygiene  {len(hygiene_debt)} absorbed skill(s) carry inherited dashes or banned words: " + "; ".join(hygiene_debt))
+    if ref_debt:
+        print(f"refs     {len(ref_debt)} reference file(s) carry the same violations: " + "; ".join(ref_debt[:6]) + (" ..." if len(ref_debt) > 6 else ""))
     if accepted_bodies:
         print(f"bodies   {len(accepted_bodies)} accepted over {BODY_WARN} chars: " + "; ".join(accepted_bodies))
 

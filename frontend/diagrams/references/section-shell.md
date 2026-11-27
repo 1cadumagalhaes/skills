@@ -43,7 +43,7 @@ new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: '600px 0px' });
 ```
 
-Rules of thumb: `threshold` 0.1–0.15 and a negative bottom `rootMargin` so a section
+Rules of thumb: `threshold` 0.1-0.15 and a negative bottom `rootMargin` so a section
 starts animating when it is properly on screen, not when one pixel appears;
 `rootMargin: '600px 0px'` (not threshold) for anything that needs a network request.
 
@@ -74,7 +74,7 @@ function agendar() {
 @keyframes tempo { to { transform: scaleX(1) } }
 ```
 
-`sozinho` goes false on the first click or keypress — autoplay must never fight a
+`sozinho` goes false on the first click or keypress. Autoplay must never fight a
 visitor who has taken control. `emTela` comes from an observer at ~0.35; `pausado`
 from `mouseenter`/`focusin`.
 
@@ -99,9 +99,9 @@ abas.forEach((a, i) => a.addEventListener('keydown', e => {
 `roving tabindex` (selected tab `0`, the rest `-1`), `aria-selected`,
 `aria-controls` → panel id, and the panel gets `role="tabpanel"`
 `aria-labelledby`. On wide screens with a real pointer, `mouseenter` selects too
-(`matchMedia('(hover: hover) and (min-width: 961px)')`) — which is how the "para
-quem é" section on the reference site works: hovering a situation lights the module
-it maps to.
+(`matchMedia('(hover: hover) and (min-width: 961px)')`). The "para quem é" section
+on the reference site uses this behavior: hovering a situation lights the module it
+maps to.
 
 ## Replay guard
 

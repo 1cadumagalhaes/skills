@@ -45,7 +45,7 @@ Before proposing architecture changes, identify:
 
 ## Database Internals Audit
 
-Use this when the bottleneck is not just "add an index" but how data is stored, read, written, replicated, locked, and recovered.
+Use this when the bottleneck lies in how data is stored, read, written, replicated, locked and recovered, rather than in adding an index.
 
 ### Workload Shape
 

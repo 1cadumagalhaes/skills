@@ -2,7 +2,7 @@
 
 Clusters of points in space, each cluster a named source, a few points bright enough
 to ask for attention, a side panel that explains whichever one you touch. It is the
-archetype for "there is a lot under the surface" — and the one that most often gets
+archetype for "there is a lot under the surface," and the one that most often gets
 faked with a static image, badly.
 
 Working code: `examples/index.html`, the `map()` block.
@@ -24,7 +24,7 @@ Working code: `examples/index.html`, the `map()` block.
 
 The canvas draws dots and lines. **Everything with a word in it is DOM**, positioned
 each frame from the same projection: the cluster names, the signal buttons, the
-panel. That is what makes the thing keyboard-operable and readable — the reference
+panel. That is what makes the thing keyboard-operable and readable. The reference
 site's 3D map is a canvas with `<button>`s floating over it.
 
 ## The data
@@ -67,8 +67,8 @@ return { x: cx * W + x * rx * W * k, y: cy * H + y * ry * H * k, k, z: z2 };
 `k`. Sort the projected points by `z` before drawing so nearer dots sit on top; at
 this size, sorting 50 points per cluster per frame is free.
 
-Focal length 700 with a 260 depth multiplier gives a mild perspective — enough that
-the cluster turns, not so much that it distorts. Change the 260, not the 700, when
+Focal length 700 with a 260 depth multiplier gives a mild perspective. The cluster
+turns without distorting. Change the 260, not the 700, when
 you want more depth.
 
 ## Interaction

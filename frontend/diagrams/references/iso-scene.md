@@ -23,9 +23,9 @@ const p = (x, y, z, u) => [
 ];
 ```
 
-`u` is the unit in pixels (`data-u` on the figure). Everything else — boxes,
-cylinders, ducts, label anchors — is expressed in grid units and multiplied by `u`
-at projection time, so one scene scales by changing a single attribute.
+`u` is the unit in pixels (`data-u` on the figure). Boxes, cylinders, ducts, and label
+anchors are expressed in grid units and multiplied by `u` at projection time. One
+scene scales by changing a single attribute.
 
 Track the bounding box while projecting (min/max of both screen coordinates). The
 `viewBox` is that box plus ~10 px of padding, which is what lets one figure be
@@ -49,7 +49,7 @@ parts.sort((a, b) => a.d - b.d).forEach(p => g.appendChild(p.n));
 
 The fill must be *exactly* the background (`var(--iso-fill)` = `var(--bg)`), or the
 back edges show through as ghosts. On a gradient or image background, this
-technique does not work — use a matching solid panel behind the figure.
+technique does not work. Use a matching solid panel behind the figure.
 
 A box draws only the three faces a viewer can see: `right` (x+w), `front` (y+d),
 `top` (z+h). Three polygons each; there is no reason to draw the hidden ones.
@@ -59,7 +59,7 @@ A box draws only the three faces a viewer can see: `right` (x+w), `front` (y+d),
 | primitive | notes |
 |---|---|
 | `box(x,y,z,w,d,h,{module, anchor, top, front})` | 3 faces + optional detail brushes + a named label anchor |
-| `cylinder(cx,cy,z,r,h,{rings})` | ellipse radii are `r * SQRT2 * C * u` and `r * SQRT2 * S * u` — that is what makes a circle look like a circle on the floor plane |
+| `cylinder(cx,cy,z,r,h,{rings})` | ellipse radii are `r * SQRT2 * C * u` and `r * SQRT2 * S * u`. That is what makes a circle look like a circle on the floor plane |
 | `ring(cx,cy,z,r)` | a flat ellipse: floor markings, signal rings |
 | `duct(points[],{module,delay,duration})` | a polyline plus a travelling pulse |
 | `wire(x,y,z,w,d,h)` | dashed 12-edge cuboid: the thing that does not exist yet |
@@ -78,8 +78,8 @@ box(-.4, 4.4, 0, 3, 2.2, 1.8, {
 
 **Gotcha:** a detail drawn into a face must be keyed with that face's depth, or it
 floats above closer boxes. In the example, details are pushed at `1e7` because no
-box is ever in front of the module they belong to — fine for a flat scene, wrong for
-nested ones. When in doubt, give the detail the depth of the box that owns it plus a
+box is ever in front of the module they belong to. That is fine for a flat scene and
+wrong for nested ones. When in doubt, give the detail the depth of the box that owns it plus a
 fraction.
 
 ## Draw-in
@@ -103,7 +103,7 @@ el.style.setProperty('--d', (i / n * tempo).toFixed(3) + 's');
 `pathLength="1"` makes one dash equal to the whole outline, whatever its real
 length, so a single `stroke-dashoffset: 1 → 0` animation works for every element.
 The stagger is just the element index over the total count times `data-tempo`
-(0.9–1.8 s on the reference site). Add `is-ready` ~`tempo + 0.4 s` later to switch
+(0.9-1.8 s on the reference site). Add `is-ready` ~`tempo + 0.4 s` later to switch
 the ambient loops on.
 
 ## Pulses along the ducts
@@ -118,8 +118,8 @@ A short dash travelling a path, with no JS at all:
 ```
 
 Per-duct `--pd` (delay) and `--pv` (duration) keep several ducts from marching in
-lockstep — 3.1/3.4/3.7 s with 0.4–0.9 s offsets reads as data flowing, one shared
-duration reads as a loading animation.
+lockstep. Durations of 3.1, 3.4, and 3.7 s with 0.4-0.9 s offsets read as data
+flowing; one shared duration reads as a loading animation.
 
 ## Labels: HTML over the drawing
 
@@ -179,8 +179,8 @@ enters a label, resume on leave.
 The most convincing interaction on the reference site is not an animation at all: a
 list of three topics on the right, a stacked drawing on the left, and hovering or
 focusing any topic lights its floor, dims the others, lifts the chosen one, and
-dims the sibling rows — and hovering the floors or the labels does the same in
-reverse. One function drives all six element groups.
+dims the sibling rows. Hovering the floors or the labels does the same in reverse.
+One function drives all six element groups.
 
 **JS sets three classes and one flag; CSS derives everything else.**
 
@@ -217,7 +217,7 @@ Four things make it work, and they are worth copying exactly:
    without `:has()`.
 2. **Two speeds in one component.** Opacity at 350 ms, the 7 px lift at 500 ms. The
    lift is the gesture; the dim is the consequence. Same instinct as the measured
-   state fades (450–550 ms) elsewhere on the site.
+   state fades (450-550 ms) elsewhere on the site.
 3. **Hover is bidirectional and reversible.** Rows, floors and side labels all call
    the same `mostrar(n)`; `pointerleave` returns to the *pinned* index, not to none;
    `click` pins or unpins. Six groups, one function, one source of truth.
@@ -234,7 +234,7 @@ the stack moves **below** the list (`order: 2`), so the control comes first.
 | the section is | scene | motion |
 |---|---|---|
 | a system with named parts | boxes + ducts from a core | draw-in + pulses + addressable modules |
-| a process in 3–4 steps (storyboard) | one tiny scene per step: two boxes talking, a stack of plates, three blocks, a plate with a ring above | draw-in only, no ducts; the hover is the card's own |
+| a process in 3-4 steps (storyboard) | one tiny scene per step: two boxes talking, a stack of plates, three blocks, a plate with a ring above | draw-in only, no ducts; the hover is the card's own |
 | a funnel or a hierarchy (layers) | cylinders stacked at rising `z`, radii shrinking | draw-in + one lit layer at a time |
 | a product mockup (static) | a window and a phone as boxes with a `screen` face | draw-in only; it stops when it is finished |
 
@@ -242,8 +242,8 @@ Two practical notes from building the set:
 
 - **Storyboard figures need a fixed height box.** Different scenes have different
   aspects, so with `width: 100%` the captions land at different heights across the
-  four cards. Give the figure a `height` and let the SVG letterbox inside it — that
-  is safe *only* because those figures carry no HTML labels.
+  four cards. Give the figure a `height` and let the SVG letterbox inside it. That is
+  safe *only* because those figures carry no HTML labels.
 - **Cylinders need a lit top to read as plates.** The occlusion trick fills faces
   with the page background, which is right for boxes and makes a stack of discs look
   like a wireframe. One rule fixes it: `[data-iso="pilha"] .f.top { fill:

@@ -5,16 +5,16 @@ technical course is a **worked example you can operate**: a process, a state you
 advance, and the artifact changing in front of you. Five panels do almost all of it,
 and they share one skeleton.
 
-The timings that make these panels feel considered — measured from the clips, to the
-millisecond — are in `references/motion-craft.md`. Read that before picking any
+The timings that make these panels feel considered come from frame-by-frame
+measurements in the clips. Read `references/motion-craft.md` before picking any
 duration.
 
 Working examples, both self-contained:
 
-- `examples/stepper.html` — the stepper with a simulated clock, node-click
-  explanations and a scenario tab (the panels 1 + 3 of this file).
-- `examples/panels.html` — the other five: learner-driven walkthrough with a
-  terminal, pipeline with scenarios and atomic transformations, one artifact in N
+- `examples/stepper.html`: the stepper with a simulated clock, node-click
+  explanations and a scenario tab (panels 1 and 3 of this file).
+- `examples/panels.html`: the other five panels include a learner-driven walkthrough
+  with a terminal, pipeline scenarios and atomic transformations, one artifact in N
   representations, the robot demo, and the highlight/notes shell.
 
 Everything below comes from watching real lesson panels frame by frame and writing the
@@ -45,7 +45,7 @@ Four rules that come straight from that frame:
    passando de card em card na loja", "Você também pode clicar em qualquer etapa".
    A panel nobody knows how to operate teaches nothing.
 2. **Progress is always visible.** `passo 4 de 8`, a pager of numbered circles, or a
-   segmented bar — never just "next".
+   segmented bar, never just "next".
 3. **One footnote of honesty.** "Os tempos são ilustrativos… O que vale é a ordem dos
    passos e o tamanho de cada um perto dos outros." Say what is real and what is
    illustrative, in the component, not in a comment.
@@ -54,7 +54,7 @@ Four rules that come straight from that frame:
    one extra hue per meaning (purple for TLS, say). A legend sits under the stage
    whenever two colours coexist.
 
-## Panel 1 — the stepper with a simulated clock
+## Panel 1: the stepper with a simulated clock
 
 The strongest one: a system diagram where each step names who is working, which hop
 carries the packet, and how much simulated time has passed.
@@ -82,7 +82,7 @@ Everything on screen is derived from `i`, never stored per element:
 - **the active hop**: `steps[i].hops` → that edge goes black and gets a small dot
   travelling along it; every other edge is grey.
 - **the clock**: `steps.slice(0, i+1).reduce(sum of ms)`; the bar is
-  `total / finalTotal`, so the bar's *jumps* are the lesson — a 15 ms CPU step looks
+  `total / finalTotal`, so the bar's *jumps* are the lesson. A 15 ms CPU step looks
   cheap next to a 40 ms round trip.
 - **the message**: `steps[i].note`, one or two sentences, no scrollbar.
 
@@ -99,7 +99,7 @@ function render(i) {
 ```
 
 CSS does the rest; the only transitions are `stroke`/`border-color`/`transform` at
-200–300 ms. No timeline library, no per-step keyframes — the panel is a
+200-300 ms. No timeline library or per-step keyframes. The panel is a
 **pure function of an index**, which is also why clicking a numbered circle to jump
 to step 6 is free.
 
@@ -111,12 +111,12 @@ first manual interaction.
 desenho para ver o que ela é"). That is what turns the diagram into a glossary the
 learner can interrogate instead of watch.
 
-## Panel 2 — learner-driven walkthrough
+## Panel 2: learner-driven walkthrough
 
 The same skeleton, but the trigger is the learner's action rather than a button:
-a URL field, "aperte Enter", and the stages light up one after another —
-`DNS 14 ms`, `TCP 21 ms`, `TLS 49 ms`, `Request HTTP`, `Resposta HTTP` — each row a
-label, a one-line description, a mini bar and its cost.
+a URL field, "aperte Enter", and the stages light up one after another. Each row has
+a label, a one-line description, a mini bar and its cost: `DNS 14 ms`, `TCP 21 ms`,
+`TLS 49 ms`, `Request HTTP`, and `Resposta HTTP`.
 
 Two things make it better than a stepper:
 
@@ -130,7 +130,7 @@ Build it as: `stages[]` (same `{title, note, ms}` shape) + an input + a `run()` 
 walks the array on a timer, appending terminal lines from the same array
 (`stage.terminal` strings). ~120 lines.
 
-## Panel 3 — pipeline stepper with scenarios
+## Panel 3: pipeline stepper with scenarios
 
 Five stage cards in a row (`Onde o dado nasce → Ingestão → Transformação →
 Armazenamento → Uso`), each with an icon, a status chip (`pronto` / `rodando` /
@@ -147,25 +147,25 @@ Three additions over Panel 1, all worth copying:
   de madrugada)" swap the *data*, not the diagram. Failure becomes a story you can
   play, which is the single most useful thing a course can do.
 - **The last stage renders the product.** When the pipeline reaches `Uso`, the panel
-  shows the manager's dashboard — `R$ 812.400 em 2.344 vendas ontem`, a bar chart
-  with "ontem" highlighted. The learner sees the thing they are building at the end
+  shows the manager's dashboard with `R$ 812.400 em 2.344 vendas ontem` and a bar
+  chart with "ontem" highlighted. The learner sees the thing they are building at the end
   of the path they just walked.
 
 Progress is a segmented bar (past dark, current amber, future light) plus `6 de 7`.
 
-## Panel 4 — one artifact, N representations
+## Panel 4: one artifact, N representations
 
 A segmented control across the top (`Arquivo CSV · Planilha · Banco de dados`), the
 selected one outlined in ink, the others muted. Under it: one line of what this
-representation *is*, then the artifact itself rendered in its own idiom — a
-spreadsheet with A/B/C/D columns and row numbers for the spreadsheet, a table of
-rows for the database, a monospace file for the CSV.
+representation *is*, then the artifact itself rendered in its own idiom. Show a
+spreadsheet with A/B/C/D columns and row numbers, a table of
+rows for the database, or a monospace file for the CSV.
 
-Then the second row: **who touches the data** — a person icon, an arrow with a
-travelling dot, and the file (`precos.xlsx · o arquivo`). Same for the next variant.
+Then the second row shows **who touches the data**: a person icon, an arrow with a
+travelling dot, and the file (`precos.xlsx · o arquivo`). Repeat for the next variant.
 
 The mechanic is "same data, three shapes", and it works because the artifact is
-*drawn as itself* rather than described. Keep the switcher to 2–4 options; it is a
+*drawn as itself* rather than described. Keep the switcher to 2-4 options; it is a
 comparison, not a menu.
 
 Variant seen for architectures: the same `coleta.jsonl` traced through
@@ -173,7 +173,7 @@ Variant seen for architectures: the same `coleta.jsonl` traced through
 architectures dimmed to ~40 %, the active one annotated inline (`~US$ 0,023 por GB ao
 mês`, `esquema na leitura`). Same panel, branches instead of representations.
 
-## Panel 5 — the robot demo
+## Panel 5: the robot demo
 
 A fake browser (traffic lights, URL bar with the query string) showing a product
 grid, a scripted robot cursor moving card to card, each card outlined as it is read
@@ -182,13 +182,13 @@ card. The button reads `Copiando…` while it runs, then resets.
 
 Rules:
 
-- the cursor path is authored, not simulated — it is an animation of a *process*, so
-  the order is the content;
+- the cursor path is authored, not simulated. It animates a *process*, so the order
+  is the content;
 - the highlight must show *what is being read*, not that something happened;
 - the output table is the punchline: same columns, real numbers, growing;
 - it must be legible as a still frame, because that is how people share a course.
 
-## Panel 6 — the study shell
+## Panel 6: the study shell
 
 The layer around the lesson, not a lesson panel: select text → it becomes a
 highlight → it lands in a card with the quote, a note field, the date, a link back
@@ -220,14 +220,14 @@ argument; the panel carries the evidence.
 
 ## What these panels deliberately avoid
 
-- No motion that cannot be stopped. Auto-advance is fine — the reference panel opens
-  already running, with `Pausar` visible — but only while the panel is on screen, and
-  it stops for good at the first manual interaction. What must never move is the
-  prose around it.
+- No motion that cannot be stopped. Auto-advance is fine. The reference panel opens
+  already running with `Pausar` visible, but only while the panel is on screen. It
+  stops for good at the first manual interaction. The prose around it must never move.
 - No scroll-driven state. The scroll belongs to the text.
 - Nothing hidden behind interaction: the panel is complete at step 1, it just gets
   more specific.
-- No fake numbers passing as measurements — hence the footnote.
+- No fake numbers presented as measurements. The footnote clarifies which numbers
+  are illustrative.
 
 ## Build order for your own course
 
@@ -239,7 +239,7 @@ argument; the panel carries the evidence.
    no CSS.
 4. Add the state, the controls and the pager. Verify keyboard: `→` next, `←` prev,
    `Home` restart, and the pager navigable.
-5. Add colour states and the legend. Verify with a screenshot at step 1 and step N —
-   both must read as "this is a panel about X".
+5. Add colour states and the legend. Verify with a screenshot at step 1 and step N.
+   Both must read as "this is a panel about X".
 6. Add the scenario tab (normal / breaking) if the topic has a failure mode.
 7. Reduced motion: no auto-advance, instant state changes, everything else identical.
