@@ -1,0 +1,39 @@
+name: deploy
+on:
+  push: {branches: [main]}
+  pull_request: {branches: [main]}
+permissions: {contents: read}
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions: {contents: read, id-token: write, pull-requests: write}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/github-deploy/providers/github-main
+          service_account: terraform-deployer@demo-platform.iam.gserviceaccount.com
+      - uses: hashicorp/setup-terraform@v3
+        with: {terraform_version: 1.8.5}
+      - run: terraform -chdir=terraform init -input=false
+      - run: terraform -chdir=terraform plan -out=tfplan
+      - uses: actions/upload-artifact@v4
+        with: {name: reviewed-terraform-plan, path: terraform/tfplan}
+  apply:
+    needs: plan
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions: {contents: read, id-token: write}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/github-deploy/providers/github-main
+          service_account: terraform-deployer@demo-platform.iam.gserviceaccount.com
+      - uses: hashicorp/setup-terraform@v3
+        with: {terraform_version: 1.8.5}
+      - run: terraform -chdir=terraform init -input=false
+      - uses: actions/download-artifact@v4
+        with: {name: reviewed-terraform-plan, path: terraform}
+      - run: terraform -chdir=terraform apply -input=false tfplan

@@ -1,0 +1,29 @@
+version: 2
+sources:
+  - name: raw
+    database: demo-social-analytics
+    schema: raw
+    tables:
+      - name: social_posts
+        description: One row per post per ingestion run; deduped downstream by post_id and day.
+        columns:
+          - name: post_id
+          - name: account_id
+          - name: published_at
+          - name: impressions
+          - name: likes
+          - name: shares
+          - name: ingested_at
+models:
+  - name: stg_social_posts
+    columns:
+      - name: post_id
+        tests: [not_null]
+      - name: published_at
+        tests: [not_null]
+  - name: social_posts_daily
+    columns:
+      - name: published_date
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]

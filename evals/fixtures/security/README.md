@@ -1,0 +1,3 @@
+# Member API security eval fixture
+
+This is a deliberately small eval fixture, not production code. It represents a pre-production API with an avatar upload boundary and intentionally unsafe logging/storage decisions for review. All names, hosts and identifiers are fake; no real personal data or credentials are included. The signup request model includes a CPF field to make the logging issue concrete.
