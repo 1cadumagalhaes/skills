@@ -14,6 +14,7 @@ tier: root
 | Mapping change impact before edits | `~/.agents/skills/blast-radius/SKILL.md` |
 | Writing tests test-first | `~/.agents/skills/tdd/SKILL.md` |
 | Stress-testing an uncertain plan | `~/.agents/skills/grilling/SKILL.md` |
+| Attacking a just-implemented change with adversarial tests | `~/.agents/skills/chaos-engineering/SKILL.md` |
 
 Audit existing code as it stands and return a ranked list of real problems with minimal fixes, never a rewrite proposal or style report. For branch or PR diff review, use `~/.agents/skills/code-review/SKILL.md` instead.
 
