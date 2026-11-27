@@ -20,9 +20,11 @@ o `evals/README.md` define. Supervisão: durante a rodada eu editei skills de `p
 | data-engineering | 3 | **passa** | faz a aritmética a partir do baseline dado (186 TB/mês), recusa inventar o número pós-mudança, mostra que `LIMIT` não reduz scan e que a dedupe acontece depois da cobrança |
 | infra | 1 | **passa** | Dockerfile multi-stage com imagens pinadas por digest, orçamento de startup 180s para boot de 40s, `minReadySeconds`, CPU request elevado **marcado como decisão de custo** que exige `kubectl top`, seletor imutável preservado |
 | infra | 2 | **passa** | recusa criar JSON key; descobre que o CI já usa WIF no próprio fixture e mostra que a key não resolveria, porque o gap é autorização de IAM, não autenticação |
-| infra | 3 | **falha** | 257 bytes, duas frases. Sem a aritmética de custo, sem requests vs uso, sem as três ações, sem encadear `references/cost-and-observability.md`. Ainda afirma "500m → 1", valor que não existe na fixture (`requests: 500m`, `limits: 2`) |
+| infra | 3 | **passa na repetição** | 1ª amostra: 257 bytes, duas frases, sem aritmética e com valor inventado ("500m → 1"). Repetição do mesmo prompt: 4.674 bytes, replicas fora do repo como primeiro gap, requests como multiplicador, `kubectl` sem auth declarado, e o caminho para `references/cost-and-observability.md` citado 5 vezes. Ver §variância |
 
-**Resultado: 3 de 4 portas passam (2 de 3 ou melhor). `infra` passa 2 de 3 e tem uma falha real.**
+**Resultado: as quatro portas passam (2 de 3 ou melhor). `infra` fecha 3 de 3 na repetição.**
+
+O placar não é o achado principal. O achado é que **uma amostra não distingue "a skill falha" de "a amostra falhou"**: o mesmo prompt, mesmo modelo, mesmo fixture, produziu 257 bytes com número inventado e 4.674 bytes corretos.
 
 ## O que a rodada mostra além do placar
 
@@ -42,11 +44,21 @@ fixture não tem `bq` autenticado. Nas duas rodadas o modelo parou pedindo a que
 consulta e o baseline medido, e a rubrica passou a exigir a aritmética sobre o baseline dado e a
 proibir número pós-mudança inventado. Não é afrouxar: é deixar de pedir o impossível.
 
+## Variância: por que um veredito de falha exige repetição
+
+Mesmo prompt, mesmo modelo, mesmo fixture, duas execuções: 257 bytes e 4.674 bytes. Na amostra curta o
+modelo inventou um valor que não existe na fixture; na longa fez a conta e citou a referência.
+
+Regra que entra no protocolo: **um prompt que falha é repetido uma vez antes de qualquer mudança na
+skill**. Duas falhas = defeito; uma falha e uma aprovação = amostra instável, e o que se registra é a
+variância, não um conserto. Isso casa com a observação do Uber de que eval entre 70% e 90% informa mais
+que 100%, porque 100% costuma significar que o eval não está medindo nada.
+
 ## Ação que sai daqui
 
-1. `infra`: a pergunta de custo precisa de caminho obrigatório. A porta deve encadear
-   `references/cost-and-observability.md` e exigir a conta (requests × réplicas × preço Autopilot) antes
-   de recomendar qualquer mudança. Hoje isso está na rubrica do eval e não no corpo da skill.
+1. `infra` não precisa de conserto: o non-negotiable 6 já exige a conta por réplica, nó e multiplicador
+   Autopilot, e a linha de roteamento para `references/cost-and-observability.md` já existe. A amostra
+   curta simplesmente não a seguiu.
 2. Nove portas não têm fixture, então `eval.sh` sai 2 nelas. Sem fixture não há medição: `python`,
    `code-audit`, `debug`, `repo-defaults`, `frontend-*`, `delegate`.
 3. O padrão dos prompts de borda vale mais que o placar: qualquer porta nova deve ter um caso que
