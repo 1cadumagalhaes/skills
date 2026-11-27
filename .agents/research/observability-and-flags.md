@@ -40,6 +40,34 @@ Fontes primárias lidas, não resumos:
 | Use uma API de avaliação vendor-neutral (OpenFeature) para que a escolha do fornecedor não entre no código. | OpenFeature intro |
 | Regra que já temos e continua valendo: faça flag de tudo que **não** dá para reverter redeployando a imagem anterior. | `backend/references/service-contract.md:53` |
 
+## Mecanismo: env var, arquivo, banco ou serviço de verdade
+
+O artigo do Fowler lista cinco degraus de configuração, e a regra é subir só quando uma necessidade
+concreta empurra:
+
+| Degrau | Serve quando | Custa |
+|---|---|---|
+| Constante no código | a flag é temporária e sai com o próximo deploy | um build por mudança |
+| Variável de ambiente | a mudança é por ambiente, não por usuário | restart ou redeploy para mudar |
+| Arquivo de configuração | precisa mudar sem build, mas com versionamento e review | deploy de config, sem targeting |
+| Tabela no banco da aplicação | precisa de admin em runtime e de histórico | mais uma dependência no caminho crítico |
+| Serviço de flags distribuído | precisa de targeting por contexto, auditoria de quem virou o quê, ambientes, kill switch durante incidente, experimento com exposição | fornecedor, latência de avaliação, mais um ponto de falha |
+
+"Prefira configuração estática" é a recomendação explícita do Fowler, e o OpenFeature confirma o motivo do
+último degrau: um sistema completo de flags precisa de admin, trilha de auditoria e gestão de ambientes, e
+isso é software, não um arquivo. **Adotar serviço de flags é decisão de operação, não de elegância.**
+
+Três coisas que o mecanismo decide e que precisam estar escritas antes de ligar a primeira flag:
+
+1. **Quem vira a chave em produção**, em quanto tempo, e o que acontece se essa pessoa estiver dormindo. Flag
+   de ops sem esse parágrafo é um botão sem dono.
+2. **Rollout e rollback são perguntas diferentes.** Rollout é como a novidade chega (canary, percentual,
+   targeting); rollback é a garantia de voltar. Flag de release permite rollback em segundos; deploy
+   anterior permite rollback em minutos. Se a flag existe só para evitar deploy ruim, o problema é o deploy.
+3. **Estado da flag é estado de produção.** Entra no runbook, no monitoramento (erro de provider, latência de
+   avaliação) e na resposta a incidente. Flag avaliada no cliente com provider fora do ar é o default
+   silencioso, e ninguém descobre isso durante o incidente.
+
 ## Flags no cliente: o que só existe no browser
 
 Frontend não é "o mesmo assunto com outro SDK". As fontes acima mostram quatro propriedades que mudam o
