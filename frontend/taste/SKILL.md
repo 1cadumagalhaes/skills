@@ -91,12 +91,16 @@ such a list (the client's name and what it means, the street it stands in, the o
 makes it what it is), and the pages that lost had a good composition with a category idea. The list
 is also your picture search: each place, material and printed thing on it is a query for step 6.
 
+**Done when:** your notes name 8 to 12 facts that belong to this client and no competitor.
+
 ### 2. Write the argument
 
 Before any design, list the page as claims with their proof, one line per section, the way
 `references/copy.md` §1 shows. The claims decide which sections exist and in what order. Delete any
 section that has no claim. This is how you avoid the stock sequence of hero, logos, three features,
 testimonial, pricing, call to action.
+
+**Done when:** your copy notes list one claim and proof for each section, with no section lacking a claim.
 
 ### 3. Draw the direction
 
@@ -150,6 +154,8 @@ The command prints a **direction sheet**. It is the art direction for this build
   in the report.
 - Reprint the direction with `node <skill>/scripts/draw.mjs --show` whenever you need it. It is small, and it is the decision, not this file. Re-read only the section of the step you are on. Never re-read this whole file to recall the direction.
 
+**Done when:** the chosen direction sheet is printed and your notes name why it fits the inventory.
+
 ### 4. Find the idea
 
 The direction is a way of composing. The idea is what makes the page belong to this subject and no
@@ -190,6 +196,8 @@ Decide what each one shows from your inventory before building: the fly-through 
 studio's own title cards, the route is the road this shipment really takes, the picture that opens to
 the whole screen is the room the guest will wake up in. A scene filled with pictures that could belong
 to anyone is a screensaver.
+
+**Done when:** your notes contain the filled idea sentence and one live thing grounded in the subject.
 
 ### 5. Write the words
 
@@ -297,6 +305,8 @@ not finished. Order of work:
 Read `references/type.md`, `references/colour.md` and `references/layout.md` when you need the detail
 behind a decision; the laws below are the short form.
 
+**Done when:** the page has the dealt sections, real imagery, the live thing, and working phone and keyboard layouts.
+
 ### 7. Gate
 
 ```bash
@@ -323,6 +333,8 @@ Inspect what the visitor receives. With a build step, run the last gate on the p
 dev server: minifiers and bundlers change what ships (one dropped a `backdrop-filter` that the dev
 server showed). The inspector warns when it is looking at a dev server.
 
+**Done when:** the final production page has no inspector FAILs, and each WARN has a one-sentence defense.
+
 ### 8. Look
 
 Passing the gate means nothing banned was measured. It does not mean the page is good. Open the
@@ -332,6 +344,8 @@ down in its format, fix the top three problems, run the inspector again, look ag
 most.
 
 Judge only the pictures. If a problem is visible in a screenshot, it is real, whatever the code says.
+
+**Done when:** you have opened every listed screenshot and recorded the critique with the top three fixes.
 
 ### 9. Move
 
@@ -352,6 +366,8 @@ and drops the travel. A move that changes the colour or the layout of whole scre
 chapter, a pinned story) is part of the composition, so build it in step 6 and let every look round see
 it. `references/motion.md` has the tokens and tested recipes. Then run the inspector once more and check
 every screenshot for content that failed to appear.
+
+**Done when:** the inspector counts at least eight moving elements, and reduced motion keeps all content visible.
 
 ### 10. Report
 

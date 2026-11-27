@@ -73,6 +73,8 @@ Also cover the cases that aren't one dataset:
 
 These can be extra toggle positions or extra fixtures. Don't skip them because they don't fit the two-state toggle.
 
+**Done when:** the worst-case fixture covers every field plus Empty, One, and Huge cases.
+
 ### Phase 3 — Wire the toggle
 
 Put a segmented control labeled **Demo data / Worst case** where the user can flip it while looking at the component, and swap the fixture at the data boundary (Hard Rule 2). Extra states go in as extra segments: **Demo / Worst case / Empty / One / 1,000 rows**.
@@ -81,6 +83,8 @@ Put a segmented control labeled **Demo data / Worst case** where the user can fl
 - **No project / standalone component**: a single self-contained HTML file with the component and both datasets inline.
 
 Fixed at the bottom-center of the viewport, out of the component's way. Small, neutral, obviously chrome. It is not part of the design under test, so keep it plain: a gray track, a white pill on the active segment, system font. Switching is instant, with no animation on the content.
+
+**Done when:** the dev-only toggle switches fixtures at the data boundary and keeps its selection in the URL.
 
 ### Phase 4 — Break it
 
@@ -134,11 +138,15 @@ Every long string forces this choice. Make it per field, not globally:
 
 Present the findings in the format below, leave the toggle running, and stop. The user flips the toggle, looks, and decides.
 
+**Done when:** the findings use the required output format and the toggle remains running.
+
 ### Phase 6 — Fix on request
 
 When the user says which to fix, apply those fixes in the component, using the project's existing conventions and tokens. Then flip the toggle through every state again (Demo too: a fix for the worst case must not regress the demo) and confirm each fixed break is gone.
 
 Keep the worst-case fixture afterward unless the user says otherwise. It's the regression test for the next time someone touches the component. The toggle stays dev-only either way.
+
+**Done when:** each requested fix is verified gone in every toggle state, including Demo.
 
 ## Required Output Format
 

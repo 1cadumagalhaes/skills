@@ -28,6 +28,8 @@ Inspect the evidence sources relevant to the request:
 
 Group observed friction into concrete mistake classes. Count a pattern as a recurring class once it has happened at least twice or caused significant rework.
 
+**Done when:** relevant evidence sources are inspected and observed friction is grouped into concrete mistake classes.
+
 ## Phase 2: Fix at the highest level that works
 
 For each mistake class, pick the highest level in this order that prevents recurrence:
@@ -47,3 +49,5 @@ Before reporting done:
 - Report the evidence per class: mistake class and counts, level chosen, why a higher level could not hold it, command and output proving the new check works, and any remaining judgment-only items.
 
 Synthesized from `mattpocock/skills` `retro` (MIT, Matt Pocock) and `backnotprop/pstack` `correct` (MIT, Lauren Tan).
+
+**Done when:** each new check fails on the mistake and passes on the fixed state, with evidence reported per class.

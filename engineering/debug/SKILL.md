@@ -55,6 +55,8 @@ Write 3 to 5 ranked hypotheses before testing any of them. Each hypothesis must 
 
 Show the ranked list to the user when they are active in the loop; otherwise proceed directly in priority order.
 
+**Done when:** you have written 3 to 5 ranked hypotheses with falsifiable predictions.
+
 ## Phase 4: Instrument
 
 Test one variable per probe against a specific Phase 3 prediction:
@@ -64,6 +66,8 @@ Test one variable per probe against a specific Phase 3 prediction:
 3. Tag every temporary debug log with a unique prefix such as `[DEBUG-a4f2]` so cleanup is a single grep.
 
 For performance regressions or BigQuery/Postgres query slowness, skip log scatter and establish a baseline with a profiler or `EXPLAIN (ANALYZE, BUFFERS)`, then vet numbers with `~/.agents/skills/benchmark-check/SKILL.md`.
+
+**Done when:** each probe tests one variable against a prediction, and temporary logs have unique prefixes.
 
 ## Phase 5: Fix and lock down with a regression test
 

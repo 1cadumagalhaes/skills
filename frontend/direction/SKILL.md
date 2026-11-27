@@ -22,6 +22,8 @@ Proceed directly without asking when:
 
 Honor the brief's stated terms first whenever they resolve an axis.
 
+**Done when:** a stated direction, existing `DESIGN.md`, or established-surface fix resolves the choice without further questions.
+
 ## 1. Ground the surface in its subject
 
 Name three facts before proposing directions:
@@ -31,6 +33,8 @@ Name three facts before proposing directions:
 - **Job.** The single primary action or understanding this surface delivers.
 
 If the brief leaves these ambiguous, propose one concrete reading of each and confirm in one line rather than asking an open-ended question.
+
+**Done when:** your notes name the subject, audience, and primary job.
 
 ## 2. Propose two or three directions
 
@@ -45,9 +49,13 @@ Rules for proposals:
 - Include a "you pick" option, recommend the strongest fit, and explain why.
 - Keep one dominant idea per option rather than bundling unrelated palettes, layouts, and motifs.
 
+**Done when:** you have proposed two or three anchored options with risks, a recommendation, and a you-pick option.
+
 ## 3. Commit the decision
 
 State the chosen direction in one sentence and write it into `DESIGN.md` via `frontend-design-doc` in the same change (create a minimal `DESIGN.md` if absent). Follow the committed direction throughout implementation; name and justify any explicit deviation.
+
+**Done when:** one chosen direction is recorded in `DESIGN.md` and each deviation has a reason.
 
 ## 4. Refuse generic AI tells
 
@@ -63,6 +71,8 @@ Avoid unchosen template defaults (cream plus terracotta serif, black plus acid-g
 | Interactive diagrams, system maps, course steppers | `frontend-build` routes to `frontend-diagrams` |
 | UI copy voice | Direction voice rules in `DESIGN.md` |
 
+**Done when:** the surface maps to the next skill or reference in the table.
+
 ## 6. Report
 
 Close the decide phase in four concise lines:
@@ -73,3 +83,5 @@ Close the decide phase in four concise lines:
 4. Path where the decision is recorded (`DESIGN.md`).
 
 Informed by `anthropics/skills` `frontend-design` (Apache-2.0) and `frontend-taste` tells registry.
+
+**Done when:** the four report lines name the chosen anchor, rejected options, deviations, and `DESIGN.md` path.

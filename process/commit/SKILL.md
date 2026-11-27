@@ -35,6 +35,8 @@ A commit is a reviewable unit with one reason to change. `repo-defaults` sets th
 - Never stage a secret, an `.env*` file, or an unrelated file. If a secret is already tracked, removing it and adding it to `.gitignore` is its own commit, and it goes first.
 - A formatting-only pass stays out of a behavior commit, even when the formatter ran on its own.
 
+**Done when:** only intended files are staged, with no secret or unrelated file staged.
+
 ## Message
 
 - **Subject:** `type(scope): imperative summary`, 72 characters at most, no trailing period, and an issue key when the repo uses one, as in `feat(api): retry a 503 twice CLUBE-123`.
