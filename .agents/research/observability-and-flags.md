@@ -86,10 +86,16 @@ isso é software, não um arquivo. **Adotar serviço de flags é decisão de ope
 Três coisas que o mecanismo decide e que precisam estar escritas antes de ligar a primeira flag:
 
 1. **Quem vira a chave em produção**, em quanto tempo, e o que acontece se essa pessoa estiver dormindo. Flag
-   de ops sem esse parágrafo é um botão sem dono.
-2. **Rollout e rollback são perguntas diferentes.** Rollout é como a novidade chega (canary, percentual,
-   targeting); rollback é a garantia de voltar. Flag de release permite rollback em segundos; deploy
-   anterior permite rollback em minutos. Se uma flag de **release** existe só para evitar deploy ruim, o problema é o deploy. Flag de experimento não entra nessa conta: ela existe para medir.
+   de ops sem esse parágrafo é um botão sem dono. O gatilho é evidência de usuário ("chegou reclamação"),
+   não diagnóstico fechado: se dependesse de causa conhecida, seria hotfix.
+2. **Rollback de comportamento e rollback de artefato são coisas diferentes.** O artefato volta com o
+   deploy anterior, em minutos, e exige saber o que está errado. O comportamento volta com a flag, em
+   segundos, e **não exige diagnóstico**: desliga o que dói e investiga depois. Por isso flag de ops não é
+   remendo de deploy ruim. O caso é outro: a feature foi feita, testada e validada, e um usuário encontrou
+   uma situação que ninguém planejou. O código está correto para tudo o que foi testado; o comportamento é
+   que não serve ali. O Fowler chama essas flags de "a manually-managed Circuit Breaker", e o OpenFeature
+   lista entre os usos "safely degrade parts of a production system that are experiencing an outage". Um
+   hotfix exige saber a causa; uma flag não.
 3. **Estado da flag é estado de produção.** Entra no runbook, no monitoramento (erro de provider, latência de
    avaliação) e na resposta a incidente. Flag avaliada no cliente com provider fora do ar é o default
    silencioso, e ninguém descobre isso durante o incidente.
