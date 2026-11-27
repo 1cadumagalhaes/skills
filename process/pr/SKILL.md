@@ -13,6 +13,7 @@ derived_from: {repo: mattpocock/skills, commit: abeeaf95660b, license: MIT}
 |---|---|
 | Reviewing a changed branch | `~/.agents/skills/code-review/SKILL.md` |
 | Mapping likely impact before edits | `~/.agents/skills/blast-radius/SKILL.md` |
+| Splitting the work into commits | `~/.agents/skills/commit/SKILL.md` |
 
 Create clean, verifiable PRs with compact visual summaries, measured before/after evidence, and explicit merge risk. Run all PR prose through `~/.agents/skills/unslop/SKILL.md`.
 

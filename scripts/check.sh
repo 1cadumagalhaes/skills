@@ -65,7 +65,7 @@ FORBIDDEN = (
 # Roots that are deliberately manual navigation ports.
 MANUAL_ROOTS = {
     "motion-build", "pr", "retro", "research", "prototype",
-    "tdd", "grilling", "wizard", "agent-docs", "unslop",
+    "tdd", "grilling", "wizard", "agent-docs", "unslop", "commit",
 }
 MAX_AUTO_ROOTS = 14
 MAX_INDEX = 2800

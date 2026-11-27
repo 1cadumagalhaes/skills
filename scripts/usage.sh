@@ -83,12 +83,45 @@ for d in scan_dirs:
     files.extend(sorted(glob.glob(os.path.join(d, "**", "*.jsonl"), recursive=True)))
 
 
+# The v2 tree renamed 31 skills on 2026-11-27. Sessions written before that still
+# point at the old paths, so history is counted through this alias table instead of
+# reporting renamed skills as never used. Longest name first, so dashboard-design
+# is matched before dashboard.
+ALIASES = {
+    "project-baseline": "repo-defaults", "modern-python": "python",
+    "code-quality": "code-audit", "diagnosing-bugs": "debug",
+    "codebase-design": "module-design", "dsa-system-design": "system-design",
+    "benchmark-checklist": "benchmark-check", "webscraping-expert": "webscraping",
+    "frontend-workflow": "frontend-build", "ui-craft": "frontend-rules",
+    "design-direction": "frontend-direction", "design-contract": "frontend-design-doc",
+    "storybook-workflow": "frontend-storybook", "dashboard-design": "frontend-dashboard-charts",
+    "dashboard": "frontend-dashboard", "design-taste-frontend": "frontend-taste",
+    "modern-web-guidance": "frontend-platform-docs",
+    "revenue-centric-design": "frontend-revenue-design", "diagram-sections": "frontend-diagrams",
+    "animate": "motion-build", "choreograph": "motion-sequence",
+    "review-animations": "motion-review", "improve-animations": "motion-improve",
+    "remove-animations": "motion-remove",
+    "find-animation-opportunities": "motion-find",
+    "animation-performance": "motion-performance",
+    "animation-vocabulary": "motion-vocabulary",
+    "break-ui": "frontend-stress", "pick-ui-library": "frontend-choose-library",
+    "delegation": "delegate", "writing-for-agents": "agent-docs",
+}
+ALIAS_ORDER = sorted(ALIASES, key=len, reverse=True)
+
+
 def matched(text: str) -> list[tuple[str, str]]:
     """Skill name plus matched path for every path that points into a known skill."""
     out = []
     for m in path_re.finditer(text):
-        if m.group("name") in names:
-            out.append((m.group("name"), m.group("path")))
+        name = m.group("name")
+        if name in names:
+            out.append((name, m.group("path")))
+            continue
+        for old in ALIAS_ORDER:
+            if name == old and ALIASES[old] in names:
+                out.append((ALIASES[old], m.group("path")))
+                break
     return out
 
 
