@@ -1,3 +1,7 @@
 # Model output from eval runs: evidence, not source. The judged verdict goes in
 # evals/VERDICTS.md, which is tracked.
 evals/*/results/
+
+# Parked packs stay local: 21 MB, re-clonable from the pins in skills.lock.yaml for
+# three of them, and never read by an agent. Push them only on purpose.
+parked/
