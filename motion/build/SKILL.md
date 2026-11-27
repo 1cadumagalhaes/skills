@@ -1,6 +1,6 @@
 ---
 name: motion-build
-description: Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use motion-review; for auditing a whole codebase use motion-improve.
+description: "Build purposeful UI animations and write the implementation. Triggers: add animation, animate button, transition, motion design"
 cluster: motion
 tier: root
 disable-model-invocation: true
@@ -19,15 +19,7 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 | Diagnosing dropped frames | `~/.agents/skills/motion-performance/SKILL.md` |
 | Looking up motion terms and principles | `~/.agents/skills/motion-vocabulary/SKILL.md` |
 
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to build animations that feel right, my knowledge comes from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
-
-A construction skill. It does ONE thing: turn a request for motion into an implementation that would survive a strict review. It does not audit a codebase (that's `motion-improve`), critique a diff (that's `motion-review`), hunt for places that could animate (that's `motion-find`), or build for React Native or build for React Native.
+A construction skill. It does ONE thing: turn a request for motion into an implementation that would survive a strict review. It does not audit a codebase (that's `motion-improve`), critique a diff (that's `motion-review`), hunt for places that could animate (that's `motion-find`), or build for React Native.
 
 ## Operating Posture
 
@@ -52,12 +44,7 @@ Never present motion options as a menu. Make the call, state the reasoning in on
 
 ### 1. Should this animate at all?
 
-| Frequency | Decision |
-| --- | --- |
-| 100+ times/day (keyboard shortcuts, command palette toggle) | **No animation. Ever.** Stop here. |
-| Tens of times/day (hover effects, list navigation) | Near-imperceptible only — fast and subtle, or nothing |
-| Occasional (modals, drawers, toasts) | Standard animation |
-| Rare / first-time (onboarding, success, celebration) | The delight budget lives here |
+Frequency gate: see `../reference-frequency.md`.
 
 **Keyboard-initiated actions are a disqualifier, not a judgment call.** Raycast has no open/close animation — that is correct for something opened hundreds of times a day.
 
@@ -96,52 +83,19 @@ If the task needs a *component* rather than an animation — a toast, a drawer, 
 
 ### 4. Pick the properties
 
-- **`transform` and `opacity` only.** They skip layout and paint and run on the GPU. `width`/`height`/`margin`/`padding`/`top`/`left` trigger all three. (`clip-path` is the sanctioned fourth — see RECIPES.md. `height` is tolerated only for accordions, where there's no transform equivalent.)
-- **Never `scale(0)`.** Start from `scale(0.9–0.97)` + `opacity: 0`. Nothing in the real world appears from nothing.
-- **`transform-origin` at the trigger** for popovers, dropdowns, menus, tooltips — `var(--transform-origin)` in Base UI. **Modals are exempt**; they're not anchored to a trigger, so they stay centered.
-- **Percentages in `translate()`** are relative to the element's own size — `translateY(100%)` moves by its own height whatever the content. Prefer over hardcoded pixels.
-- **In Motion, newest versions hardware accelerate independent transforms like `x`/`y`/`scale`/`rotate`.**
-
-```jsx
-<motion.div animate={{ x: 100 }} />                          // motion 14.2+: hardware accelerated
-<motion.div animate={{ transform: "translateX(100px)" }} />  // hardware accelerated in every version
-```
-
-- **Never drive a child's transform from a CSS variable on the parent** — it recalculates styles for every child. Set `transform` on the element directly.
+Property and transform rules: see `../reference-easing.md`. For ready-to-build `clip-path` and property examples, see [RECIPES.md](RECIPES.md).
 
 ### 5. Easing and duration — or a spring
 
-**Easing**, in decision order:
-
-| Situation | Easing |
-| --- | --- |
-| Entering or exiting | `ease-out` |
-| Moving / morphing on screen | `ease-in-out` |
-| Hover / color change | `ease` |
-| Constant motion (marquee, progress) | `linear` |
-| Default | `ease-out` |
+Easing and duration: see `../reference-easing.md`.
 
 **Never `ease-in` on UI.** It starts slow, delaying the exact moment the user is watching. `ease-out` at 200ms *feels* faster than `ease-in` at 200ms.
 
-Built-in CSS easings are too weak. Use these:
-
-```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1);        /* strong ease-out for UI */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* strong ease-in-out for on-screen movement */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);     /* iOS-like drawer curve (Ionic) */
-```
-
-Need a curve that isn't here? Take it from [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/). Don't hand-roll one.
+Built-in CSS easings are too weak. Use the canonical tokens and curve guidance in `../reference-easing.md`.
 
 **Duration:**
 
-| Element | Duration |
-| --- | --- |
-| Button press feedback | 100–160ms |
-| Tooltips, small popovers | 125–200ms |
-| Dropdowns, selects | 150–250ms |
-| Modals, drawers | 200–500ms |
-| Marketing / explanatory | Can be longer |
+Duration budgets follow the same reference above.
 
 **UI animations stay under 300ms.** A 180ms dropdown feels more responsive than a 400ms one.
 

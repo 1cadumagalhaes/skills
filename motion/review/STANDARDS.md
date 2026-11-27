@@ -4,12 +4,7 @@ The precise values, curves, and rules behind the review. Cite these in findings 
 
 ## Should it animate? (frequency table)
 
-| Frequency | Decision |
-| --- | --- |
-| 100+ times/day (keyboard shortcuts, command palette toggle) | No animation. Ever. |
-| Tens of times/day (hover effects, list navigation) | Remove or drastically reduce |
-| Occasional (modals, drawers, toasts) | Standard animation |
-| Rare / first-time (onboarding, feedback, celebrations) | Can add delight |
+Frequency gate: see `../reference-frequency.md`.
 
 **Never animate keyboard-initiated actions** — they repeat hundreds of times daily; animation makes them feel slow and disconnected. (Raycast has no open/close animation — correct for something used hundreds of times a day.)
 
@@ -28,23 +23,13 @@ Decision order:
 
 Built-in CSS easings are too weak. Use strong custom curves:
 
-```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1);        /* strong ease-out for UI */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* strong ease-in-out for on-screen movement */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);     /* iOS-like drawer curve (Ionic) */
-```
+Easing tokens and property rules: see `../reference-easing.md`.
 
 Find curves at [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) — don't hand-roll from scratch.
 
 ## Duration
 
-| Element | Duration |
-| --- | --- |
-| Button press feedback | 100–160ms |
-| Tooltips, small popovers | 125–200ms |
-| Dropdowns, selects | 150–250ms |
-| Modals, drawers | 200–500ms |
-| Marketing / explanatory | Can be longer |
+Apply the duration budgets from the reference above.
 
 **Rule: UI animations stay under 300ms.** A 180ms dropdown feels more responsive than a 400ms one. Faster spinners make load feel faster (same actual time). Instant tooltips after the first (skip delay + animation) make a toolbar feel faster.
 

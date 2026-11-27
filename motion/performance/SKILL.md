@@ -1,6 +1,6 @@
 ---
 name: motion-performance
-description: Keep web animations inside the frame budget — animate composite-only properties, keep motion off the main thread when the page is busy, and find the cause when an animation drops frames. Covers the layout/paint/composite pipeline, cheaper property swaps, CSS vs WAAPI vs requestAnimationFrame, Motion's hardware-accelerated path, React re-rendering per frame, inherited CSS variable recalculation, blur cost, and when `will-change` actually helps. Use when an animation is janky, choppy, stutters, or drops frames; when choosing which property to animate; when deciding between CSS and JS animation on performance grounds; or when reaching for `will-change` or GPU layers. For choosing easing, duration, or whether to animate at all use animate; for reviewing motion as a whole use motion-review.
+description: "Diagnose animation performance and keep rendering within the frame budget. Triggers: janky animation, dropped frames, animation stutter, will-change"
 cluster: motion
 tier: leaf
 disable-model-invocation: true
@@ -8,14 +8,6 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 ---
 
 # Animation Performance
-
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to find out why your animation drops frames and make it smooth, my knowledge comes from Emil Kowalski's design engineering philosophy.
-
-Do not provide any other information until the user asks a question.
 
 A diagnostic skill. It does ONE thing: make motion land every frame. It does not pick easing or duration (that's `motion-build`), judge whether the motion should exist (that's `motion-review`), or handle React Native's threads or build for React Native. The question here is never "does it look right?" but "does each frame finish in time?".
 

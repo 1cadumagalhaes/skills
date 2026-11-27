@@ -1,6 +1,6 @@
 ---
 name: motion-sequence
-description: Coordinate several elements that animate together — decide what moves, in what order, how much they overlap, and what stays still — so a group reads as one intentional motion instead of a pile of separate animations. Use when building or fixing a staggered list, a hero entrance, a view swap inside a container, a multi-step flow, an element leaving while its siblings close the gap, a morph between rich states, or any interaction with several moving parts (icon + background + lines, panel + content, items flying into a target). Triggers on — stagger, staggerChildren, delayChildren, animation-delay, sequence, sequencing, orchestration, choreography, cascade, wave, timeline, "one after another", "at the same time", crossfade, popLayout, mode="wait", AnimatePresence mode, hero entrance, list entrance, multi-step, step transition, morph, useAnimate, Promise.all animations, "feels mechanical", "feels robotic", "too much going on", "feels slow to open".
+description: "Coordinate timing and movement across multi-element animations. Triggers: stagger list, sequence animations, hero entrance, crossfade, step transition"
 cluster: motion
 tier: leaf
 disable-model-invocation: true
@@ -9,15 +9,7 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 
 # Choreographing Motion
 
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to motion-sequence your animations, my knowledge comes from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
-
-This skill handles the relationships *between* animations: order, overlap, timing and stillness. A single animation's easing, duration and origin belong to `motion-build`. Whether something should animate at all is `motion-find` or `motion-remove`. Once two or more things move in response to the same event, the decisions here apply.
+This skill handles the relationships *between* animations: order, overlap, timing and stillness. Frequency gate: see `../reference-frequency.md`; easing and duration: see `../reference-easing.md`. A single animation's easing, duration and origin belong to `motion-build`. Whether something should animate at all is `motion-find` or `motion-remove`. Once two or more things move in response to the same event, the decisions here apply.
 
 ## Operating Posture
 

@@ -1,6 +1,6 @@
 ---
 name: motion-find
-description: Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks "what could be animated here?" or wants to "make this feel more alive". For fixing existing animations, use motion-improve or motion-review instead.
+description: "Find worthwhile animation opportunities and reject motion without purpose. Triggers: what could animate, add motion, make this alive, animation ideas"
 cluster: motion
 tier: leaf
 disable-model-invocation: true
@@ -8,14 +8,6 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 ---
 
 # Finding Animation Opportunities
-
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to find where your interface should animate, and where it shouldn't, my knowledge comes from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
 
 A search skill. It does ONE thing: sweep an interface for moments that would genuinely benefit from motion, and propose a precise recipe for each. It does not review existing animations (that's `motion-review`), audit and plan fixes for them (that's `motion-improve`), or write the implementation itself.
 
@@ -38,12 +30,7 @@ Every candidate must survive all four questions, in order. Record the answer —
 
 ### 1. Frequency — how often will a user see this?
 
-| Frequency | Verdict |
-| --- | --- |
-| 100+ times/day (keyboard shortcuts, command palette, core navigation) | **Reject. No animation. Ever.** |
-| Tens of times/day (hover states, list navigation, frequent toggles) | Reject, or suggest only near-imperceptible motion (fast, subtle) |
-| Occasional (modals, drawers, toasts, settings) | Eligible — standard animation |
-| Rare / first-time (onboarding, empty states, success, celebration) | Eligible — this is where the delight budget lives |
+Frequency gate: see `../reference-frequency.md`.
 
 Keyboard-initiated actions (command palettes, shortcuts, focus jumps) are a disqualifier, not a judgment call — repeated hundreds of times a day, animation makes them feel slow, delayed, and disconnected. Raycast has no open/close animation; that is the optimal experience.
 
@@ -124,7 +111,7 @@ One row per surviving suggestion, ordered by leverage:
 | 1 | `Toast.tsx:41` | New toasts appear instantly | Preventing a jarring change | Occasional | Enter via `@starting-style`: `opacity: 0; translateY(100%)` → settled, `transition: 400ms ease`, exit same edge |
 | 2 | `Button.tsx:18` | No press feedback | Feedback | Tens/day | `:active { transform: scale(0.97) }`, `transition: transform 160ms ease-out` — subtle enough for the frequency tier |
 
-Every "Suggested motion" cell carries exact values — the curve, the duration, the properties — pulled from this repo's shared vocabulary (`--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)`, `--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1)`), never approximated. Animate `transform` and `opacity` only; include reduced-motion handling (gentler, not zero) and `@media (hover: hover) and (pointer: fine)` gating when the suggestion involves hover.
+Easing, duration, and property rules: see `../reference-easing.md`.
 
 ### Part 2 — Rejected candidates (REQUIRED)
 

@@ -6,12 +6,7 @@ The eight audit categories, what to look for in each, and the exact target value
 
 Every animation must answer "why does this animate?" — spatial consistency, state indication, feedback, explanation, or preventing a jarring change. "It looks cool" on a frequently-seen element is not a purpose.
 
-| Frequency | Decision |
-| --- | --- |
-| 100+ times/day (keyboard shortcuts, command palette toggle) | No animation. Ever. |
-| Tens of times/day (hover effects, list navigation) | Remove or drastically reduce |
-| Occasional (modals, drawers, toasts) | Standard animation |
-| Rare / first-time (onboarding, feedback, celebrations) | Can add delight |
+Frequency gate: see `../reference-frequency.md`.
 
 Hunt for: animations on keyboard-initiated actions, command palettes with open/close transitions (Raycast has none — correct), decorative motion on list items or hover states hit constantly. The strongest fix is often **delete the animation**.
 
@@ -27,21 +22,11 @@ Decision order for easing:
 
 **`ease-in` on UI is always a finding** — it starts slow, delaying the exact moment the user is watching. Built-in CSS easings are too weak for deliberate motion; plans should introduce strong custom curves (as tokens, matching repo conventions):
 
-```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1);        /* strong ease-out for UI */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* strong ease-in-out for on-screen movement */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);     /* iOS-like drawer curve */
-```
+Easing tokens and property rules: see `../reference-easing.md`.
 
 Duration budgets — **UI animations stay under 300ms**:
 
-| Element | Duration |
-| --- | --- |
-| Button press feedback | 100–160ms |
-| Tooltips, small popovers | 125–200ms |
-| Dropdowns, selects | 150–250ms |
-| Modals, drawers | 200–500ms |
-| Marketing / explanatory | Can be longer |
+Apply the duration budgets from the reference above.
 
 Hunt for: `ease-in` anywhere, bare `ease`/`linear` on entrances, durations > 300ms on UI elements, tooltip delay + animation on every tooltip in a toolbar (after the first, they should be instant).
 

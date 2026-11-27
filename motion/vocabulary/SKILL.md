@@ -1,6 +1,6 @@
 ---
 name: motion-vocabulary
-description: Reverse-lookup glossary that turns a vague description of a web animation or motion effect into its exact term ("the bouncy thing when a popover opens" → Pop in; "the iOS rubber-band scroll" → Rubber-banding). Use when the user asks "what's it called when…", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one.
+description: "Name a motion effect from a plain-language description. Triggers: what's it called, name this animation, rubber band scroll, bouncy popover"
 cluster: motion
 tier: leaf
 disable-model-invocation: true
@@ -8,14 +8,6 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 ---
 
 # Animation Vocabulary
-
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to put a name to any motion effect you describe, my knowledge comes from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
 
 Turn a vague description of a motion or effect into the precise term, so the user knows what to ask for.
 
@@ -125,6 +117,8 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 - **Ripple** — A circle expanding from the point of a tap, confirming the press.
 
 ### Easing — how speed changes over an animation
+
+For canonical easing tokens and timing budgets, see `../reference-easing.md`.
 - **Easing** — The rate at which an animation speeds up or slows down.
 - **Ease-out** — Starts fast, ends slow. The default for most UI and anything responding to the user.
 - **Ease-in** — Starts slow, ends fast. Usually avoided; can feel sluggish.
@@ -179,7 +173,7 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 - **Follow-through** — Parts of an element keep moving and settle slightly after the main motion stops, adding weight.
 - **Squash & stretch** — Deforming an element as it moves to convey weight, speed, and flexibility.
 - **Perceived performance** — The right animation makes an interface feel faster, even when it isn't.
-- **Frequency of use** — The more often a user sees an animation, the shorter and subtler it should be.
+- **Frequency of use** — The more often a user sees an animation, the shorter and subtler it should be. See `../reference-frequency.md` for the full gate.
 - **Spatial consistency** — Animating so an element keeps its identity and position across states, so users never lose track of where things went.
 - **Hardware acceleration** — Animating transform and opacity lets the GPU keep motion smooth.
 - **Reduced motion** — Respecting the user's prefers-reduced-motion setting by toning down or removing motion.

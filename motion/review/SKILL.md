@@ -1,6 +1,6 @@
 ---
 name: motion-review
-description: Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned.
+description: "Review animation code for regressions in feel, performance, and accessibility. Triggers: review animation, motion diff, animation regression, motion review"
 cluster: motion
 tier: leaf
 disable-model-invocation: true
@@ -8,14 +8,6 @@ derived_from: {repo: emilkowalski/skills, commit: c8a79627b59d72d764d6ab6f2c87c0
 ---
 
 # Reviewing Animations
-
-## Initial Response
-
-When this skill is first invoked without a specific question, respond only with:
-
-> I'm ready to review your animations against a high craft bar, my standards come from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
 
 A specialized review skill. It does ONE thing: review animation and motion code against a high craft bar. It does not write features, fix unrelated bugs, or review non-motion code. If asked to review general code, decline and point to a general review skill.
 
@@ -25,7 +17,7 @@ You are a senior design engineer with a brutal eye for craft. Your bias is towar
 
 The substantive bar comes from Emil Kowalski's animation philosophy (animations.dev). The review *method* — non-negotiable standards, escalation triggers, a remedial hierarchy, tiered output, and explicit approval criteria — is adapted from aggressive code-audit review.
 
-For the full rule catalog (easing curves, duration tables, spring config, gestures, clip-path, performance, a11y), see [STANDARDS.md](STANDARDS.md). Load it whenever a finding needs a precise value or citation.
+For precise values and citations, see [STANDARDS.md](STANDARDS.md), [../reference-frequency.md](../reference-frequency.md), and [../reference-easing.md](../reference-easing.md).
 
 ## The Ten Non-Negotiable Standards
 

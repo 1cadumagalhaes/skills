@@ -302,8 +302,23 @@ for s in sorted(skills.values(), key=lambda x: x["rel"]):
 # A body above 12 KB is worth a look: it is loaded in full every time the skill is
 # read, and large bodies usually hold reference material that belongs in references/.
 BODY_WARN = 12000
+# Bodies above the threshold that were looked at and kept, with the reason. A new
+# oversized body warns; an accepted one is still listed, so the debt stays visible.
+BODY_ACCEPTED = {
+    "webscraping": "kept by decision; 16 invocations",
+    "frontend-taste": "cost driver was the re-read instruction, now fixed; split pending",
+    "frontend-stress": "every phase ends on a completion criterion",
+    "motion-sequence": "canonical tables moved to references; the rest is sequencing rules",
+    "motion-performance": "canonical tables moved to references; per-frame diagnostics remain",
+    "motion-vocabulary": "glossary entries; split into references pending",
+}
+accepted_bodies = []
 for s in sorted(skills.values(), key=lambda x: x["rel"]):
-    if len(s["body"]) > BODY_WARN:
+    if len(s["body"]) <= BODY_WARN:
+        continue
+    if s["name"] in BODY_ACCEPTED:
+        accepted_bodies.append(f"{s['name']} {len(s['body'])} ({BODY_ACCEPTED[s['name']]})")
+    else:
         lint.append(f"lint: {s['name']}: body is {len(s['body'])} chars, consider moving detail to references/")
 
 # One table, one home. A skill that lists three or more harness mechanisms inline
@@ -375,6 +390,8 @@ if not quiet:
     for line in mirror_report:
         print(f"  {line}")
     print(f"lint     {len(lint)} warning(s)")
+    if accepted_bodies:
+        print(f"bodies   {len(accepted_bodies)} accepted over {BODY_WARN} chars: " + "; ".join(accepted_bodies))
 
 if not quiet and deprived:
     print(f"orphan leaves  {', '.join(deprived)}")
