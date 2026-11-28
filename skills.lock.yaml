@@ -6,6 +6,16 @@
 external:
   olorin: ~/Projects/olorin/integrations/skills/olorin
   graphify: ~/.pi/agent/skills/graphify
+
+# Real directories inside the discovery farm (~/.agents/skills) that are skills owned by
+# another project and must reach every harness. Anything not declared here stays local to
+# the harness that reads the farm directly, which is what keeps stray directories from
+# being advertised to all of them.
+farm_dirs:
+  - instabox
+  - instabox-basic-setup
+  - instabox-move-repo
+  - instabox-snapshots
 parked:
   Kappaemme-git/codex-startup-pressure-test-skill:
     pack: marketing

@@ -58,6 +58,10 @@ except ImportError:
     sys.exit("check: PyYAML is required (python3 -m pip install --user pyyaml)")
 
 repo, farm, home, quiet, strict = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4] == "1", sys.argv[5] == "1"
+try:
+    lock = yaml.safe_load(open(os.path.join(repo, "skills.lock.yaml"), encoding="utf-8")) or {}
+except FileNotFoundError:
+    lock = {}
 audit = sys.argv[6] == "1"
 
 CLUSTERS = ("base", "engineering", "frontend", "motion", "process")
@@ -191,9 +195,10 @@ if os.path.isdir(farm):
 # Real directories live in the farm on purpose: instabox on one machine, personal skills on
 # another. They are not drift. A real directory that shadows a repository skill is, because
 # the stale copy silently wins over the linked one.
+declared_dirs = set((lock.get("farm_dirs") or []))
 farm_real = {e for e in farm_entries
              if os.path.isdir(os.path.join(farm, e)) and not os.path.islink(os.path.join(farm, e))
-             and not e.startswith(".")}
+             and not e.startswith(".") and e in declared_dirs}
 farm_skills = farm_links | farm_real
 
 known = {s["name"] for s in skills.values() if s["name"]}

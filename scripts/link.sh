@@ -79,6 +79,7 @@ while i < len(argv):
 lock_path = os.path.join(repo, "skills.lock.yaml")
 lock = (yaml.safe_load(open(lock_path, encoding="utf-8")) or {}) if os.path.exists(lock_path) else {}
 external_skills = lock.get("external") or {}
+declared_farm_dirs = set(lock.get("farm_dirs") or [])
 
 parked_root = os.path.join(repo, "parked")
 available_packs = sorted(
@@ -286,7 +287,8 @@ if os.path.isdir(farm):
         if entry in wanted or entry in excluded_set:
             continue
         if os.path.isdir(path) and not os.path.islink(path):
-            mirror_desired[entry] = path
+            if entry in declared_farm_dirs:
+                mirror_desired[entry] = path
             continue
         if not os.path.islink(path):
             continue
